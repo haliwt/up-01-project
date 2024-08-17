@@ -206,8 +206,8 @@ static void status_1(void)
 		if (gpro_t.timer_1_time_out_flag == 1)
 		{
             gpro_t.timer_1_time_out_flag =0;
-            g_recoder_times ++;
-            g_MainStatus =2;
+            g_recoder_times =3;
+            g_MainStatus =1;
 		}
         else if(gpro_t.timer_2_flag == 1)		/* 检查自动定时器2，间隔200ms翻转一次LED1 */
 		{
@@ -220,14 +220,16 @@ static void status_1(void)
 //			bsp_LedOff(4);
 //            bsp_LedOff(5);
 			
-			
-
-			bsp_LedOn(led_no_state_1);	/* 点亮其中一个LED */	
+			bsp_LedOn(5);
+          
+			//bsp_LedOn(led_no_state_1);	/* 点亮其中一个LED */	
             led_no_state_1++ ;
             if (led_no_state_1 == 6)
 			{
 				led_no_state_1 = 1;
 			}
+          
+          
 		}	
 
  }

@@ -250,7 +250,7 @@ void rgb_led_set_input_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx)
 
 /*******************************************************************************
 *
-*Function Name: void rgb_led_set_input_mode(GPIO_TypeDef *p_gpiox, uint16_t pinx)
+*Function Name: void rgb_led_set_output_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx,uint8_t high_low)
 *Function : 
 *Input Ref: GPIO PORT and GPIO Pin numbers
 *Return Ref:NO 
