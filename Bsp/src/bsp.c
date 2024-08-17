@@ -194,8 +194,8 @@ static void status_1(void)
 	xTimerStart_1_Fun();
     //bsp_StartTimer(0, 5000);		/* 定时器0是5000ms 单次定时器 */
 	//bsp_StartAutoTimer(1, 200);		/* 定时器1是500ms 自动重装定时器, 控制LED1按1Hz频率翻转闪烁 */
-	bsp_LedOn(1); //led_1 is on
-	
+	//bsp_LedOff(1); //led_1 is on
+	   red_led_1_on();
     }
 
 		//bsp_Idle();		/* CPU空闲时执行的函数，在 bsp.c */
@@ -213,18 +213,21 @@ static void status_1(void)
 		{
             gpro_t.timer_2_flag =0;
            /* 先关闭所有的LED，然后在打开其中一个 */
-			bsp_LedOff(1);
-			bsp_LedOff(2);
-			bsp_LedOff(3);
-			bsp_LedOff(4);
-            bsp_LedOff(5);
+			//bsp_LedOff(1);
+           
+//			bsp_LedOff(2);
+//			bsp_LedOff(3);
+//			bsp_LedOff(4);
+//            bsp_LedOff(5);
 			
-			if (++led_no_state_1 == 6)
+			
+
+			bsp_LedOn(led_no_state_1);	/* 点亮其中一个LED */	
+            led_no_state_1++ ;
+            if (led_no_state_1 == 6)
 			{
 				led_no_state_1 = 1;
 			}
-
-			bsp_LedOn(led_no_state_1);	/* 点亮其中一个LED */	
 		}	
 
  }
@@ -256,7 +259,7 @@ static void status_2(void)
      xTimerStart_1_Fun();//bsp_StartTimer(0, 5000);		    /* 定时器0是5000ms 单次定时器 */
 	//bsp_StartAutoTimer(1, 200);		/* 定时器1是500ms 自动重装定时器, 控制LED1按1Hz频率翻转闪烁 */
    
-	bsp_LedOn(1);
+	 //red_led_1_on();//bsp_LedOn(1);
 	led_no_state_2 = 1;
 
     }
@@ -276,18 +279,22 @@ static void status_2(void)
 		{
             gpro_t.timer_2_flag =0;
            /* 先打开所有的LED，然后在关闭其中一个 */
-			bsp_LedOn(1);
-			bsp_LedOn(2);
-			bsp_LedOn(3);
-			bsp_LedOn(4);
-            bsp_LedOn(5);
+//			bsp_LedOn(1);
+//			bsp_LedOn(2);
+//			bsp_LedOn(3);
+//			bsp_LedOn(4);
+//            bsp_LedOn(5);
+            
 			
-			if (++led_no_state_2 == 6)
+			
+
+			bsp_LedOn(led_no_state_2);	/* 点亮其中一个LED */		
+
+            led_no_state_2++;
+            if(led_no_state_2 == 6)
 			{
 				led_no_state_2 = 1;
 			}
-
-			bsp_LedOff(led_no_state_2);	/* 点亮其中一个LED */			
 		}		
 }
 	

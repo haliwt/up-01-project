@@ -1,5 +1,4 @@
-#include "bsp_led.h"
-
+#include "bsp.h"
 led_t gled_t;
 
 
@@ -34,7 +33,7 @@ void LED_Init(void)
 *Return Ref:NO 
 *
 ********************************************************************************/
-void rgb_led_set_input_mode(uint16_t pinx)
+void rgb_led_set_input_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx)
 {
 
   
@@ -45,7 +44,30 @@ void rgb_led_set_input_mode(uint16_t pinx)
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
 
+   GPIO_InitStruct.Pin = pinx;
+   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+   GPIO_InitStruct.Pull = GPIO_NOPULL;
+   HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
+//
 
+//   
+//         GPIO_InitStruct.Pin = pinx;
+//         GPIO_InitStruct.Mode = GPIO_MODE_INPUT; // GPIO_MODE_INPUT = 0X0
+//         GPIO_InitStruct.Pull = GPIO_PULLUP;
+//    
+//    
+//        assert_param(IS_GPIO_MODE(GPIO_Init->Mode));
+//    
+//      /* Configure IO Direction mode (Input, Output, Alternate or Analog) */
+//       temp = GPIOx->MODER;
+//       temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
+//       temp |= ((GPIO_Init->Mode & GPIO_MODE) << (position * 2u));
+//       GPIOx->MODER = temp;
+
+
+}
+
+#if 0
   switch(pinx){
 
     case GPIO_1_Pin:
@@ -224,6 +246,7 @@ void rgb_led_set_input_mode(uint16_t pinx)
   
 
 }
+#endif 
 
 /*******************************************************************************
 *
@@ -233,7 +256,7 @@ void rgb_led_set_input_mode(uint16_t pinx)
 *Return Ref:NO 
 *
 ********************************************************************************/
-void rgb_led_set_output_mode(uint16_t pinx)
+void rgb_led_set_output_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx,uint8_t high_low)
 {
 
   
@@ -245,6 +268,21 @@ void rgb_led_set_output_mode(uint16_t pinx)
     __HAL_RCC_GPIOA_CLK_ENABLE();
 
 
+     /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOx, pinx,high_low);
+
+
+
+  /*Configure GPIO pins : PBPin PBPin */
+  GPIO_InitStruct.Pin = pinx;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
+
+}
+
+#if 0
   switch(pinx){
 
     case GPIO_1_Pin:
@@ -383,7 +421,7 @@ void rgb_led_set_output_mode(uint16_t pinx)
 
 }
 
-
+#endif 
 
 
 /**
@@ -518,27 +556,27 @@ static uint8_t reg_led_color_fun(uint8_t color)
 */
 void bsp_LedOn(uint8_t _no)  //bsp_LedOn
 {
-	_no--;
+	//_no--;
 
-	if (_no == 0)
+	if (_no == 1)
 	{
-		GPIO_1_GPIO_Port->BRR = GPIO_1_Pin; //BRR ->GPIO output = 0 
-	}
-	else if (_no == 1)
-	{
-		GPIO_2_GPIO_Port->BRR = GPIO_2_Pin;
+		red_led_1_on();//GPIO_1_GPIO_Port->BRR = GPIO_1_Pin; //BRR ->GPIO output = 0 
 	}
 	else if (_no == 2)
 	{
-		GPIO_3_GPIO_Port->BRR = GPIO_3_Pin;
+		red_led_2_on();//GPIO_2_GPIO_Port->BRR = GPIO_2_Pin;
 	}
 	else if (_no == 3)
 	{
-		GPIO_4_GPIO_Port->BRR = GPIO_4_Pin;
+		red_led_3_on();//GPIO_3_GPIO_Port->BRR = GPIO_3_Pin;
 	}
-    else if(_no == 4)
+	else if (_no == 4)
+	{
+		red_led_4_on();//GPIO_4_GPIO_Port->BRR = GPIO_4_Pin;
+	}
+    else if(_no == 5)
     {
-        GPIO_5_GPIO_Port->BRR = GPIO_5_Pin;
+        red_led_5_on();//GPIO_5_GPIO_Port->BRR = GPIO_5_Pin;
 
     }
 }
@@ -553,25 +591,25 @@ void bsp_LedOn(uint8_t _no)  //bsp_LedOn
 */
 void bsp_LedOff(uint8_t _no)
 {
-	_no--;
+	//_no--;
 
-	if (_no == 0)
+	if (_no == 1)
 	{
 		GPIO_1_GPIO_Port->BSRR = GPIO_1_Pin;   // GPIO output is high = "1"
 	}
-	else if (_no == 1)
+	else if (_no == 2)
 	{
 		GPIO_1_GPIO_Port->BSRR = GPIO_2_Pin;
 	}
-	else if (_no == 2)
+	else if (_no == 3)
 	{
 		GPIO_1_GPIO_Port->BSRR = GPIO_3_Pin;
 	}
-	else if (_no == 3)
+	else if (_no == 4)
 	{
 		GPIO_1_GPIO_Port->BSRR = GPIO_4_Pin;
 	}
-    else if(_no == 4)
+    else if(_no == 5)
     {
         GPIO_5_GPIO_Port->BSRR = GPIO_5_Pin;
 

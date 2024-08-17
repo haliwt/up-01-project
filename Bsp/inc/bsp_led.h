@@ -90,9 +90,11 @@ uint8_t sys_gpio_pin_get(GPIO_TypeDef *p_gpiox, uint16_t pinx);
 
 
 
-void rgb_led_set_input_mode(uint16_t pinx);
+void rgb_led_set_input_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx);
 
-void rgb_led_set_output_mode(uint16_t pinx);
+
+void rgb_led_set_output_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx,uint8_t high_low);
+
 
 
 void bsp_LedOn(uint8_t _no);
