@@ -5,7 +5,7 @@
 //#define KEY0        sys_gpio_pin_get(KEY0_GPIO_PORT, KEY0_GPIO_PIN)  
 
 
-#define KEY_POWER_VALUE()      sys_gpio_pin_get(KEY_ID_GPIO_Port,KEY_ID_Pin)  //
+#define KEY_POWER_VALUE()    sys_gpio_pin_get(KEY_ID_GPIO_Port,KEY_ID_Pin)  //HAL_GPIO_ReadPin(KEY_ID_GPIO_Port,KEY_ID_Pin)   //
 
 typedef enum _key_state{
 

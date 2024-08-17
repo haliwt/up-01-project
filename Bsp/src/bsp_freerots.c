@@ -52,7 +52,7 @@ void freeRTOS_Handler(void)
 	AppTaskCreate();
 
 	/* 创建任务通信机制 */
-//	AppObjCreate();
+	AppObjCreate();
 	
     /* 启动调度，开始执行任务 */
     vTaskStartScheduler();
@@ -115,7 +115,7 @@ static void vTaskMsgPro(void *pvParameters)
                 if(creat_timer_success ==0){
                           
                       xTimerStart((TimerHandle_t  )Timer2Timer_Handler,   /* 待启动的定时器句柄 */
-                                   (TickType_t     )100);        /* 等待系统启动定时器的最大时间 portMAX_DELAY*/
+                                   (TickType_t     )200);        /* 等待系统启动定时器的最大时间 portMAX_DELAY*/
 
 
                 }
@@ -160,7 +160,7 @@ static void vTaskStart(void *pvParameters)
 
     }
    
-    vTaskDelay(30);
+    vTaskDelay(20);
   }
 }
 /**********************************************************************************************************
@@ -211,14 +211,14 @@ static void AppObjCreate (void)
 	*/
 	
 		Timer1Timer_Handler = xTimerCreate("Timer",          /* 定时器名字 */
-							       (TickType_t )500,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
+							       (TickType_t )5000,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
 							       pdFALSE, /*一次性定时器*/ //pdTRUE,          /* 周期性 */
 							       (void *) 1,      /* 定时器ID */
 							       vTimer1Callback); /* 定时器回调函数 */
 
 
        Timer2Timer_Handler = xTimerCreate("Timer",          /* 定时器名字 */
-                                   (TickType_t )200,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
+                                   (TickType_t )300,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
                                    pdTRUE,          /* 周期性 */
                                    (void *) 2,      /* 定时器ID */
                                    vTimer2Callback); /* 定时器回调函数 */
@@ -300,7 +300,7 @@ static void vTimer2Callback(xTimerHandle pxTimer)
 void xTimerStart_1_Fun(void)
 {
    	xTimerStart((TimerHandle_t  )Timer1Timer_Handler,   /* 待启动的定时器句柄 */
-                 (TickType_t   )500);        /* 等待系统启动定时器的最大时间 500ms */
+                 (TickType_t   )5000);        /* 等待系统启动定时器的最大时间 5000ms */
 
 
 }

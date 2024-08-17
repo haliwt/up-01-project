@@ -3,13 +3,19 @@
 Process_T gpro_t;
 
 
-uint8_t g_MainStatus = 0;	/* 状态机 */
-
-uint8_t g_recoder_times = 0;
 
 static void status_0(void);
 static void status_1(void);
 static void status_2(void);
+
+
+uint8_t g_MainStatus = 0;	/* 状态机 */
+
+uint8_t g_recoder_times = 0;
+
+uint8_t  led_no_state_1 ;
+uint8_t led_no_state_2 ;
+
 
 
 
@@ -88,17 +94,17 @@ void waterfall_light_handler(void)
     {
     case 0:         /* 上电执行一次。LED1闪烁3次，每次间隔1秒。3次后状态机返回。*/
         status_0(); 
-        g_MainStatus = 1;   /* 转移到状态1 */
+        //g_MainStatus = 1;   /* 转移到状态1 */
     break;
 
     case 1:         /* LED1 - LED4 依次流水显示。每次点亮1个LED。状态持续5秒后返回。 */
         status_1();     
-        g_MainStatus = 2;   /* 转移到状态2 */
+      //  g_MainStatus = 2;   /* 转移到状态2 */
     break;
 
     case 2:
         status_2(); /* LED1 - LED4 依次流水显示。每次点亮3个LED, 熄灭1个。状态持续5秒后返回。*/
-        g_MainStatus = 1;   /* 转移到状态1 */
+      //  g_MainStatus = 1;   /* 转移到状态1 */
     break;
     }   
 
@@ -149,12 +155,13 @@ static void status_0(void)
             gpro_t.timer_1_time_out_flag=0;
             bsp_LedToggle(1);		/* 间隔100ms 翻转一次 LED1 */
             g_recoder_times ++;
-            g_MainStatus = 1;
+           
 		}
 		/* 检查定时器2时间是否到 */
 		else if (bsp_CheckTimer_2(gpro_t.timer_2_flag))
 		{
 			/* 3秒定时到后退出本状态 */
+              g_MainStatus = 1;
 			
 		}
   
@@ -174,7 +181,7 @@ static void status_0(void)
 */
 static void status_1(void)
 {
-   uint8_t  led_no ;
+  
 
    static uint8_t state_1 = 0xff;
 
@@ -182,13 +189,14 @@ static void status_1(void)
 
       state_1 = g_recoder_times;
 
-   led_no = 1;		/* LED指示灯序号 1-5 */
+      led_no_state_1 = 1;		/* LED指示灯序号 1-5 */
 	
-	xTimerStart_1_Fun();//bsp_StartTimer(0, 5000);		/* 定时器0是5000ms 单次定时器 */
+	xTimerStart_1_Fun();
+    //bsp_StartTimer(0, 5000);		/* 定时器0是5000ms 单次定时器 */
 	//bsp_StartAutoTimer(1, 200);		/* 定时器1是500ms 自动重装定时器, 控制LED1按1Hz频率翻转闪烁 */
 	bsp_LedOn(1); //led_1 is on
 	
-     }
+    }
 
 		//bsp_Idle();		/* CPU空闲时执行的函数，在 bsp.c */
 		
@@ -211,12 +219,12 @@ static void status_1(void)
 			bsp_LedOff(4);
             bsp_LedOff(5);
 			
-			if (++led_no == 6)
+			if (++led_no_state_1 == 6)
 			{
-				led_no = 1;
+				led_no_state_1 = 1;
 			}
 
-			bsp_LedOn(led_no);	/* 点亮其中一个LED */	
+			bsp_LedOn(led_no_state_1);	/* 点亮其中一个LED */	
 		}	
 
  }
@@ -236,7 +244,7 @@ static void status_1(void)
 */
 static void status_2(void)
 {
-    uint8_t led_no ;		/* LED指示灯序号 1-5 */
+   		/* LED指示灯序号 1-5 */
 
 
    static uint8_t state_0 = 0xff;
@@ -249,7 +257,7 @@ static void status_2(void)
 	//bsp_StartAutoTimer(1, 200);		/* 定时器1是500ms 自动重装定时器, 控制LED1按1Hz频率翻转闪烁 */
    
 	bsp_LedOn(1);
-	led_no = 1;
+	led_no_state_2 = 1;
 
     }
 			
@@ -274,12 +282,12 @@ static void status_2(void)
 			bsp_LedOn(4);
             bsp_LedOn(5);
 			
-			if (++led_no == 6)
+			if (++led_no_state_2 == 6)
 			{
-				led_no = 1;
+				led_no_state_2 = 1;
 			}
 
-			bsp_LedOff(led_no);	/* 点亮其中一个LED */			
+			bsp_LedOff(led_no_state_2);	/* 点亮其中一个LED */			
 		}		
 }
 	
