@@ -9,13 +9,16 @@ static void status_1(void);
 static void status_2(void);
 
 
+
+
+
 uint8_t g_MainStatus = 0;	/* 状态机 */
 
 uint8_t g_recoder_times = 0;
 
 uint8_t  led_no_state_1 ;
 uint8_t led_no_state_2 ;
-
+uint8_t record_six_minutes_times_flag;
 
 
 
@@ -106,7 +109,9 @@ void waterfall_light_handler(void)
         status_2(); /* LED1 - LED4 依次流水显示。每次点亮3个LED, 熄灭1个。状态持续5秒后返回。*/
       //  g_MainStatus = 1;   /* 转移到状态1 */
     break;
-    }   
+    } 
+
+    //red_led_active_record_fun(record_six_minutes_times_flag);
 
 
 
@@ -144,21 +149,23 @@ static void status_0(void)
 		/* 这个地方可以插入其他任务 */		
 		
 		/* bsp_CheckTimer()检查定时器1时间是否到。函数形参表示软件定时器的ID, 值域0 - 3 */
-		if(bsp_CheckTimer_1(gpro_t.timer_1_time_out_flag))	 //100ms 	
-		{ 
-            gpro_t.timer_1_time_out_flag=0;
-            bsp_LedToggle(1);		/* 间隔100ms 翻转一次 LED1 */
-            g_recoder_times ++;
-           
-		}
+//		if(bsp_CheckTimer_1(gpro_t.timer_1_time_out_flag))	 //100ms 	
+//		{ 
+//            gpro_t.timer_1_time_out_flag=0;
+//          //  bsp_LedToggle(1);		/* 间隔100ms 翻转一次 LED1 */
+//            g_recoder_times ++;
+//           
+//		}
 		/* 检查定时器2时间是否到 */
-		else if (bsp_CheckTimer_2(gpro_t.timer_2_flag))
+		if(bsp_CheckTimer_2(gpro_t.timer_2_time_out_flag))
 		{
 			/* 3秒定时到后退出本状态 */
-              g_MainStatus = 1;
+              g_MainStatus = 2;
+            
+             xTimerStart_1_Fun();
 			
 		}
-      red_led_all_on();
+        red_led_all_on();
 	
 	/* 任务结束时，应该关闭定时器，因为他们会占用后台的资源 */
 	//bsp_StopTimer(0);	 单次定时器如果超时到过一次后，可以不必关闭
@@ -200,19 +207,21 @@ static void status_1(void)
 		if (gpro_t.timer_1_time_out_flag == 1)
 		{
             gpro_t.timer_1_time_out_flag =0;
-            g_recoder_times =3;
+           // g_recoder_times =3;
+           
             g_MainStatus =1;
 		}
-        else if(gpro_t.timer_2_flag == 1)		/* 检查自动定时器2，间隔200ms翻转一次LED1 */
+        
+        if(gpro_t.timer_2_time_out_flag == 1)		/* 检查自动定时器2，间隔200ms翻转一次LED1 */
 		{
-            gpro_t.timer_2_flag =0;
+            gpro_t.timer_2_time_out_flag =0;
            /* 先关闭所有的LED，然后在打开其中一个 */
 			//bsp_LedOff(1);
            
 //			bsp_LedOff(2);
 //			bsp_LedOff(3);
 //			bsp_LedOff(4);
-//            bsp_LedOff(5);
+//          bsp_LedOff(5);
 			
 			red_bsp_LedOn(led_no_state_1);
           
@@ -268,22 +277,18 @@ static void status_2(void)
 		if (gpro_t.timer_1_time_out_flag == 1)
 		{
             gpro_t.timer_1_time_out_flag = 0 ;
-              g_recoder_times ++;
-            g_MainStatus = 1;
-		}
-        else if(gpro_t.timer_2_flag ==1)		/* 检查自动定时器2，间隔200ms翻转一次LED1 */
-		{
-            gpro_t.timer_2_flag =0;
-           /* 先打开所有的LED，然后在关闭其中一个 */
-//			bsp_LedOn(1);
-//			bsp_LedOn(2);
-//			bsp_LedOn(3);
-//			bsp_LedOn(4);
-//            bsp_LedOn(5);
+            //g_recoder_times ++;
+            record_six_minutes_times_flag++;
             
-			
-			
-
+           
+		}
+        
+        if(gpro_t.timer_2_time_out_flag ==1)		/* 检查自动定时器2，间隔200ms翻转一次LED1 */
+		{
+            gpro_t.timer_2_time_out_flag =0;
+           /* 先打开所有的LED，然后在关闭其中一个 */
+			red_led_active_record_fun(record_six_minutes_times_flag);
+            
 			red_bsp_LedOn(led_no_state_2);	/* 点亮其中一个LED */		
 
             led_no_state_2++;
@@ -294,10 +299,74 @@ static void status_2(void)
 		}		
 }
 	
-	/* 任务结束时，应该关闭定时器，因为他们会占用后台的资源 */
-	//bsp_StopTimer(0);	 单次定时器如果超时过一次后，可以不必执行stop函数
 	
 
+/*********************************************************************************************************
+*	函 数 名: status_2
+*	功能说明: 状态2.  LED1 - LED5 依次流水显示。每次点亮3个LED, 熄灭1个。状态持续5秒后返回。
+*	形    参：无
+*	返 回 值: 无
+*********************************************************************************************************/
+void red_led_active_record_fun(uint8_t rdata)
+{
+    switch(rdata){
+
+      case 0:
+
+      break;
+
+
+      case 1:
+          
+        red_bsp_LedOn(1);
+      break;
+
+      case 2:
+
+         red_bsp_LedOn(1);
+	     red_bsp_LedOn(2);
+
+      break;
+
+
+      case 3:
+           red_bsp_LedOn(1);
+           red_bsp_LedOn(2);
+           red_bsp_LedOn(3);
+
+
+      break;
+
+      case 4:
+
+            red_bsp_LedOn(1);
+			red_bsp_LedOn(2);
+			red_bsp_LedOn(3);
+			red_bsp_LedOn(4);
+           
+
+      break;
+
+
+      case 5:
+
+            red_bsp_LedOn(1);
+			red_bsp_LedOn(2);
+			red_bsp_LedOn(3);
+			red_bsp_LedOn(4);
+            red_bsp_LedOn(5);
+
+            rdata = 0;
+
+      break;
+
+
+    }
+
+
+
+
+}
 
 
 

@@ -30,8 +30,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	
 	if(tm0>999){ //1000 *1ms = 1000ms = 1s
 		tm0=0;
-
-       SysTick_ISR(); //WT.EDIT 2024.08.14
+        gpro_t.gTimer_led_color_switch_time++ ;
+      // SysTick_ISR(); //WT.EDIT 2024.08.14
         //main process timer
 	
 	    //be used to timer 

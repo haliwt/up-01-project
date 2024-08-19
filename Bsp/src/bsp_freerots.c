@@ -99,38 +99,39 @@ static void vTaskMsgPro(void *pvParameters)
       
       }
 		
-//	  xResult = xTaskNotifyWait(0x00000000,      
-//						          0xFFFFFFFF,      
-//						          &ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
-//						          xMaxBlockTime);  /* 最大允许延迟时间 */
-//		
-//		if( xResult == pdPASS )
-//		{
-//			/* 接收到消息，检测那个位被按下 */
-//             
-//			if((ulValue & POWER_KEY_0) != 0){
-//                 buzzer_sound();
-//                    
-//                
-//                if(creat_timer_success ==0){
-//                          
-//                      xTimerStart((TimerHandle_t  )Timer2Timer_Handler,   /* 待启动的定时器句柄 */
-//                                   (TickType_t     )200);        /* 等待系统启动定时器的最大时间 portMAX_DELAY*/
-//
-//
-//                }
-//
-//            }
-//           
-//           
-//       }
-//	   else{
+	  xResult = xTaskNotifyWait(0x00000000,      
+						          0xFFFFFFFF,      
+						          &ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
+						          xMaxBlockTime);  /* 最大允许延迟时间 */
+		
+		if( xResult == pdPASS )
+		{
+			/* 接收到消息，检测那个位被按下 */
+             
+			if((ulValue & POWER_KEY_0) != 0){
+                 buzzer_sound();
+                    
+                
+                if(creat_timer_success ==0){
+                          
+                      xTimerStart((TimerHandle_t  )Timer2Timer_Handler,   /* 待启动的定时器句柄 */
+                                   (TickType_t     )200);        /* 等待系统启动定时器的最大时间 portMAX_DELAY*/
+
+                   
+
+                }
+
+            }
+           
+           
+       }
+	   else{
 		         
          waterfall_light_handler();
-         vTaskDelay(10);
+        // vTaskDelay(10);
      
           
-        //}
+        }
              
     }
       
@@ -213,14 +214,14 @@ static void AppObjCreate (void)
 	*/
 	
 		Timer1Timer_Handler = xTimerCreate("Timer",          /* 定时器名字 */
-							       (TickType_t )5000,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
+							       (TickType_t ) 120000,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
 							       pdFALSE, /*一次性定时器*/ //pdTRUE,          /* 周期性 */
 							       (void *) 1,      /* 定时器ID */
 							       vTimer1Callback); /* 定时器回调函数 */
 
 
        Timer2Timer_Handler = xTimerCreate("Timer",          /* 定时器名字 */
-                                   (TickType_t )300,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
+                                   (TickType_t )200,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
                                    pdTRUE,          /* 周期性 */
                                    (void *) 2,      /* 定时器ID */
                                    vTimer2Callback); /* 定时器回调函数 */
@@ -232,19 +233,7 @@ static void AppObjCreate (void)
 			/* 没有创建成功，用户可以在这里加入创建失败的处理机制 */
             creat_timer_success = 1;
 		}
-//		else
-//		{
-//			 /* 启动定时器，系统启动后才开始工作 */
-//			 if(xTimerStart(Timer1Timer_Handler, 100) != pdPASS)
-//			 {
-//				 /* 定时器还没有进入激活状态 */
-//			 }
-//
-//             if(xTimerStart(Timer2Timer_Handler, 100) != pdPASS)
-//			 {
-//				 /* 定时器还没有进入激活状态 */
-//			 }
-//		}
+
 	
 }
 
@@ -284,7 +273,7 @@ static void vTimer1Callback(xTimerHandle pxTimer)
 */
 static void vTimer2Callback(xTimerHandle pxTimer)
 {
-	gpro_t.timer_2_flag =1;
+	gpro_t.timer_2_time_out_flag =1;
 
 	//configASSERT(pxTimer);
 
@@ -294,7 +283,7 @@ static void vTimer2Callback(xTimerHandle pxTimer)
 	
 	
 	/* 处理定时器2任务 */
-	//bsp_CheckTimer_2(gpro_t.timer_2_flag);
+	//bsp_CheckTimer_2(gpro_t.timer_2_time_out_flag);
 }
 
 
@@ -302,7 +291,15 @@ static void vTimer2Callback(xTimerHandle pxTimer)
 void xTimerStart_1_Fun(void)
 {
    	xTimerStart((TimerHandle_t  )Timer1Timer_Handler,   /* 待启动的定时器句柄 */
-                 (TickType_t   )5000);        /* 等待系统启动定时器的最大时间 5000ms */
+                 (TickType_t   )120000);        /* 等待系统启动定时器的最大时间 5000ms */
+
+
+}
+
+void xTimerStart_2_Fun(void)
+{
+   	xTimerStart((TimerHandle_t  )Timer2Timer_Handler,   /* 待启动的定时器句柄 */
+                 (TickType_t   )200);        /* 等待系统启动定时器的最大时间 5000ms */
 
 
 }

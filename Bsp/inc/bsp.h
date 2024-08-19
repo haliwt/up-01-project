@@ -22,6 +22,9 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
+#include "main.h"
+#include "cmsis_os.h"
+
 
 
 
@@ -47,8 +50,9 @@
 typedef struct _bsp_process{
 
      uint8_t  timer_1_time_out_flag ;
-     uint8_t timer_2_flag;
-
+     uint8_t  timer_2_time_out_flag;
+     uint8_t  rgb_red_led_time_out;   // 5 pcs red led is time is up
+     uint16_t  gTimer_led_color_switch_time;
 
 
 }Process_T;
@@ -67,6 +71,7 @@ uint8_t  bsp_CheckTimer_1(uint8_t times);
 
 uint8_t  bsp_CheckTimer_2(uint8_t times);
 
+void red_led_active_record_fun(uint8_t rdata);
 
 
 #endif 

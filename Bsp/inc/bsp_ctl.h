@@ -41,5 +41,9 @@ void blue_led_1_on(void);
 void blue_led_4_on(void);
 
 
+void red_led_all_on(void);
+
+
+
 #endif 
 
