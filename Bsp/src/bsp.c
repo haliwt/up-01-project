@@ -216,6 +216,7 @@ static void status_2(void)
                  interval_time_flag++ ;
 
                  if(interval_time_flag > 10){
+                     interval_time_flag=0;
 
                      gpro_t.record_eight_minutes_times_flag=0x0;
                      gpro_t.works_time_out_flag=0;
@@ -232,19 +233,19 @@ static void status_2(void)
             gpro_t.timer_2_time_out_flag =0;
            /* 先打开所有的LED，然后在关闭其中一个 */
 		
-            if(gpro_t.record_eight_minutes_times_flag < 5){
+            if(gpro_t.record_eight_minutes_times_flag < 6){
 
                red_bsp_LedOn(led_no_state_2,gpro_t.record_eight_minutes_times_flag);
 
 
             }
-            else if(gpro_t.record_eight_minutes_times_flag > 4 && gpro_t.record_eight_minutes_times_flag < 10){
+            else if(gpro_t.record_eight_minutes_times_flag > 5 && gpro_t.record_eight_minutes_times_flag < 11){
 
                  green_bsp_LedOn(led_no_state_2,gpro_t.record_eight_minutes_times_flag);    /* 点亮其中一个LED */ 
 
 
             }
-            else if(gpro_t.record_eight_minutes_times_flag > 9   &&   gpro_t.works_time_out_flag ==0){
+            else if(gpro_t.record_eight_minutes_times_flag > 10   &&   gpro_t.works_time_out_flag ==0){
 
                blue_bsp_LedOn(led_no_state_2,gpro_t.record_eight_minutes_times_flag)  ;
                if(gpro_t.works_time_out_flag == 1){
