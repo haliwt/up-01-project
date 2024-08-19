@@ -128,14 +128,8 @@ static void status_0(void)
 
       state_0 = g_recoder_times;
 
-    /* 关闭LED */
-	bsp_LedOff(1);
-	bsp_LedOff(2);
-	bsp_LedOff(3);
-	bsp_LedOff(4);
-	bsp_LedOff(5);
-	/* 点亮 LED1 */
-	bsp_LedOn(1);
+    /* red led all on */
+	 red_led_all_on();
 
 
     }
@@ -164,7 +158,7 @@ static void status_0(void)
               g_MainStatus = 1;
 			
 		}
-  
+      red_led_all_on();
 	
 	/* 任务结束时，应该关闭定时器，因为他们会占用后台的资源 */
 	//bsp_StopTimer(0);	 单次定时器如果超时到过一次后，可以不必关闭
@@ -220,7 +214,7 @@ static void status_1(void)
 //			bsp_LedOff(4);
 //            bsp_LedOff(5);
 			
-			bsp_LedOn(5);
+			red_bsp_LedOn(led_no_state_1);
           
 			//bsp_LedOn(led_no_state_1);	/* 点亮其中一个LED */	
             led_no_state_1++ ;
@@ -290,7 +284,7 @@ static void status_2(void)
 			
 			
 
-			bsp_LedOn(led_no_state_2);	/* 点亮其中一个LED */		
+			red_bsp_LedOn(led_no_state_2);	/* 点亮其中一个LED */		
 
             led_no_state_2++;
             if(led_no_state_2 == 6)

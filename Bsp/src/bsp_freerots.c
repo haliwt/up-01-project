@@ -99,37 +99,38 @@ static void vTaskMsgPro(void *pvParameters)
       
       }
 		
-	  xResult = xTaskNotifyWait(0x00000000,      
-						          0xFFFFFFFF,      
-						          &ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
-						          xMaxBlockTime);  /* 最大允许延迟时间 */
-		
-		if( xResult == pdPASS )
-		{
-			/* 接收到消息，检测那个位被按下 */
-             
-			if((ulValue & POWER_KEY_0) != 0){
-                 buzzer_sound();
-                    
-                
-                if(creat_timer_success ==0){
-                          
-                      xTimerStart((TimerHandle_t  )Timer2Timer_Handler,   /* 待启动的定时器句柄 */
-                                   (TickType_t     )200);        /* 等待系统启动定时器的最大时间 portMAX_DELAY*/
-
-
-                }
-
-            }
-           
-           
-       }
-	   else{
+//	  xResult = xTaskNotifyWait(0x00000000,      
+//						          0xFFFFFFFF,      
+//						          &ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
+//						          xMaxBlockTime);  /* 最大允许延迟时间 */
+//		
+//		if( xResult == pdPASS )
+//		{
+//			/* 接收到消息，检测那个位被按下 */
+//             
+//			if((ulValue & POWER_KEY_0) != 0){
+//                 buzzer_sound();
+//                    
+//                
+//                if(creat_timer_success ==0){
+//                          
+//                      xTimerStart((TimerHandle_t  )Timer2Timer_Handler,   /* 待启动的定时器句柄 */
+//                                   (TickType_t     )200);        /* 等待系统启动定时器的最大时间 portMAX_DELAY*/
+//
+//
+//                }
+//
+//            }
+//           
+//           
+//       }
+//	   else{
 		         
          waterfall_light_handler();
+         vTaskDelay(10);
      
           
-        }
+        //}
              
     }
       
@@ -159,6 +160,7 @@ static void vTaskStart(void *pvParameters)
 
 
     }
+  
    
     vTaskDelay(20);
   }

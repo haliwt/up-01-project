@@ -554,7 +554,7 @@ static uint8_t reg_led_color_fun(uint8_t color)
 *	返 回 值: 无
 *********************************************************************************************************
 */
-void bsp_LedOn(uint8_t _no)  //bsp_LedOn
+void red_bsp_LedOn(uint8_t _no)  //bsp_LedOn
 {
 	//_no--;
 
@@ -580,6 +580,58 @@ void bsp_LedOn(uint8_t _no)  //bsp_LedOn
 
     }
 }
+
+
+void red_led_all_on(void)
+{
+
+led_1:   red_led_1_on();
+    osDelay(3);
+    red_led_2_on();
+     osDelay(3);
+    red_led_3_on();
+     osDelay(3);
+    red_led_4_on();
+     osDelay(3);
+    red_led_5_on();
+     osDelay(3);
+    goto led_1;
+
+
+
+
+
+
+}
+
+
+void green_bsp_LedOn(uint8_t _no)  //bsp_LedOn
+{
+	//_no--;
+
+	if (_no == 1)
+	{
+		red_led_1_on();//GPIO_1_GPIO_Port->BRR = GPIO_1_Pin; //BRR ->GPIO output = 0 
+	}
+	else if (_no == 2)
+	{
+		red_led_2_on();//GPIO_2_GPIO_Port->BRR = GPIO_2_Pin;
+	}
+	else if (_no == 3)
+	{
+		red_led_3_on();//GPIO_3_GPIO_Port->BRR = GPIO_3_Pin;
+	}
+	else if (_no == 4)
+	{
+		red_led_4_on();//GPIO_4_GPIO_Port->BRR = GPIO_4_Pin;
+	}
+    else if(_no == 5)
+    {
+        red_led_5_on();//GPIO_5_GPIO_Port->BRR = GPIO_5_Pin;
+
+    }
+}
+
 
 /*
 *********************************************************************************************************
