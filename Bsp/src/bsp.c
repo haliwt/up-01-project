@@ -168,7 +168,8 @@ static void status_0(void)
             // xTimerStart_1_Fun();
 			
 		}
-        red_led_all_on();
+        else
+           red_led_all_on();
 	
 	/* 任务结束时，应该关闭定时器，因为他们会占用后台的资源 */
 	//bsp_StopTimer(0);	 单次定时器如果超时到过一次后，可以不必关闭
@@ -194,24 +195,17 @@ static void status_1(void)
       state_1 = g_recoder_times;
 
       led_no_state_1 = 1;		/* LED指示灯序号 1-5 */
-	
-	xTimerStart_1_Fun();
-    //bsp_StartTimer(0, 5000);		/* 定时器0是5000ms 单次定时器 */
-	//bsp_StartAutoTimer(1, 200);		/* 定时器1是500ms 自动重装定时器, 控制LED1按1Hz频率翻转闪烁 */
-	//bsp_LedOff(1); //led_1 is on
-	   red_led_1_on();
+      xTimerStart_1_Fun();
+      red_led_1_on();
     }
 
-		//bsp_Idle();		/* CPU空闲时执行的函数，在 bsp.c */
 		
-		/* 这个地方可以插入其他任务 */		
 		
 		/* 检查定时器0时间是否到 */
 		if (gpro_t.timer_1_time_out_flag == 1)
 		{
             gpro_t.timer_1_time_out_flag =0;
-           // g_recoder_times =3;
-           // xTimerStart_1_Fun();
+      
             g_MainStatus =1;
 		}
         
@@ -219,12 +213,7 @@ static void status_1(void)
 		{
             gpro_t.timer_2_time_out_flag =0;
            /* 先关闭所有的LED，然后在打开其中一个 */
-			//bsp_LedOff(1);
-           
-//			bsp_LedOff(2);
-//			bsp_LedOff(3);
-//			bsp_LedOff(4);
-//          bsp_LedOff(5);
+
 			
 			red_bsp_LedOn(led_no_state_1);
           
@@ -239,20 +228,12 @@ static void status_1(void)
 		}	
 
  }
-
-	/* 任务结束时，应该关闭定时器，因为他们会占用后台的资源 */
-	//bsp_StopTimer(0);	 单次定时器如果超时到过一次后，可以不必关闭
-	//bsp_StopTimer(1);
-
-
-/*
-*********************************************************************************************************
+/**********************************************************************************************************
 *	函 数 名: status_2
 *	功能说明: 状态2.  LED1 - LED5 依次流水显示。每次点亮3个LED, 熄灭1个。状态持续5秒后返回。
 *	形    参：无
 *	返 回 值: 无
-*********************************************************************************************************
-*/
+**********************************************************************************************************/
 static void status_2(void)
 {
    		/* LED指示灯序号 1-5 */
@@ -263,6 +244,8 @@ static void status_2(void)
    if(state_0 != g_recoder_times  ){
 
       state_0 = g_recoder_times;
+
+    //  rgb_led_all_off();
 
      xTimerStart_1_Fun();//bsp_StartTimer(0, 5000);		    /* 定时器0是5000ms 单次定时器 */
 	//bsp_StartAutoTimer(1, 200);		/* 定时器1是500ms 自动重装定时器, 控制LED1按1Hz频率翻转闪烁 */
@@ -294,8 +277,8 @@ static void status_2(void)
            /* 先打开所有的LED，然后在关闭其中一个 */
 		
           
-			red_bsp_LedOn(led_no_state_2);	/* 点亮其中一个LED */	
-
+			//red_bsp_LedOn(led_no_state_2);	/* 点亮其中一个LED */	
+              green_bsp_LedOn(led_no_state_2) ; //bsp_LedOn
             
             
           

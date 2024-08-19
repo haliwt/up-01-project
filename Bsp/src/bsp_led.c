@@ -37,8 +37,9 @@ void LED_Init(void)
 void rgb_led_set_input_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx)
 {
 
-  
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
+   //  uint32_t position = 0x00u;
+   //  uint32_t temp;
+   GPIO_InitTypeDef GPIO_InitStruct = {0};
    
     /* GPIO Ports Clock Enable */
     __HAL_RCC_GPIOB_CLK_ENABLE();
@@ -49,205 +50,19 @@ void rgb_led_set_input_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx)
    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
    GPIO_InitStruct.Pull = GPIO_NOPULL;
    HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
-//
 
-//   
-//         GPIO_InitStruct.Pin = pinx;
-//         GPIO_InitStruct.Mode = GPIO_MODE_INPUT; // GPIO_MODE_INPUT = 0X0
-//         GPIO_InitStruct.Pull = GPIO_PULLUP;
+//         assert_param(IS_GPIO_MODE(GPIO_InitStruct.Mode));
+//      
+//         /* Configure IO Direction mode (Input, Output, Alternate or Analog) */
+//          temp= GPIOx->MODER;
 //    
-//    
-//        assert_param(IS_GPIO_MODE(GPIO_Init->Mode));
-//    
-//      /* Configure IO Direction mode (Input, Output, Alternate or Analog) */
-//       temp = GPIOx->MODER;
-//       temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
-//       temp |= ((GPIO_Init->Mode & GPIO_MODE) << (position * 2u));
-//       GPIOx->MODER = temp;
-
+//          temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
+//          temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
+//          GPIOx->MODER = temp;
 
 }
 
-#if 0
-  switch(pinx){
 
-    case GPIO_1_Pin:
-
-
-    /*Configure GPIO pin Output Level GPIO_1_Pin */
-    HAL_GPIO_WritePin(GPIOB, GPIO_1_Pin, GPIO_PIN_RESET);
-    /*Configure GPIO pin : PtPin */
-    GPIO_InitStruct.Pin = GPIO_1_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP ;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-     
-    /*Configure GPIO pin : PtPin */
-    GPIO_InitStruct.Pin = GPIO_2_Pin|GPIO_3_Pin|GPIO_4_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-
-     /*Configure GPIO pin : PtPin */
-    GPIO_InitStruct.Pin = GPIO_5_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-
-    break;
-
-    case GPIO_2_Pin :
-
-
-
-         /*Configure GPIO pin Output Level GPIO_1_Pin */
-        HAL_GPIO_WritePin(GPIOA, GPIO_2_Pin, GPIO_PIN_RESET);
-        /*Configure GPIO pin : PtPin */
-        GPIO_InitStruct.Pin = GPIO_2_Pin;
-        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP ;
-        GPIO_InitStruct.Pull = GPIO_PULLUP;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-      
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin =  GPIO_3_Pin|GPIO_4_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_1_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    
-    
-        /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_5_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-    
-
-    break;
-
-
-    case GPIO_3_Pin :
-
-        /*Configure GPIO pin Output Level GPIO_1_Pin */
-        HAL_GPIO_WritePin(GPIOA, GPIO_3_Pin, GPIO_PIN_RESET);
-        /*Configure GPIO pin : PtPin */
-        GPIO_InitStruct.Pin = GPIO_3_Pin;
-        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP ;
-        GPIO_InitStruct.Pull = GPIO_PULLUP;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-        
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_2_Pin|GPIO_4_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_1_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    
-    
-        /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_5_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-    
-
-    break;
-
-     case GPIO_4_Pin :
-
-
-        /*Configure GPIO pin Output Level GPIO_1_Pin */
-        HAL_GPIO_WritePin(GPIOA, GPIO_4_Pin, GPIO_PIN_RESET);
-        /*Configure GPIO pin : PtPin */
-        GPIO_InitStruct.Pin = GPIO_4_Pin;
-        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP ;
-        GPIO_InitStruct.Pull = GPIO_PULLUP;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-        
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_2_Pin|GPIO_3_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_1_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    
-    
-        /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_5_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-    
-        
-
-    break;
-
-    case GPIO_5_Pin :
-
-
-         /*Configure GPIO pin Output Level GPIO_1_Pin */
-        HAL_GPIO_WritePin(GPIOC, GPIO_5_Pin, GPIO_PIN_RESET);
-        /*Configure GPIO pin : PtPin */
-        GPIO_InitStruct.Pin = GPIO_5_Pin;
-        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP ;
-        GPIO_InitStruct.Pull = GPIO_PULLUP;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-        HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-        
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_2_Pin|GPIO_3_Pin|GPIO_4_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_1_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    
-    
-  
-    
-
-    break;
-
-
-
-  }
-
-
-  
-
-}
-#endif 
 
 /*******************************************************************************
 *
@@ -260,7 +75,6 @@ void rgb_led_set_input_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx)
 void rgb_led_set_output_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx,uint8_t high_low)
 {
 
-  
   GPIO_InitTypeDef GPIO_InitStruct = {0};
    
     /* GPIO Ports Clock Enable */
@@ -283,43 +97,7 @@ void rgb_led_set_output_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx,uint8_t high_low
 
 }
 
-#if 0
-void rgb_led_all_set_input_mode(void)
-{
 
-GPIO_InitTypeDef GPIO_InitStruct = {0};
-
- /* GPIO Ports Clock Enable */
- __HAL_RCC_GPIOB_CLK_ENABLE();
- __HAL_RCC_GPIOC_CLK_ENABLE();
- __HAL_RCC_GPIOA_CLK_ENABLE();
-
-
-
- /*Configure GPIO pins : PBPin PBPin */
- GPIO_InitStruct.Pin = GPIO_1_Pin;
- GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
- GPIO_InitStruct.Pull = GPIO_PULLUP;
-
- HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-
-  /*Configure GPIO pins : PBPin PBPin */
- GPIO_InitStruct.Pin = GPIO_2_Pin|GPIO_3_Pin|GPIO_4_Pin;
- GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
- GPIO_InitStruct.Pull = GPIO_PULLUP;
- 
- HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : PBPin PBPin */
- GPIO_InitStruct.Pin = GPIO_5_Pin;
- GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
- GPIO_InitStruct.Pull = GPIO_PULLUP;
- HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-
-}
-#else 
 void rgb_led_all_set_input_mode(void)
 {
 
@@ -379,7 +157,7 @@ void rgb_led_all_set_input_mode(void)
 
 
 }
-#endif 
+ 
 
 /**
  * @brief       set GPIO of state 
@@ -539,38 +317,7 @@ void red_bsp_LedOn(uint8_t _no)  //bsp_LedOn
 }
 
 
-/**********************************************************************************************************
-*	函 数 名: void green_bsp_LedOn(uint8_t _no) 
-*	功能说明: 点亮指定的LED指示灯。
-*	形    参:  _no : 指示灯序号，范围 1 - 5
-*	返 回 值: 无
-**********************************************************************************************************/
-void green_bsp_LedOn(uint8_t _no)  //bsp_LedOn
-{
-	//_no--;
 
-	if (_no == 1)
-	{
-		red_led_1_on();//GPIO_1_GPIO_Port->BRR = GPIO_1_Pin; //BRR ->GPIO output = 0 
-	}
-	else if (_no == 2)
-	{
-		red_led_2_on();//GPIO_2_GPIO_Port->BRR = GPIO_2_Pin;
-	}
-	else if (_no == 3)
-	{
-		red_led_3_on();//GPIO_3_GPIO_Port->BRR = GPIO_3_Pin;
-	}
-	else if (_no == 4)
-	{
-		red_led_4_on();//GPIO_4_GPIO_Port->BRR = GPIO_4_Pin;
-	}
-    else if(_no == 5)
-    {
-        red_led_5_on();//GPIO_5_GPIO_Port->BRR = GPIO_5_Pin;
-
-    }
-}
 
 
 /**********************************************************************************************************

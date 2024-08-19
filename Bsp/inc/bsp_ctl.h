@@ -37,6 +37,12 @@ void red_led_3_on(void);
 void red_led_4_on(void);
 
 void red_led_5_on(void);
+//rgb green led 
+//void green_led_1_on(void);
+
+//void green_led_2_on(void);
+
+void green_bsp_LedOn(uint8_t _no) ; //bsp_LedOn
 
 //blue led 
 void blue_led_1_on(void);
