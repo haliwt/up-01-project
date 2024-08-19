@@ -23,6 +23,9 @@ extern ctl_t gctl_t;
 
 void bsp_ctl_init(void);
 
+void rgb_led_all_off(void);
+
+
 
 //red led
 void red_led_1_on(void);

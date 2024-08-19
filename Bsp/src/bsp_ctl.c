@@ -159,6 +159,19 @@ led_1:   red_led_1_on();
 
 }
 
+/********************************************************************************
+*
+* Function Name: 
+* Function : 5pcs of grb red led turn on
+* Input Ref:NO
+* Return Ref:NO
+*
+********************************************************************************/
+void rgb_led_all_off(void)
+{
+   rgb_led_all_set_input_mode();
+
+}
 
 
 

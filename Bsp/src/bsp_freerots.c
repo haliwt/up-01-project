@@ -38,6 +38,10 @@ static TimerHandle_t           Timer2Timer_Handler;/* 定时器2句柄 */
 
 
 uint8_t creat_timer_success; 
+volatile uint8_t power_onoff_sound;
+uint8_t power_off_flag;
+              
+
 
 
 /**********************************************************************************************************
@@ -70,9 +74,9 @@ void freeRTOS_Handler(void)
 static void vTaskMsgPro(void *pvParameters)
 {
     BaseType_t xResult;
-	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(10); /* 设置最大等待时间为50ms */
+	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(40); /* 设置最大等待时间为50ms */
 	uint32_t ulValue;
-    static uint8_t dc_power_sound_flag;
+    static uint8_t dc_power_sound_flag,power_turn_onoff_flag;
     while(1)
     {
 		/*
@@ -93,11 +97,7 @@ static void vTaskMsgPro(void *pvParameters)
 		    注：ulNotifiedValue表示任务vTaskMsgPro的任务控制块里面的变量。		
 		*/
 
-      if(dc_power_sound_flag==0){
-         dc_power_sound_flag++;
-         buzzer_sound();
-      
-      }
+ 
 		
 	  xResult = xTaskNotifyWait(0x00000000,      
 						          0xFFFFFFFF,      
@@ -109,10 +109,33 @@ static void vTaskMsgPro(void *pvParameters)
 			/* 接收到消息，检测那个位被按下 */
              
 			if((ulValue & POWER_KEY_0) != 0){
-                 buzzer_sound();
-                    
+
+                 power_onoff_sound =1;
                 
-                if(creat_timer_success ==0){
+            }
+           
+           
+       }
+	   else{
+
+          if(dc_power_sound_flag==0){
+             dc_power_sound_flag++;
+             buzzer_sound();
+      
+          }
+
+            if(power_onoff_sound ==1){
+                Buzzer_KeySound(); 
+                power_onoff_sound++;
+              
+            }
+            else if(power_onoff_sound==2){
+               power_onoff_sound++ ; 
+             power_turn_onoff_flag = power_turn_onoff_flag ^ 0x01;
+             
+             if(power_turn_onoff_flag == 1){
+                gpro_t.gpower_on = power_on;
+                 if(creat_timer_success ==0){
                           
                       xTimerStart((TimerHandle_t  )Timer2Timer_Handler,   /* 待启动的定时器句柄 */
                                    (TickType_t     )200);        /* 等待系统启动定时器的最大时间 portMAX_DELAY*/
@@ -121,14 +144,48 @@ static void vTaskMsgPro(void *pvParameters)
 
                 }
 
-            }
-           
-           
-       }
-	   else{
-		         
-         waterfall_light_handler();
-        // vTaskDelay(10);
+
+             }
+             else{
+                  gpro_t.gpower_on = power_off;
+                  power_off_flag = 1;
+                
+
+
+             }
+            
+          }
+
+
+            
+         if(gpro_t.gpower_on == power_on ){
+            waterfall_light_handler();
+
+          }
+          else if(gpro_t.gpower_on == power_off ){
+
+              if(power_off_flag ==1){
+                  power_off_flag ++;
+                  rgb_led_all_off();
+
+                  xTimerStop((TimerHandle_t  )Timer1Timer_Handler,    /* 待停止的定时器句柄 */
+                                (TickType_t     )0);        /* 等待系统停止定时器的最大时间 */
+
+                  xTimerStop((TimerHandle_t  )Timer2Timer_Handler,    /* 待停止的定时器句柄 */
+                                  (TickType_t     )0);        /* 等待系统停止定时器的最大时间 */
+
+
+                 
+
+              }
+
+
+          }
+
+
+
+          
+      
      
           
         }
@@ -161,6 +218,7 @@ static void vTaskStart(void *pvParameters)
 
 
     }
+   
   
    
     vTaskDelay(20);
@@ -214,7 +272,7 @@ static void AppObjCreate (void)
 	*/
 	
 		Timer1Timer_Handler = xTimerCreate("Timer",          /* 定时器名字 */
-							       (TickType_t ) 120000,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
+							       (TickType_t ) 60000,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
 							       pdFALSE, /*一次性定时器*/ //pdTRUE,          /* 周期性 */
 							       (void *) 1,      /* 定时器ID */
 							       vTimer1Callback); /* 定时器回调函数 */
@@ -291,7 +349,7 @@ static void vTimer2Callback(xTimerHandle pxTimer)
 void xTimerStart_1_Fun(void)
 {
    	xTimerStart((TimerHandle_t  )Timer1Timer_Handler,   /* 待启动的定时器句柄 */
-                 (TickType_t   )120000);        /* 等待系统启动定时器的最大时间 5000ms */
+                 (TickType_t   )60000);        /* 等待系统启动定时器的最大时间 5000ms */
 
 
 }

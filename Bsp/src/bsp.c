@@ -12,13 +12,15 @@ static void status_2(void);
 
 
 
+
 uint8_t g_MainStatus = 0;	/* 状态机 */
 
 uint8_t g_recoder_times = 0;
 
 uint8_t  led_no_state_1 ;
 uint8_t led_no_state_2 ;
-uint8_t record_six_minutes_times_flag;
+
+
 
 
 
@@ -111,9 +113,9 @@ void waterfall_light_handler(void)
     break;
     } 
 
-    //red_led_active_record_fun(record_six_minutes_times_flag);
+    //red_led_active_record_fun(record_eight_minutes_times_flag);
 
-
+   
 
 }
 
@@ -160,9 +162,10 @@ static void status_0(void)
 		if(bsp_CheckTimer_2(gpro_t.timer_2_time_out_flag))
 		{
 			/* 3秒定时到后退出本状态 */
+               g_recoder_times++ ;
               g_MainStatus = 2;
             
-             xTimerStart_1_Fun();
+            // xTimerStart_1_Fun();
 			
 		}
         red_led_all_on();
@@ -208,7 +211,7 @@ static void status_1(void)
 		{
             gpro_t.timer_1_time_out_flag =0;
            // g_recoder_times =3;
-           
+           // xTimerStart_1_Fun();
             g_MainStatus =1;
 		}
         
@@ -278,7 +281,9 @@ static void status_2(void)
 		{
             gpro_t.timer_1_time_out_flag = 0 ;
             //g_recoder_times ++;
-            record_six_minutes_times_flag++;
+            xTimerStart_1_Fun();
+            gpro_t.record_eight_minutes_times_flag++;
+            if(gpro_t.record_eight_minutes_times_flag > 5)gpro_t.record_eight_minutes_times_flag=1;
             
            
 		}
@@ -287,14 +292,18 @@ static void status_2(void)
 		{
             gpro_t.timer_2_time_out_flag =0;
            /* 先打开所有的LED，然后在关闭其中一个 */
-			red_led_active_record_fun(record_six_minutes_times_flag);
-            
-			red_bsp_LedOn(led_no_state_2);	/* 点亮其中一个LED */		
+		
+          
+			red_bsp_LedOn(led_no_state_2);	/* 点亮其中一个LED */	
 
+            
+            
+          
             led_no_state_2++;
             if(led_no_state_2 == 6)
 			{
 				led_no_state_2 = 1;
+                
 			}
 		}		
 }
@@ -319,12 +328,15 @@ void red_led_active_record_fun(uint8_t rdata)
       case 1:
           
         red_bsp_LedOn(1);
+        osDelay(3);
       break;
 
       case 2:
 
          red_bsp_LedOn(1);
+         osDelay(3);
 	     red_bsp_LedOn(2);
+         osDelay(3);
 
       break;
 

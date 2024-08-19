@@ -94,6 +94,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM17_Init();
   /* USER CODE BEGIN 2 */
+   HAL_TIM_Base_Start_IT(&htim17);//HAL_TIM_Base_Start(&htim3);
    bsp_ctl_init();
     freeRTOS_Handler();
   /* USER CODE END 2 */

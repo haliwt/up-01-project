@@ -284,146 +284,89 @@ void rgb_led_set_output_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx,uint8_t high_low
 }
 
 #if 0
-  switch(pinx){
+void rgb_led_all_set_input_mode(void)
+{
 
-    case GPIO_1_Pin:
+GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-    /*Configure GPIO pin Output Level */
-    HAL_GPIO_WritePin(GPIOB, GPIO_1_Pin, GPIO_PIN_RESET);
-    /*Configure GPIO pin : PtPin */
-    GPIO_InitStruct.Pin = GPIO_2_Pin|GPIO_3_Pin|GPIO_4_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+ /* GPIO Ports Clock Enable */
+ __HAL_RCC_GPIOB_CLK_ENABLE();
+ __HAL_RCC_GPIOC_CLK_ENABLE();
+ __HAL_RCC_GPIOA_CLK_ENABLE();
+
+
+
+ /*Configure GPIO pins : PBPin PBPin */
+ GPIO_InitStruct.Pin = GPIO_1_Pin;
+ GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+ GPIO_InitStruct.Pull = GPIO_PULLUP;
+
+ HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+
+  /*Configure GPIO pins : PBPin PBPin */
+ GPIO_InitStruct.Pin = GPIO_2_Pin|GPIO_3_Pin|GPIO_4_Pin;
+ GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+ GPIO_InitStruct.Pull = GPIO_PULLUP;
  
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+ HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : PBPin PBPin */
+ GPIO_InitStruct.Pin = GPIO_5_Pin;
+ GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+ GPIO_InitStruct.Pull = GPIO_PULLUP;
+ HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-     /*Configure GPIO pin : PtPin */
-    GPIO_InitStruct.Pin = GPIO_5_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-
-    break;
-
-    case GPIO_2_Pin :
-
-      
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin =  GPIO_3_Pin|GPIO_4_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-       HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_1_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-       HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    
-    
-        /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_5_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-       HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-    
-
-    break;
-
-
-    case GPIO_3_Pin :
-        
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_2_Pin|GPIO_4_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-       HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_1_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    
-    
-        /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_5_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-    
-
-    break;
-
-     case GPIO_4_Pin :
-        
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_2_Pin|GPIO_3_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-       HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_1_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    
-    
-        /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_5_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-    
-        
-
-    break;
-
-    case GPIO_5_Pin :
-        
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_2_Pin|GPIO_3_Pin|GPIO_4_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-
-       /*Configure GPIO pin : PtPin */
-       GPIO_InitStruct.Pin = GPIO_1_Pin;
-       GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-       GPIO_InitStruct.Pull = GPIO_NOPULL;
-       HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    
-    
-  
-    
-
-    break;
-
-
-
-  }
-
-
-  
 
 }
+#else 
+void rgb_led_all_set_input_mode(void)
+{
 
+        uint32_t position = 0x00u;
+      //  uint32_t iocurrent;
+        uint32_t temp;
+    
+    
+        
+        GPIO_InitTypeDef GPIO_InitStruct = {0};
+    
+        /* GPIO Ports Clock Enable */
+        __HAL_RCC_GPIOB_CLK_ENABLE();
+        __HAL_RCC_GPIOC_CLK_ENABLE();
+        __HAL_RCC_GPIOA_CLK_ENABLE();
+    
+          GPIO_InitStruct.Pin = GPIO_1_Pin|GPIO_2_Pin|GPIO_3_Pin|GPIO_4_Pin|GPIO_5_Pin;
+          GPIO_InitStruct.Mode = GPIO_MODE_INPUT; // GPIO_MODE_INPUT = 0X0
+          GPIO_InitStruct.Pull = GPIO_PULLUP;
+    
+    
+         assert_param(IS_GPIO_MODE(GPIO_Init->Mode));
+    
+       /* Configure IO Direction mode (Input, Output, Alternate or Analog) */
+        temp= GPIO_1_GPIO_Port->MODER;
+
+        temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
+        temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
+        GPIO_1_GPIO_Port->MODER = temp;
+
+        
+        temp= GPIO_2_GPIO_Port->MODER;
+        temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
+        temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
+        GPIO_2_GPIO_Port->MODER = temp;
+
+        
+        temp= GPIO_5_GPIO_Port->MODER;
+         temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
+        temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
+        GPIO_5_GPIO_Port->MODER = temp;
+
+      
+
+
+}
 #endif 
-
 
 /**
  * @brief       set GPIO of state 
@@ -559,11 +502,13 @@ void red_bsp_LedOn(uint8_t _no)  //bsp_LedOn
 
 	if (_no == 1)
 	{
-		red_led_1_on();//GPIO_1_GPIO_Port->BRR = GPIO_1_Pin; //BRR ->GPIO output = 0 
+         
+        red_led_1_on();//GPIO_1_GPIO_Port->BRR = GPIO_1_Pin; //BRR ->GPIO output = 0 
 	}
 	else if (_no == 2)
 	{
-		red_led_2_on();//GPIO_2_GPIO_Port->BRR = GPIO_2_Pin;
+
+        red_led_2_on();//GPIO_2_GPIO_Port->BRR = GPIO_2_Pin;
 	}
 	else if (_no == 3)
 	{

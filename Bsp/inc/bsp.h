@@ -47,11 +47,23 @@
 	#define DISABLE_INT()	__set_PRIMASK(1)	/* 禁止全局中断 */
 #endif
 
+
+typedef enum _power_onoff_stat{
+
+    power_off,
+    power_on,
+
+}power_onoff_state;
+
 typedef struct _bsp_process{
 
+     uint8_t  gpower_on;
      uint8_t  timer_1_time_out_flag ;
      uint8_t  timer_2_time_out_flag;
      uint8_t  rgb_red_led_time_out;   // 5 pcs red led is time is up
+    
+     uint8_t   record_eight_minutes_times_flag;
+
      uint16_t  gTimer_led_color_switch_time;
 
 
@@ -70,6 +82,7 @@ void waterfall_light_handler(void);
 uint8_t  bsp_CheckTimer_1(uint8_t times);
 
 uint8_t  bsp_CheckTimer_2(uint8_t times);
+
 
 void red_led_active_record_fun(uint8_t rdata);
 

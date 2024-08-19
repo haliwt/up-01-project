@@ -78,6 +78,9 @@ void LED_Init(void);
 
 void led_rgb_run_handler(void);
 
+void rgb_led_all_set_input_mode(void);
+
+
 uint8_t rgb_onoff_state_fun(uint8_t (*rgb_on_off_handler)(uint8_t data));
 
 uint8_t rgb_color_state_fun(uint8_t(*rgb_color_handler)(uint8_t color));
