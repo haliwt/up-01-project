@@ -125,7 +125,7 @@ static void vTaskMsgPro(void *pvParameters)
           }
 
             if(power_onoff_sound ==1){
-                Buzzer_KeySound(); 
+                 buzzer_sound();
                 power_onoff_sound++;
               
             }
@@ -166,7 +166,7 @@ static void vTaskMsgPro(void *pvParameters)
 
               if(power_off_flag ==1){
                   power_off_flag ++;
-                  rgb_led_all_off();
+                
 
                   xTimerStop((TimerHandle_t  )Timer1Timer_Handler,    /* 待停止的定时器句柄 */
                                 (TickType_t     )0);        /* 等待系统停止定时器的最大时间 */
@@ -174,11 +174,13 @@ static void vTaskMsgPro(void *pvParameters)
                   xTimerStop((TimerHandle_t  )Timer2Timer_Handler,    /* 待停止的定时器句柄 */
                                   (TickType_t     )0);        /* 等待系统停止定时器的最大时间 */
 
+                  rgb_led_all_off();
 
                  
 
               }
 
+             rgb_led_all_off();
 
           }
 

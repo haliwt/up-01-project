@@ -341,7 +341,7 @@ void rgb_led_all_set_input_mode(void)
           GPIO_InitStruct.Pull = GPIO_PULLUP;
     
     
-         assert_param(IS_GPIO_MODE(GPIO_Init->Mode));
+         assert_param(IS_GPIO_MODE(GPIO_InitStruct.Mode));
     
        /* Configure IO Direction mode (Input, Output, Alternate or Analog) */
         temp= GPIO_1_GPIO_Port->MODER;
@@ -356,7 +356,20 @@ void rgb_led_all_set_input_mode(void)
         temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
         GPIO_2_GPIO_Port->MODER = temp;
 
+        #if 0
+        temp= GPIO_3_GPIO_Port->MODER;
+        temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
+        temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
+        GPIO_3_GPIO_Port->MODER = temp;
         
+        temp= GPIO_4_GPIO_Port->MODER;
+         temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
+         temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
+         GPIO_4_GPIO_Port->MODER = temp;
+
+         #endif 
+        
+
         temp= GPIO_5_GPIO_Port->MODER;
          temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
         temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
