@@ -281,40 +281,7 @@ static uint8_t reg_led_color_fun(uint8_t color)
 
 }
 
-/**********************************************************************************************************
-*	函 数 名: bsp_LedOn
-*	功能说明: 点亮指定的LED指示灯。
-*	形    参:  _no : 指示灯序号，范围 1 - 5
-*	返 回 值: 无
-**********************************************************************************************************/
-void red_bsp_LedOn(uint8_t _no)  //bsp_LedOn
-{
-	//_no--;
 
-	if (_no == 1)
-	{
-         
-        red_led_1_on();//GPIO_1_GPIO_Port->BRR = GPIO_1_Pin; //BRR ->GPIO output = 0 
-	}
-	else if (_no == 2)
-	{
-
-        red_led_2_on();//GPIO_2_GPIO_Port->BRR = GPIO_2_Pin;
-	}
-	else if (_no == 3)
-	{
-		red_led_3_on();//GPIO_3_GPIO_Port->BRR = GPIO_3_Pin;
-	}
-	else if (_no == 4)
-	{
-		red_led_4_on();//GPIO_4_GPIO_Port->BRR = GPIO_4_Pin;
-	}
-    else if(_no == 5)
-    {
-        red_led_5_on();//GPIO_5_GPIO_Port->BRR = GPIO_5_Pin;
-
-    }
-}
 
 
 
@@ -352,6 +319,7 @@ void red_bsp_LedOff(uint8_t _no)
 
     }
 }
+
 
 /**********************************************************************************************************
 *	函 数 名: bsp_LedToggle

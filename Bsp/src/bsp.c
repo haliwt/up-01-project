@@ -5,7 +5,7 @@ Process_T gpro_t;
 
 
 static void status_0(void);
-static void status_1(void);
+//static void status_1(void);
 static void status_2(void);
 
 
@@ -102,10 +102,10 @@ void waterfall_light_handler(void)
         //g_MainStatus = 1;   /* 转移到状态1 */
     break;
 
-    case 1:         /* LED1 - LED4 依次流水显示。每次点亮1个LED。状态持续5秒后返回。 */
-        status_1();     
-      //  g_MainStatus = 2;   /* 转移到状态2 */
-    break;
+//    case 1:         /* LED1 - LED4 依次流水显示。每次点亮1个LED。状态持续5秒后返回。 */
+//        status_1();     
+//      //  g_MainStatus = 2;   /* 转移到状态2 */
+//    break;
 
     case 2:
         status_2(); /* LED1 - LED4 依次流水显示。每次点亮3个LED, 熄灭1个。状态持续5秒后返回。*/
@@ -184,6 +184,7 @@ static void status_0(void)
 *	返 回 值: 无
 *********************************************************************************************************
 */
+#if 0
 static void status_1(void)
 {
   
@@ -228,6 +229,7 @@ static void status_1(void)
 		}	
 
  }
+#endif
 /**********************************************************************************************************
 *	函 数 名: status_2
 *	功能说明: 状态2.  LED1 - LED5 依次流水显示。每次点亮3个LED, 熄灭1个。状态持续5秒后返回。
@@ -278,7 +280,8 @@ static void status_2(void)
 		
           
 			//red_bsp_LedOn(led_no_state_2);	/* 点亮其中一个LED */	
-              green_bsp_LedOn(led_no_state_2) ; //bsp_LedOn
+            //  green_bsp_LedOn(led_no_state_2) ; //bsp_LedOn
+              blue_bsp_LedOn(led_no_state_2)  ;
             
             
           

@@ -102,8 +102,7 @@ void rgb_led_set_output_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx,uint8_t high_low
 
 
 
-void red_bsp_LedOn(uint8_t _no);
-void red_bsp_LedOff(uint8_t _no);
+
 
 
 void blue_bsp_LedOn(uint8_t _no);
