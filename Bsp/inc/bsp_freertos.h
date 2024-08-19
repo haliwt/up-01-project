@@ -12,6 +12,7 @@ void xTimerStart_1_Fun(void);
 
 void xTimerStart_2_Fun(void);
 
+void xTimerStop_2_Fun(void);
 
 #endif
 

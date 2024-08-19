@@ -365,3 +365,10 @@ void xTimerStart_2_Fun(void)
 }
 
 
+void xTimerStop_2_Fun(void)
+{
+     xTimerStop((TimerHandle_t  )Timer2Timer_Handler,    /* 待停止的定时器句柄 */
+                 (TickType_t     )10);        /* 等待系统停止定时器的最大时间 */
+
+}
+

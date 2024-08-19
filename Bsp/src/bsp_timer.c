@@ -78,6 +78,9 @@ static void (*s_TIM_CallBack2)(void);
 static void (*s_TIM_CallBack3)(void);
 static void (*s_TIM_CallBack4)(void);
 
+
+
+
 /*
 *********************************************************************************************************
 *	函 数 名: bsp_InitTimer
@@ -219,7 +222,7 @@ void bsp_DelayMS(uint32_t n)
 
 	while (1)
 	{
-		bsp_Idle();				/* CPU空闲执行的操作， 见 bsp.c 和 bsp.h 文件 */
+		//bsp_Idle();				/* CPU空闲执行的操作， 见 bsp.c 和 bsp.h 文件 */
 
 		/*
 			等待延迟时间到
@@ -664,10 +667,19 @@ void TIM5_IRQHandler(void)
 
 
 
+void bsp_RunPer10ms(void)	/* 每隔10ms调用一次此函数，此函数在 bsp.c */
+{
+
+
+}
 
 
 
+void bsp_RunPer1ms(void)
+{
 
+
+}
 
 
 

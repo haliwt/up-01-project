@@ -30,22 +30,25 @@ void rgb_led_all_off(void);
 
 
 
-void red_bsp_LedOn(uint8_t _no);
+void red_bsp_LedOn(uint8_t _no,uint8_t flag);
 
 
-void green_bsp_LedOn(uint8_t _no) ; //bsp_LedOn
+void green_bsp_LedOn(uint8_t _no,uint8_t flag) ; //bsp_LedOn
 
-void blue_bsp_LedOn(uint8_t _no)  ;
+void blue_bsp_LedOn(uint8_t _no,uint8_t flag)  ;
 
 
 
 //blue led 
-void blue_led_1_on(void);
 
-void blue_led_4_on(void);
 
 
 void red_led_all_on(void);
+
+
+
+void blue_led_all_on(uint8_t on_flag);
+
 
 
 
