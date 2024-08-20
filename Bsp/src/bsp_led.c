@@ -3,9 +3,9 @@
 led_t gled_t;
 
 
-static uint8_t reg_led_on_off_fun(uint8_t data);
+//static uint8_t reg_led_on_off_fun(uint8_t data);
 
-static uint8_t reg_led_color_fun(uint8_t color);
+//static uint8_t reg_led_color_fun(uint8_t color);
 
 
 /********************************************************************************
@@ -18,9 +18,9 @@ static uint8_t reg_led_color_fun(uint8_t color);
 *******************************************************************************/
 void LED_Init(void)
 {
-   rgb_onoff_state_fun(reg_led_on_off_fun);
+  // rgb_onoff_state_fun(reg_led_on_off_fun);
 
-   rgb_color_state_fun(reg_led_color_fun);
+  // rgb_color_state_fun(reg_led_color_fun);
 
 
 }
@@ -101,6 +101,8 @@ void rgb_led_set_output_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx,uint8_t high_low
 void rgb_led_all_set_input_mode(void)
 {
 
+
+
         uint32_t position = 0x00u;
       //  uint32_t iocurrent;
         uint32_t temp;
@@ -134,7 +136,7 @@ void rgb_led_all_set_input_mode(void)
         temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
         GPIO_2_GPIO_Port->MODER = temp;
 
-        #if 0
+        
         temp= GPIO_3_GPIO_Port->MODER;
         temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
         temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
@@ -145,7 +147,7 @@ void rgb_led_all_set_input_mode(void)
          temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
          GPIO_4_GPIO_Port->MODER = temp;
 
-         #endif 
+        
         
 
         temp= GPIO_5_GPIO_Port->MODER;
@@ -153,7 +155,23 @@ void rgb_led_all_set_input_mode(void)
         temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
         GPIO_5_GPIO_Port->MODER = temp;
 
-      
+    
+    
+   
+
+}
+
+
+void rgb_led_all_gpio_set_output(uint8_t logic_data)
+{
+    rgb_led_set_output_mode(GPIO_1_GPIO_Port,GPIO_1_Pin,logic_data);
+    rgb_led_set_output_mode(GPIO_2_GPIO_Port,GPIO_2_Pin,logic_data);
+    
+    rgb_led_set_output_mode(GPIO_3_GPIO_Port,GPIO_3_Pin,logic_data);
+    rgb_led_set_output_mode(GPIO_4_GPIO_Port,GPIO_4_Pin,logic_data);
+
+    rgb_led_set_output_mode(GPIO_5_GPIO_Port,GPIO_5_Pin,logic_data);
+
 
 
 }
@@ -258,31 +276,6 @@ uint8_t rgb_color_state_fun(uint8_t(*rgb_color_handler)(uint8_t color))
 }
 
 
-/****************************************************************
-*
-*Function Name: static uint8_t reg_led_on_off_fun(uint8_t data)
-*
-*
-*
-*****************************************************************/
-static uint8_t reg_led_on_off_fun(uint8_t data)
-{
-
-
-
-}
-
-
-static uint8_t reg_led_color_fun(uint8_t color)
-{
-
-
-
-
-}
-
-
-
 
 
 
@@ -299,7 +292,7 @@ void red_bsp_LedOff(uint8_t _no)
 
 	if (_no == 1)
 	{
-		//GPIO_1_GPIO_Port->BSRR = GPIO_1_Pin;   // GPIO output is high = "1"
+		//GPIO_1_GPIO_Port->BSRR = GPIO_1_Pin;   // GPIO output is high = "1" B-bit,S-set R-reset ,R -register
 	}
 	else if (_no == 2)
 	{

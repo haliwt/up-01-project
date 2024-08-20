@@ -102,6 +102,7 @@ void rgb_led_set_output_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx,uint8_t high_low
 
 
 
+void rgb_led_all_gpio_set_output(uint8_t logic_data);
 
 
 

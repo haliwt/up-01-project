@@ -162,7 +162,11 @@ static void status_2(void)
                blue_bsp_LedOn(led_no_state_2,gpro_t.record_eight_minutes_times_flag)  ;
                if(gpro_t.works_time_out_flag == 1){
 
-                 // xTimerStop_2_Fun();
+                  gpro_t.works_time_out_flag = 1;
+                 gpro_t.key_active_flag = 0;
+                  xTimerStop_2_Fun();
+                  xTimerStop_1_Fun();
+               
                   gpro_t.gTimer_led_color_switch_time = 0;
 
                }

@@ -197,7 +197,9 @@ static void vTaskMsgPro(void *pvParameters)
              gpro_t.g_MainStatus = 0;
              gpro_t.gTimer_led_color_switch_time =0;
 
-             rgb_led_all_off();
+           rgb_led_all_off();
+             
+            rgb_led_all_gpio_set_output(0);
 
           }
 
