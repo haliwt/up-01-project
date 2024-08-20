@@ -16,7 +16,7 @@ uint8_t g_recoder_times = 0;
 //uint8_t  led_no_state_1 ;
 uint8_t led_no_state_2 ;
 
-uint8_t works_time_out_counter;
+
 
 
 /*******************************************************************************************************
@@ -65,7 +65,7 @@ void waterfall_light_handler(void)
 static void status_0(void)
 {
         /* 检查定时器2时间是否到 */
-		if(gpro_t.gTimer_led_color_switch_time > 5)
+		if(gpro_t.gTimer_led_color_switch_time > 2)
 		{
 			/* 3秒定时到后退出本状态 */
                rgb_led_all_off();
@@ -126,23 +126,7 @@ static void status_2(void)
             xTimerStart_1_Fun();
            
             gpro_t.record_eight_minutes_times_flag++;
-            if(gpro_t.record_eight_minutes_times_flag > 11)gpro_t.record_eight_minutes_times_flag=0xff;
-            if(gpro_t.works_time_out_flag ==1){
-                works_time_out_counter ++;
-
-                if(works_time_out_counter > 2){
-                    works_time_out_counter =0;
-
-                    gpro_t.record_eight_minutes_times_flag=0;
-                    gpro_t.works_time_out_flag =0;
-
-
-                }
-
-
-            }
-            blue_led_all_on(gpro_t.works_time_out_flag);
-
+           
         }
         
         if(gpro_t.timer_2_time_out_flag ==1 && gpro_t.works_time_out_flag ==0)		/* 检查自动定时器2，间隔200ms翻转一次LED1 */

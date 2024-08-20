@@ -12,7 +12,7 @@ typedef enum _key_state{
    KEY_DOWN,
    KEY_UP,
 
-};
+}key_state;
 
 #endif 
 

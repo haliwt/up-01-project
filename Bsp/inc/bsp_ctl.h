@@ -16,6 +16,8 @@ typedef struct _ctl_t{
 
    uint8_t power_off;
 
+   uint8_t rgb_color_array[11];
+
 
 }ctl_t;
 

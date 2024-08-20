@@ -294,7 +294,7 @@ static void AppTaskCreate (void)
 */
 static void AppObjCreate (void)
 {
-	uint8_t i;
+	
 	//const TickType_t  xTimerPer[2] = {100, 100}; //100ms
 	
 	/* 

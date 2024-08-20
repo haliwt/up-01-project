@@ -30,6 +30,7 @@ static void blue_led_4_on(void);
 static void blue_led_5_on(void);
 
 
+static void red_led_on_origianl(uint8_t _no);
 
 
 
@@ -133,24 +134,52 @@ static void red_led_5_on(void)
 void red_led_all_on(void)
 {
 
-if(gpro_t.gTimer_led_color_switch_time< 5){
+if(gpro_t.gTimer_led_color_switch_time< 2 && gpro_t.gpower_on == power_on){
 led_1:   red_led_1_on();
-    osDelay(3);
+     vTaskDelay(4);//osDelay(3);
     red_led_2_on();
-     osDelay(3);
+     vTaskDelay(4);//osDelay(3);
     red_led_3_on();
-     osDelay(3);
+     vTaskDelay(4);//osDelay(3);
     red_led_4_on();
-     osDelay(3);
+     vTaskDelay(4);//osDelay(3);
     red_led_5_on();
-     osDelay(3);
-   if(gpro_t.gTimer_led_color_switch_time < 5){
+     vTaskDelay(4);//osDelay(3);
+   if(gpro_t.gTimer_led_color_switch_time < 5 && gpro_t.gpower_on == power_on){
         goto led_1;
     }
     }
     else{
 
       rgb_led_all_off();
+
+    }
+
+}
+
+static void red_led_on_origianl(uint8_t _no)
+{
+   	if (_no == 1)
+	{
+         
+        red_led_1_on();//GPIO_1_GPIO_Port->BRR = GPIO_1_Pin; //BRR ->GPIO output = 0 
+	}
+	else if (_no == 2)
+	{
+
+        red_led_2_on();//GPIO_2_GPIO_Port->BRR = GPIO_2_Pin;
+	}
+	else if (_no == 3)
+	{
+		red_led_3_on();//GPIO_3_GPIO_Port->BRR = GPIO_3_Pin;
+	}
+	else if (_no == 4)
+	{
+		red_led_4_on();//GPIO_4_GPIO_Port->BRR = GPIO_4_Pin;
+	}
+    else if(_no == 5)
+    {
+        red_led_5_on();//GPIO_5_GPIO_Port->BRR = GPIO_5_Pin;
 
     }
 
@@ -179,50 +208,60 @@ void rgb_led_all_off(void)
 void red_bsp_LedOn(uint8_t _no, uint8_t green_flag)  //bsp_LedOn
 {
 	//_no--;
-	static uint8_t green_led[5];
+	//static uint8_t green_led[5];
     switch(green_flag){
 
       case 0:
+        gctl_t.rgb_color_array[0] =0;
 
       break; 
 
 
       case 1:
-        green_led[0] = 1;
+        //green_led[0] = 1;
+        gctl_t.rgb_color_array[1] = 1;
 
       break;
 
       case 2:
-        green_led[1] = 2;
+        //green_led[1] = 2;
+         gctl_t.rgb_color_array[2] = 2;
 
       break;
 
       case 3:
-          green_led[2] = 3;
+          //green_led[2] = 3;
+          gctl_t.rgb_color_array[3] = 3;
 
       break;
 
       case 4:
 
-          green_led[3]  = 4;
-
+          //green_led[3]  = 4;
+           gctl_t.rgb_color_array[4] = 4;
 
       break;
 
        case 5:
 
-          green_led[4]  = 5;
+          //green_led[4]  = 5;
+         
+          gctl_t.rgb_color_array[5] = 5;
 
 
       break;
       }
 
 
-    
+    if(gctl_t.rgb_color_array[0] ==0 && gctl_t.rgb_color_array[1]==0){
+
+         red_led_on_origianl(_no);
+    }
+    else{
 
 	if (_no == 1)
 	{
-        if(green_led[0] == 1){
+        if(gctl_t.rgb_color_array[1] == 1){
 
             green_led_1_on();
         }
@@ -231,7 +270,7 @@ void red_bsp_LedOn(uint8_t _no, uint8_t green_flag)  //bsp_LedOn
 	}
 	else if (_no == 2)
 	{
-        if(green_led[1] == 2){
+        if(gctl_t.rgb_color_array[2] == 2){
         
              green_led_2_on();
         }
@@ -240,7 +279,7 @@ void red_bsp_LedOn(uint8_t _no, uint8_t green_flag)  //bsp_LedOn
 	}
 	else if (_no == 3)
 	{
-        if(green_led[2] == 3){
+        if(gctl_t.rgb_color_array[3] == 3){
         
              green_led_3_on();
         }
@@ -249,7 +288,7 @@ void red_bsp_LedOn(uint8_t _no, uint8_t green_flag)  //bsp_LedOn
 	}
 	else if (_no == 4)
 	{
-         if(green_led[3] == 4){
+         if(gctl_t.rgb_color_array[4] == 4){
         
             green_led_4_on();
          }
@@ -258,7 +297,7 @@ void red_bsp_LedOn(uint8_t _no, uint8_t green_flag)  //bsp_LedOn
 	}
     else if(_no == 5)
     {
-        if(green_led[4] ==5 ){
+        if(gctl_t.rgb_color_array[5] ==5 ){
         
            green_led_5_on();
         }
@@ -266,9 +305,8 @@ void red_bsp_LedOn(uint8_t _no, uint8_t green_flag)  //bsp_LedOn
         red_led_5_on();//GPIO_5_GPIO_Port->BRR = GPIO_5_Pin;
 
     }
+   }
 }
-
-
 /********************************************************************************
 *
 * Function Name: vod green_led_1_on(void)
@@ -363,34 +401,38 @@ void green_bsp_LedOn(uint8_t _no, uint8_t blue_flag)  //bsp_LedOn
 {
 	//_no--;
 
-       static uint8_t blue_led[6];
+     //  static uint8_t blue_led[6];
         switch(blue_flag){
     
           case 6:
             
-             blue_led[0] = 1;
+             //blue_led[0] = 1;
+             gctl_t.rgb_color_array[6]=1;
     
           break; 
     
     
           case 7:
-            blue_led[1] = 2;
-    
+           // blue_led[1] = 2;
+              gctl_t.rgb_color_array[7]=2;
           break;
     
           case 8:
-            blue_led[2] = 3;
+            //blue_led[2] = 3;
+            gctl_t.rgb_color_array[8]=3;
     
           break;
     
           case 9:
-              blue_led[3] = 4;
+             // blue_led[3] = 4;
+             gctl_t.rgb_color_array[9]=4;
     
           break;
     
           case 10:
     
-              blue_led[4]  = 5;
+              //blue_led[4]  = 5;
+              gctl_t.rgb_color_array[10]=5;
     
     
           break;
@@ -404,7 +446,7 @@ void green_bsp_LedOn(uint8_t _no, uint8_t blue_flag)  //bsp_LedOn
 
 	if (_no == 1)
 	{
-        if(blue_led[0] == 1){
+        if(gctl_t.rgb_color_array[6] == 1){
             blue_led_1_on();
         }
         else
@@ -412,7 +454,7 @@ void green_bsp_LedOn(uint8_t _no, uint8_t blue_flag)  //bsp_LedOn
 	}
 	else if (_no == 2)
 	{
-        if(blue_led[1] == 2){
+        if(gctl_t.rgb_color_array[7] == 2){
             blue_led_2_on();
         }
         else
@@ -420,7 +462,7 @@ void green_bsp_LedOn(uint8_t _no, uint8_t blue_flag)  //bsp_LedOn
 	}
 	else if (_no == 3)
 	{
-        if(blue_led[2] == 3){
+        if(gctl_t.rgb_color_array[8] == 3){
             blue_led_3_on();
         }
         else
@@ -428,7 +470,7 @@ void green_bsp_LedOn(uint8_t _no, uint8_t blue_flag)  //bsp_LedOn
 	}
 	else if (_no == 4)
 	{
-        if(blue_led[3] == 4){
+        if(gctl_t.rgb_color_array[9] == 4){
             blue_led_4_on();
         }
         else
@@ -436,7 +478,7 @@ void green_bsp_LedOn(uint8_t _no, uint8_t blue_flag)  //bsp_LedOn
 	}
     else if(_no == 5)
     {
-        if(blue_led[4] == 5){
+        if(gctl_t.rgb_color_array[10] == 5){
             blue_led_5_on();
         }
         else
@@ -580,6 +622,9 @@ void blue_bsp_LedOn(uint8_t _no, uint8_t blue_end_flag)
 ****************************************************************************/
 void blue_led_all_on(uint8_t on_flag)
 {
+
+  uint8_t i;
+
    if(on_flag == 1 && gpro_t.gpower_on == power_on && gpro_t.key_active_flag ==0){
 
       
@@ -601,6 +646,10 @@ void blue_led_all_on(uint8_t on_flag)
               gpro_t.gTimer_led_color_switch_time =0;
               gpro_t.works_time_out_flag = 0;
               gpro_t.record_eight_minutes_times_flag=0;
+              for(i=0;i<11;i++){
+                gctl_t.rgb_color_array[i] =0;
+
+              }
               xTimerStart_1_Fun();
 
               xTimerStart_2_Fun();
