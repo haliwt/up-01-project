@@ -118,6 +118,7 @@ static void status_2(void)
 		/* 这个地方可以插入其他任务 */		
 		
 		/* 检查定时器0时间是否到 */
+        if(gpro_t.works_time_out_flag ==0){
 		if(gpro_t.timer_1_time_out_flag == 1)
 		{
             gpro_t.timer_1_time_out_flag = 0 ;
@@ -155,6 +156,17 @@ static void status_2(void)
 
 
             }
+            else{
+
+                 gpro_t.works_time_out_flag = 1;
+                 gpro_t.key_active_flag = 0;
+                  xTimerStop_2_Fun();
+                  xTimerStop_1_Fun();
+               
+                  gpro_t.gTimer_led_color_switch_time = 0;
+
+            }
+            #if 0
             else if(gpro_t.record_eight_minutes_times_flag > 5 && gpro_t.record_eight_minutes_times_flag < 11){
 
                  green_bsp_LedOn(led_no_state_2,gpro_t.record_eight_minutes_times_flag);    /* 点亮其中一个LED */ 
@@ -172,6 +184,7 @@ static void status_2(void)
                }
 
             }
+            #endif 
 			
             led_no_state_2++;
             if(led_no_state_2 == 6)
@@ -181,7 +194,7 @@ static void status_2(void)
 			}
 		}
         
-      
+        }
         blue_led_all_on(gpro_t.works_time_out_flag);
                  
         

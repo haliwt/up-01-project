@@ -100,7 +100,7 @@ void freeRTOS_Handler(void)
 static void vTaskMsgPro(void *pvParameters)
 {
     BaseType_t xResult;
-	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(10); /* 设置最大等待时间为50ms */
+	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(20); /* 设置最大等待时间为50ms */
 	uint32_t ulValue;
     static uint8_t dc_power_sound_flag,power_turn_onoff_flag;
     while(1)
@@ -225,26 +225,26 @@ static void vTaskStart(void *pvParameters)
 		/* 按键扫描 */
 		//bsp_KeyScan();
     if(KEY_POWER_VALUE()  == KEY_DOWN){
-       
+          gpro_t.key_active_flag ++ ;
           xTaskNotify(xHandleTaskMsgPro, /* 目标任务 */
 					 POWER_KEY_0,            /* 设置目标任务事件标志位bit0  */
 					 eSetBits);          /* 将目标任务的事件标志位与BIT_0进行或操作，  将结果赋值给事件标志位。*/
 
 
     }
-    else{
-
-     if(gpro_t.gpower_on == power_on ){
-        
-        blue_led_all_on(gpro_t.works_time_out_flag);
-     }
-
-
-    }
-   
+//    else{
+//
+//     if(gpro_t.gpower_on == power_on ){
+//        
+//        blue_led_all_on(gpro_t.works_time_out_flag);
+//     }
+//
+//
+//    }
+//   
   
    
-    vTaskDelay(20);
+    vTaskDelay(10);
   }
 }
 /**********************************************************************************************************
@@ -304,7 +304,7 @@ static void AppObjCreate (void)
 	*/
 	
 		Timer1Timer_Handler = xTimerCreate("Timer",          /* 定时器名字 */
-							       (TickType_t ) 60000,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
+							       (TickType_t ) 30000,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
 							       pdFALSE, /*一次性定时器*/ //pdTRUE,          /* 周期性 */
 							       (void *) 1,      /* 定时器ID */
 							       vTimer1Callback); /* 定时器回调函数 */
@@ -399,6 +399,14 @@ void xTimerStop_2_Fun(void)
 {
      xTimerStop((TimerHandle_t  )Timer2Timer_Handler,    /* 待停止的定时器句柄 */
                  (TickType_t     )10);        /* 等待系统停止定时器的最大时间 */
+
+}
+
+void xTimerStop_1_Fun(void)
+{
+    xTimerStop((TimerHandle_t  )Timer1Timer_Handler,    /* 待停止的定时器句柄 */
+                                (TickType_t     )10);        /* 等待系统停止定时器的最大时间 */
+
 
 }
 
