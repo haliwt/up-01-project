@@ -149,6 +149,7 @@ static void red_led_5_on(void)
 void red_led_all_on(void)
 {
 
+if(gpro_t.gTimer_led_color_switch_time< 5){
 led_1:   red_led_1_on();
     osDelay(3);
     red_led_2_on();
@@ -159,8 +160,14 @@ led_1:   red_led_1_on();
      osDelay(3);
     red_led_5_on();
      osDelay(3);
-    if(gpro_t.rgb_red_led_time_out == 1){
+   if(gpro_t.gTimer_led_color_switch_time < 5){
         goto led_1;
+    }
+    }
+    else{
+
+      rgb_led_all_off();
+
     }
 
 }
@@ -595,11 +602,11 @@ void blue_bsp_LedOn(uint8_t _no, uint8_t blue_end_flag)
 ****************************************************************************/
 void blue_led_all_on(uint8_t on_flag)
 {
-   if(on_flag == 1){
+   if(on_flag == 1 && gpro_t.gpower_on == power_on){
 
 
     
-   led_2:   blue_led_1_on();
+        blue_led_1_on();
        osDelay(3);
        blue_led_2_on();
         osDelay(3);
@@ -609,9 +616,9 @@ void blue_led_all_on(uint8_t on_flag)
         osDelay(3);
        blue_led_5_on();
         osDelay(3);
-       if(on_flag == 1){
-           goto led_2;
-       }
+//        if(on_flag == 1 && gpro_t.gpower_on == power_on )
+//            goto led_2;
+       
    }
   
 }

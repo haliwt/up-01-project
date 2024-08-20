@@ -16,6 +16,9 @@ uint8_t g_recoder_times = 0;
 uint8_t  led_no_state_1 ;
 uint8_t led_no_state_2 ;
 
+uint8_t works_time_out_counter;
+
+
 /*******************************************************************************************************
 *	函 数 名: bsp_Idle
 *	功能说明: 空闲时执行的函数。一般主程序在for和while循环程序体中需要插入 CPU_IDLE() 宏来调用本函数。
@@ -61,40 +64,14 @@ void waterfall_light_handler(void)
 */
 static void status_0(void)
 {
-   static uint8_t state_0 = 0xff;
-
-   if(state_0 != g_recoder_times  ){
-
-      state_0 = g_recoder_times;
-
-    /* red led all on */
-	 red_led_all_on();
-
-
-    }
-
-    
-	//bsp_StartTimer(0, 3000);		/* 定时器0是3000ms 单次定时器 */		
-	//bsp_StartAutoTimer(1, 500);		/* 定时器1是500ms 自动重装定时器, 控制LED1按1Hz频率翻转闪烁 */
-	
-				
-		//bsp_Idle();		/* CPU空闲时执行的函数，在 bsp.c */
-		
-		/* 这个地方可以插入其他任务 */		
-		
-		/* bsp_CheckTimer()检查定时器1时间是否到。函数形参表示软件定时器的ID, 值域0 - 3 */
-//		if(bsp_CheckTimer_1(gpro_t.timer_1_time_out_flag))	 //100ms 	
-//		{ 
-//            gpro_t.timer_1_time_out_flag=0;
-//          //  bsp_LedToggle(1);		/* 间隔100ms 翻转一次 LED1 */
-//            g_recoder_times ++;
-//           
-//		}
-		/* 检查定时器2时间是否到 */
-		if(bsp_CheckTimer_2(gpro_t.timer_2_time_out_flag))
+        /* 检查定时器2时间是否到 */
+		if(gpro_t.gTimer_led_color_switch_time > 5)
 		{
 			/* 3秒定时到后退出本状态 */
+               rgb_led_all_off();
                g_recoder_times++ ;
+               gpro_t.works_time_out_flag =0;
+               gpro_t.record_eight_minutes_times_flag=0;
               g_MainStatus = 2;
             
             // xTimerStart_1_Fun();
@@ -103,9 +80,7 @@ static void status_0(void)
         else
            red_led_all_on();
 	
-	/* 任务结束时，应该关闭定时器，因为他们会占用后台的资源 */
-	//bsp_StopTimer(0);	 单次定时器如果超时到过一次后，可以不必关闭
-	//bsp_StopTimer(1);
+	
 }
 
 
@@ -117,60 +92,6 @@ uint8_t  bsp_CheckTimer_2(uint8_t times)
 }
 
 
-/*
-*********************************************************************************************************
-*	函 数 名: status_1
-*	功能说明: 状态1。 LED1 - LED5 依次流水显示。每次点亮1个LED。状态持续5秒后返回。
-*	形    参：无
-*	返 回 值: 无
-*********************************************************************************************************
-*/
-#if 0
-static void status_1(void)
-{
-  
-
-   static uint8_t state_1 = 0xff;
-
-   if(state_1 != g_recoder_times  ){
-
-      state_1 = g_recoder_times;
-
-      led_no_state_1 = 1;		/* LED指示灯序号 1-5 */
-      xTimerStart_1_Fun();
-      red_led_1_on();
-    }
-
-		
-		
-		/* 检查定时器0时间是否到 */
-		if (gpro_t.timer_1_time_out_flag == 1)
-		{
-            gpro_t.timer_1_time_out_flag =0;
-      
-            g_MainStatus =1;
-		}
-        
-        if(gpro_t.timer_2_time_out_flag == 1)		/* 检查自动定时器2，间隔200ms翻转一次LED1 */
-		{
-            gpro_t.timer_2_time_out_flag =0;
-           /* 先关闭所有的LED，然后在打开其中一个 */
-
-			
-			red_bsp_LedOn(led_no_state_1);
-          
-			//bsp_LedOn(led_no_state_1);	/* 点亮其中一个LED */	
-            led_no_state_1++ ;
-            if (led_no_state_1 == 6)
-			{
-				led_no_state_1 = 1;
-			}
-          
-          
-		}	
-
- }
-#endif
 /**********************************************************************************************************
 *	函 数 名: status_2
 *	功能说明: 状态2.  LED1 - LED5 依次流水显示。每次点亮3个LED, 熄灭1个。状态持续5秒后返回。
@@ -182,18 +103,12 @@ static void status_2(void)
    		/* LED指示灯序号 1-5 */
    static uint8_t state_0 =0xff;
 
-   static uint8_t  interval_time_flag;
-
    if(state_0 != g_recoder_times  ){
 
       state_0 = g_recoder_times;
 
-    //  rgb_led_all_off();
-
      xTimerStart_1_Fun();//bsp_StartTimer(0, 5000);		    /* 定时器0是5000ms 单次定时器 */
-	//bsp_StartAutoTimer(1, 200);		/* 定时器1是500ms 自动重装定时器, 控制LED1按1Hz频率翻转闪烁 */
-   
-	 //red_led_1_on();//bsp_LedOn(1);
+
 	led_no_state_2 = 1;
 
     }
@@ -203,30 +118,29 @@ static void status_2(void)
 		/* 这个地方可以插入其他任务 */		
 		
 		/* 检查定时器0时间是否到 */
-		if (gpro_t.timer_1_time_out_flag == 1)
+		if(gpro_t.timer_1_time_out_flag == 1)
 		{
             gpro_t.timer_1_time_out_flag = 0 ;
             //g_recoder_times ++;
             xTimerStart_1_Fun();
             gpro_t.record_eight_minutes_times_flag++;
             if(gpro_t.record_eight_minutes_times_flag > 11)gpro_t.record_eight_minutes_times_flag=0xff;
-
             if(gpro_t.works_time_out_flag ==1){
+                works_time_out_counter ++;
 
-                 interval_time_flag++ ;
+                if(works_time_out_counter > 9){
+                    works_time_out_counter =0;
 
-                 if(interval_time_flag > 10){
-                     interval_time_flag=0;
+                    gpro_t.record_eight_minutes_times_flag=0;
+                    gpro_t.works_time_out_flag =0;
 
-                     gpro_t.record_eight_minutes_times_flag=0x0;
-                     gpro_t.works_time_out_flag=0;
 
-                 }
+                }
+
 
             }
-            
-           
-		}
+
+        }
         
         if(gpro_t.timer_2_time_out_flag ==1 && gpro_t.works_time_out_flag ==0)		/* 检查自动定时器2，间隔200ms翻转一次LED1 */
 		{
@@ -251,6 +165,7 @@ static void status_2(void)
                if(gpro_t.works_time_out_flag == 1){
 
                   xTimerStop_2_Fun();
+                  gpro_t.gTimer_led_color_switch_time = 0;
 
                }
 
@@ -263,10 +178,10 @@ static void status_2(void)
                 
 			}
 		}
-        if(gpro_t.works_time_out_flag == 1){
+        else if(gpro_t.works_time_out_flag == 1){
             blue_led_all_on(gpro_t.works_time_out_flag);
                  
-         }
+        }
        
 }
 	

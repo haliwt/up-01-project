@@ -15,7 +15,7 @@
 /***********************************************************************************************************
 											函数声明
 ***********************************************************************************************************/
-
+//static void vTaskLedPro(void *pvParameters);
 static void vTaskMsgPro(void *pvParameters);
 static void vTaskStart(void *pvParameters);
 static void AppTaskCreate (void);
@@ -28,6 +28,8 @@ static void vTimer2Callback(xTimerHandle pxTimer);
 /***********************************************************************************************************
 											变量声明
 ***********************************************************************************************************/
+
+//static TaskHandle_t xHandleTaskLedPro = NULL;
 
 static TaskHandle_t xHandleTaskMsgPro = NULL;
 static TaskHandle_t xHandleTaskStart = NULL;
@@ -61,6 +63,30 @@ void freeRTOS_Handler(void)
     /* 启动调度，开始执行任务 */
     vTaskStartScheduler();
 }
+
+/**********************************************************************************************************
+*	函 数 名: static void vTaskLedPro(void *pvParameters)
+*	功能说明: 使用函数xTaskNotifyWait接收任务vTaskTaskUserIF发送的事件标志位设置
+*	形    参: pvParameters 是在创建该任务时传递的形参
+*	返 回 值: 无
+*   优 先 级: 2  
+**********************************************************************************************************/
+//static void vTaskLedPro(void *pvParameters)
+//{
+//
+//    while(1)
+//    {
+//
+//     if(gpro_t.gpower_on == power_on ){
+//        
+//        blue_led_all_on(gpro_t.works_time_out_flag);
+//     }
+//      vTaskDelay(10);
+//
+//    }
+//
+//}
+
 
 /*
 *********************************************************************************************************
@@ -114,8 +140,7 @@ static void vTaskMsgPro(void *pvParameters)
                 
             }
            
-           
-       }
+      }
 	   else{
 
           if(dc_power_sound_flag==0){
@@ -135,29 +160,20 @@ static void vTaskMsgPro(void *pvParameters)
              
              if(power_turn_onoff_flag == 1){
                 gpro_t.gpower_on = power_on;
+                gpro_t.gTimer_led_color_switch_time=0;
                  if(creat_timer_success ==0){
                           
                       xTimerStart((TimerHandle_t  )Timer2Timer_Handler,   /* 待启动的定时器句柄 */
                                    (TickType_t     )200);        /* 等待系统启动定时器的最大时间 portMAX_DELAY*/
 
-                   
-
-                }
-
-
-             }
+                   }
+               }
              else{
                   gpro_t.gpower_on = power_off;
                   power_off_flag = 1;
-                
-
-
-             }
+               }
             
           }
-
-
-            
          if(gpro_t.gpower_on == power_on ){
             waterfall_light_handler();
 
@@ -176,21 +192,12 @@ static void vTaskMsgPro(void *pvParameters)
 
                   rgb_led_all_off();
 
-                 
-
-              }
+               }
 
              rgb_led_all_off();
 
           }
-
-
-
-          
-      
-     
-          
-        }
+      }
              
     }
       
@@ -220,6 +227,15 @@ static void vTaskStart(void *pvParameters)
 
 
     }
+    else{
+
+     if(gpro_t.gpower_on == power_on ){
+        
+        blue_led_all_on(gpro_t.works_time_out_flag);
+     }
+
+
+    }
    
   
    
@@ -234,6 +250,15 @@ static void vTaskStart(void *pvParameters)
 **********************************************************************************************************/
 static void AppTaskCreate (void)
 {
+
+//
+//   xTaskCreate( vTaskLedPro,     		/* 任务函数  */
+//                 "vTaskLedPro",   		/* 任务名    */
+//                 128,             		/* 任务栈大小，单位word，也就是4字节 */
+//                 NULL,           		/* 任务参数  */
+//                 1,               		/* 任务优先级次子*/
+//                 &xHandleTaskLedPro );  /* 任务句柄  */
+
 
 
    xTaskCreate( vTaskMsgPro,     		/* 任务函数  */
