@@ -14,6 +14,7 @@
 #include "bsp_buzzer.h"
 #include "bsp_timer.h"
 #include "bsp_ctl.h"
+#include "bsp_fan.h"
 #include "interrupt_manager.h"
 #include "bsp_freertos.h"
 
@@ -29,7 +30,7 @@
 
 
 /* 定义 BSP 版本号 */
-#define __STM32G030_BSP_VERSION	  	"1.0"
+#define __STM32G030F6P6_BSP_VERSION	  	"1.0"
 
 /* CPU空闲时执行的函数 */
 //#define CPU_IDLE()		bsp_Idle()
@@ -67,7 +68,9 @@ typedef struct _bsp_process{
     
      uint8_t   record_eight_minutes_times_flag;
 
-     uint16_t  gTimer_led_color_switch_time;
+     uint8_t gTimer_power_on_disp;
+
+     uint16_t  gTimer_have_a_rest_time;
 
 
 }Process_T;

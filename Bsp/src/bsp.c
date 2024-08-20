@@ -65,7 +65,7 @@ void waterfall_light_handler(void)
 static void status_0(void)
 {
         /* 检查定时器2时间是否到 */
-		if(gpro_t.gTimer_led_color_switch_time > 2)
+		if(gpro_t.gTimer_power_on_disp > 1)
 		{
 			/* 3秒定时到后退出本状态 */
                rgb_led_all_off();
@@ -108,7 +108,7 @@ static void status_2(void)
       state_0 = g_recoder_times;
 
      xTimerStart_1_Fun();//bsp_StartTimer(0, 5000);		    /* 定时器0是5000ms 单次定时器 */
-
+     xTimerStart_2_Fun();
 	led_no_state_2 = 1;
 
     }
@@ -147,7 +147,7 @@ static void status_2(void)
                   xTimerStop_2_Fun();
                   xTimerStop_1_Fun();
                
-                  gpro_t.gTimer_led_color_switch_time = 0;
+                  gpro_t.gTimer_have_a_rest_time = 0;
 
             }
             #if 0
@@ -167,7 +167,7 @@ static void status_2(void)
                   xTimerStop_2_Fun();
                   xTimerStop_1_Fun();
                
-                  gpro_t.gTimer_led_color_switch_time = 0;
+                  gpro_t.gTimer_have_a_rest_time = 0;
 
                }
 

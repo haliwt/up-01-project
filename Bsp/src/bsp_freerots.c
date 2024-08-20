@@ -102,7 +102,7 @@ static void vTaskMsgPro(void *pvParameters)
     BaseType_t xResult;
 	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(20); /* 设置最大等待时间为50ms */
 	uint32_t ulValue;
-    static uint8_t dc_power_sound_flag,power_turn_onoff_flag;
+    static uint8_t dc_power_sound_flag;
     while(1)
     {
 		/*
@@ -150,25 +150,21 @@ static void vTaskMsgPro(void *pvParameters)
           }
 
             if(power_onoff_sound ==1){
+                 power_onoff_sound++;
                  buzzer_sound();
-                power_onoff_sound++;
-              
+               
             }
-            else if(power_onoff_sound==2){
+            
+           if(power_onoff_sound==2){
                power_onoff_sound++ ; 
-             power_turn_onoff_flag = power_turn_onoff_flag ^ 0x01;
-             
-             if(power_turn_onoff_flag == 1){
+           
+            if(gpro_t.gpower_on == power_off){
                 gpro_t.gpower_on = power_on;
-                gpro_t.gTimer_led_color_switch_time=0;
-                 if(creat_timer_success ==0){
-                          
-                      xTimerStart((TimerHandle_t  )Timer2Timer_Handler,   /* 待启动的定时器句柄 */
-                                   (TickType_t     )200);        /* 等待系统启动定时器的最大时间 portMAX_DELAY*/
-
-                   }
-               }
+                gpro_t.gTimer_power_on_disp=0;
+                
+              }
              else{
+                  gpro_t.gTimer_power_on_disp =10;
                   gpro_t.gpower_on = power_off;
                   power_off_flag = 1;
                }
@@ -179,6 +175,11 @@ static void vTaskMsgPro(void *pvParameters)
 
           }
           else if(gpro_t.gpower_on == power_off ){
+
+              
+              rgb_led_all_off();
+                         
+              rgb_led_all_gpio_set_output(0);
 
               if(power_off_flag ==1){
                   power_off_flag ++;
@@ -195,12 +196,9 @@ static void vTaskMsgPro(void *pvParameters)
 
                }
              gpro_t.g_MainStatus = 0;
-             gpro_t.gTimer_led_color_switch_time =0;
+             gpro_t.gTimer_have_a_rest_time =0;
 
-           rgb_led_all_off();
-             
-            rgb_led_all_gpio_set_output(0);
-
+          
           }
 
           blue_led_all_on(gpro_t.works_time_out_flag);
@@ -234,18 +232,7 @@ static void vTaskStart(void *pvParameters)
 
 
     }
-//    else{
-//
-//     if(gpro_t.gpower_on == power_on ){
-//        
-//        blue_led_all_on(gpro_t.works_time_out_flag);
-//     }
-//
-//
-//    }
-//   
   
-   
     vTaskDelay(10);
   }
 }

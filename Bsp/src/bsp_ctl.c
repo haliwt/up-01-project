@@ -47,6 +47,7 @@ void bsp_ctl_init(void)
 {
 
     Buzzer_Sound_Fun_Init();
+    gpro_t.gpower_on = power_off;
 
 
 }
@@ -134,8 +135,11 @@ static void red_led_5_on(void)
 void red_led_all_on(void)
 {
 
-if(gpro_t.gTimer_led_color_switch_time< 2 && gpro_t.gpower_on == power_on){
-led_1:   red_led_1_on();
+
+
+if(gpro_t.gTimer_have_a_rest_time< 1 && gpro_t.gpower_on == power_on){
+led_1:  vTaskDelay(4); 
+    red_led_1_on();
      vTaskDelay(4);//osDelay(3);
     red_led_2_on();
      vTaskDelay(4);//osDelay(3);
@@ -144,8 +148,8 @@ led_1:   red_led_1_on();
     red_led_4_on();
      vTaskDelay(4);//osDelay(3);
     red_led_5_on();
-     vTaskDelay(4);//osDelay(3);
-   if(gpro_t.gTimer_led_color_switch_time < 5 && gpro_t.gpower_on == power_on){
+    // vTaskDelay(4);//osDelay(3);
+   if(gpro_t.gTimer_have_a_rest_time < 1 && gpro_t.gpower_on == power_on){
         goto led_1;
     }
     }
@@ -642,8 +646,8 @@ void blue_led_all_on(uint8_t on_flag)
        blue_led_5_on();
       // osDelay(2);
 
-       if(gpro_t.gTimer_led_color_switch_time > 89   &&  gpro_t.works_time_out_flag  ==1){
-              gpro_t.gTimer_led_color_switch_time =0;
+       if(gpro_t.gTimer_have_a_rest_time > 89   &&  gpro_t.works_time_out_flag  ==1){
+              gpro_t.gTimer_have_a_rest_time =0;
               gpro_t.works_time_out_flag = 0;
               gpro_t.record_eight_minutes_times_flag=0;
               for(i=0;i<11;i++){
