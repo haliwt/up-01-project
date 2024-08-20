@@ -9,11 +9,11 @@ static void status_0(void);
 static void status_2(void);
 
 
-uint8_t g_MainStatus = 0;	/* 状态机 */
+//uint8_t g_MainStatus = 0;	/* 状态机 */
 
 uint8_t g_recoder_times = 0;
 
-uint8_t  led_no_state_1 ;
+//uint8_t  led_no_state_1 ;
 uint8_t led_no_state_2 ;
 
 uint8_t works_time_out_counter;
@@ -30,7 +30,7 @@ uint8_t works_time_out_counter;
 void waterfall_light_handler(void)
 {
 
-    switch (g_MainStatus)
+    switch (gpro_t.g_MainStatus)
     {
     case 0:         /* 上电执行一次。LED1闪烁3次，每次间隔1秒。3次后状态机返回。*/
         status_0(); 
@@ -72,7 +72,7 @@ static void status_0(void)
                g_recoder_times++ ;
                gpro_t.works_time_out_flag =0;
                gpro_t.record_eight_minutes_times_flag=0;
-              g_MainStatus = 2;
+              gpro_t.g_MainStatus = 2;
             
             // xTimerStart_1_Fun();
 			
@@ -123,12 +123,13 @@ static void status_2(void)
             gpro_t.timer_1_time_out_flag = 0 ;
             //g_recoder_times ++;
             xTimerStart_1_Fun();
+           
             gpro_t.record_eight_minutes_times_flag++;
             if(gpro_t.record_eight_minutes_times_flag > 11)gpro_t.record_eight_minutes_times_flag=0xff;
             if(gpro_t.works_time_out_flag ==1){
                 works_time_out_counter ++;
 
-                if(works_time_out_counter > 9){
+                if(works_time_out_counter > 2){
                     works_time_out_counter =0;
 
                     gpro_t.record_eight_minutes_times_flag=0;
@@ -139,6 +140,7 @@ static void status_2(void)
 
 
             }
+            blue_led_all_on(gpro_t.works_time_out_flag);
 
         }
         
@@ -164,7 +166,7 @@ static void status_2(void)
                blue_bsp_LedOn(led_no_state_2,gpro_t.record_eight_minutes_times_flag)  ;
                if(gpro_t.works_time_out_flag == 1){
 
-                  xTimerStop_2_Fun();
+                 // xTimerStop_2_Fun();
                   gpro_t.gTimer_led_color_switch_time = 0;
 
                }
@@ -178,10 +180,11 @@ static void status_2(void)
                 
 			}
 		}
-        else if(gpro_t.works_time_out_flag == 1){
-            blue_led_all_on(gpro_t.works_time_out_flag);
+        
+      
+        blue_led_all_on(gpro_t.works_time_out_flag);
                  
-        }
+        
        
 }
 	

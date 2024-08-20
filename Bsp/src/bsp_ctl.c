@@ -584,16 +584,27 @@ void blue_led_all_on(uint8_t on_flag)
 
 
     
-        blue_led_1_on();
-       osDelay(3);
+       blue_led_1_on();
+       osDelay(10);
        blue_led_2_on();
-        osDelay(3);
+        osDelay(10);
        blue_led_3_on();
-        osDelay(3);
+        osDelay(10);
        blue_led_4_on();
-        osDelay(3);
+        osDelay(10);
        blue_led_5_on();
-        osDelay(3);
+        osDelay(10);
+       /*************************/
+       blue_led_1_on();
+       osDelay(10);
+       blue_led_2_on();
+        osDelay(10);
+       blue_led_3_on();
+        osDelay(10);
+       blue_led_4_on();
+        osDelay(10);
+       blue_led_5_on();
+        osDelay(10);
 //        if(on_flag == 1 && gpro_t.gpower_on == power_on )
 //            goto led_2;
        

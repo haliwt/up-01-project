@@ -100,7 +100,7 @@ void freeRTOS_Handler(void)
 static void vTaskMsgPro(void *pvParameters)
 {
     BaseType_t xResult;
-	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(40); /* 设置最大等待时间为50ms */
+	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(10); /* 设置最大等待时间为50ms */
 	uint32_t ulValue;
     static uint8_t dc_power_sound_flag,power_turn_onoff_flag;
     while(1)
@@ -141,7 +141,7 @@ static void vTaskMsgPro(void *pvParameters)
             }
            
       }
-	   else{
+	  else{
 
           if(dc_power_sound_flag==0){
              dc_power_sound_flag++;
@@ -183,7 +183,8 @@ static void vTaskMsgPro(void *pvParameters)
               if(power_off_flag ==1){
                   power_off_flag ++;
                 
-
+                    gpro_t.works_time_out_flag =0;
+                   gpro_t.record_eight_minutes_times_flag=0;
                   xTimerStop((TimerHandle_t  )Timer1Timer_Handler,    /* 待停止的定时器句柄 */
                                 (TickType_t     )0);        /* 等待系统停止定时器的最大时间 */
 
@@ -193,10 +194,14 @@ static void vTaskMsgPro(void *pvParameters)
                   rgb_led_all_off();
 
                }
+             gpro_t.g_MainStatus = 0;
+             gpro_t.gTimer_led_color_switch_time =0;
 
              rgb_led_all_off();
 
           }
+
+          blue_led_all_on(gpro_t.works_time_out_flag);
       }
              
     }

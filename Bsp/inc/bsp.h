@@ -62,6 +62,7 @@ typedef struct _bsp_process{
      uint8_t  timer_2_time_out_flag;
      uint8_t  rgb_red_led_time_out;   // 5 pcs red led is time is up
      uint8_t   works_time_out_flag ;
+     uint8_t   g_MainStatus;
     
      uint8_t   record_eight_minutes_times_flag;
 
