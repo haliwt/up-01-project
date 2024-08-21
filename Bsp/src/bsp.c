@@ -209,12 +209,12 @@ void fan_works_handler(uint8_t data)
           gpro_t.gTimer_motor_run_time=0;
           motor_run_direct ++;
           if(motor_run_direct ==1){
-               motor_run_ccw_fun();
+               step_motor_rotation_handler(0,1);
            }
            else{
                motor_run_direct=0;
 
-               motor_run_cw_fun();
+              step_motor_rotation_handler(0,0);
 
 
            }

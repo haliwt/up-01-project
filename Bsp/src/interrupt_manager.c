@@ -25,6 +25,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         tm1++;
         gpro_t.gTimer_power_on_disp++;
         gpro_t.gTimer_have_a_rest_time++ ;
+        gpro_t.gTimer_detecte_fan_adc++;
+        gpro_t.gTimer_detecte_motor_adc++;
       // SysTick_ISR(); //WT.EDIT 2024.08.14
         //main process timer
 	

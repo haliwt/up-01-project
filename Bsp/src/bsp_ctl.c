@@ -631,7 +631,7 @@ void blue_led_all_on(uint8_t on_flag)
 
    if(on_flag == 1 && gpro_t.gpower_on == power_on && gpro_t.key_active_flag ==0){
 
-      
+      fan_works_handler(gpro_t.works_time_out_flag);
     
      led_2:  vTaskDelay(4);
 
@@ -670,6 +670,8 @@ void blue_led_all_on(uint8_t on_flag)
 
 
         }
+
+       
 
       
        

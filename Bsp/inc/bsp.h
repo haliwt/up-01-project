@@ -15,6 +15,7 @@
 #include "bsp_timer.h"
 #include "bsp_ctl.h"
 #include "bsp_fan.h"
+#include "bsp_adc.h"
 #include "interrupt_manager.h"
 #include "bsp_freertos.h"
 
@@ -71,6 +72,8 @@ typedef struct _bsp_process{
      uint8_t gTimer_power_on_disp;
 
      uint8_t gTimer_motor_run_time;
+     uint8_t gTimer_detecte_fan_adc;
+     uint8_t  gTimer_detecte_motor_adc;
 
      uint16_t  gTimer_have_a_rest_time;
 
