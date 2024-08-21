@@ -173,6 +173,7 @@ static void vTaskMsgPro(void *pvParameters)
          if(gpro_t.gpower_on == power_on ){
             waterfall_light_handler();
             fan_works_handler(gpro_t.works_time_out_flag);
+           #if 0
             if(gpro_t.gTimer_detecte_fan_adc > 2){
                 gpro_t.gTimer_detecte_fan_adc=0;
                 Get_Fan_ADC_Fun(0,5); //ADC_CHANNEL_0 
@@ -183,6 +184,7 @@ static void vTaskMsgPro(void *pvParameters)
                 gpro_t.gTimer_detecte_motor_adc=0;
                 Get_Motor_ADC_Fun(1, 5); //ADC_CHANNEL_1 
             }
+            #endif 
 
           }
           else if(gpro_t.gpower_on == power_off ){
@@ -214,6 +216,19 @@ static void vTaskMsgPro(void *pvParameters)
           }
 
           blue_led_all_on(gpro_t.works_time_out_flag);
+          #if 1
+           if(gpro_t.gTimer_detecte_fan_adc > 2){
+                gpro_t.gTimer_detecte_fan_adc=0;
+                Get_Fan_ADC_Fun(0,5); //ADC_CHANNEL_0 
+
+             }
+
+            if(gpro_t.gTimer_detecte_motor_adc > 3){
+                gpro_t.gTimer_detecte_motor_adc=0;
+                Get_Motor_ADC_Fun(1, 5); //ADC_CHANNEL_1 
+            }
+          #endif 
+          motor_run_hander();
       }
              
     }

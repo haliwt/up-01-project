@@ -66,10 +66,13 @@ void Error_Handler(void);
 
 #define MO_STEP_1_Pin GPIO_PIN_4
 #define MO_STEP_1_GPIO_Port GPIOA
+
 #define MO_STEP_2_Pin GPIO_PIN_5
 #define MO_STEP_2_GPIO_Port GPIOA
+
 #define MO_STEP_3_Pin GPIO_PIN_6
 #define MO_STEP_3_GPIO_Port GPIOA
+
 #define MO_STEP_4_Pin GPIO_PIN_7
 #define MO_STEP_4_GPIO_Port GPIOA
 

@@ -99,5 +99,8 @@ void red_led_active_record_fun(uint8_t rdata);
 
 void fan_works_handler(uint8_t data);
 
+void motor_run_hander(void);
+
+
 #endif 
 

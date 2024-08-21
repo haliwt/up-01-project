@@ -201,26 +201,13 @@ static void status_2(void)
 void fan_works_handler(uint8_t data)
 {
 
-   static uint8_t motor_run_direct;
+ 
    if(data == 0){
 
      fan_output_fun();
-     if(gpro_t.gTimer_motor_run_time > 10){
-          gpro_t.gTimer_motor_run_time=0;
-          motor_run_direct ++;
-          if(motor_run_direct ==1){
-               step_motor_rotation_handler(0,1);
-           }
-           else{
-               motor_run_direct=0;
-
-              step_motor_rotation_handler(0,0);
+     
 
 
-           }
-
-
-     }
    }
    else{
 
@@ -231,6 +218,23 @@ void fan_works_handler(uint8_t data)
 
 }
 
+void motor_run_hander(void)
+{
+     static uint8_t motor_run_direct;
+    if(gpro_t.gTimer_motor_run_time > 10){
+       gpro_t.gTimer_motor_run_time=0;
+       motor_run_direct ++;
+
+   }
+   if(motor_run_direct ==1){
+         step_motor_rotation_handler(1);
+   }
+   else{
+        motor_run_direct=0;
+
+         step_motor_rotation_handler(0);
+    }
 
 
+}
 

@@ -1,12 +1,6 @@
 #include "bsp_motor.h"
-/* 包含头文件 ----------------------------------------------------------------*/
-#include "stm32f4xx_hal.h"
-#include "StepMotor/bsp_uln2003.h"
-#include "key/bsp_key.h"
-/* 私有类型定义 --------------------------------------------------------------*/
-/* 私有宏定义 ----------------------------------------------------------------*/
-/* 私有宏定义 ----------------------------------------------------------------*/
-#define STEPMOTOR_SPEED              10    // 定义步进电机速度，值越小，速度越快
+
+#define STEPMOTOR_SPEED              1    // 定义步进电机速度，值越小，速度越快
                                            // 最小不能小于8
 #define STEPMOTOR_CIRCLE_NUMBER       10   // 转动圈数
 #define STEPMOTOR_DIRECTION           1    // 1：顺时针  0：逆时针
@@ -17,13 +11,15 @@
 uint8_t speed=STEPMOTOR_SPEED;
 // 转动圈数：28BYJ-48步进电机的步距角度为5.625/64，即每64个脉冲转5.625度
 // 要转一圈需要360/5.625*64=4096个脉冲。
-uint32_t Circle_number= 0;
+uint32_t Circle_number= 1000;
 // 选择方向控制
 uint8_t direction=STEPMOTOR_DIRECTION;
 /* 扩展变量 ------------------------------------------------------------------*/
 /* 私有函数原形 --------------------------------------------------------------*/
 
 static void step_motor_pulse(uint8_t step,uint8_t direction);
+
+uint16_t pulse_count; 
 
 /***********************************************************
   * Function Name: void motor_stop_fun(void)
@@ -44,11 +40,11 @@ void motor_stop_fun(void)
   * 返 回 值: 无
   * 说    明: 每隔一定的时间就输出新节拍信号
   */
-void step_motor_rotation_handler(uint8_t step,uint8_t direction)
+void step_motor_rotation_handler(uint8_t direction)
 {
   static uint8_t count=0;               // 用于旋转速度控制
   static uint8_t step=0;                // 当前步进节拍
-  static uint16_t pulse_count=0;        // 脉冲计数，4096个脉冲电机旋转一圈
+ // static uint16_t pulse_count=0;        // 脉冲计数，4096个脉冲电机旋转一圈
   
   if(Circle_number)                     // 如果等待旋转圈数不为0
   {
