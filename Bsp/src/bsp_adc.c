@@ -58,7 +58,7 @@ static uint16_t Get_Adc_Channel_1(void)
    
 
 	ADC1_ChanConf.Channel=ADC_CHANNEL_1;                                   //ĂÂ¨ÂľĂ
-    ADC1_ChanConf.Rank= ADC_REGULAR_RANK_2;   //设置规则组的，ADC1转换排名                          
+    ADC1_ChanConf.Rank= ADC_REGULAR_RANK_1;   //设置规则组的，ADC1转换排名                          
     ADC1_ChanConf.SamplingTime=ADC_SAMPLETIME_1CYCLE_5;//ADC_SAMPLETIME_239CYCLES_5;      //Â˛ĂĂĂšĂÂąÂźĂ¤               
 
 
@@ -141,7 +141,7 @@ void Get_Fan_ADC_Fun(uint8_t channel,uint8_t times)
    // if(gpro_t.works_time_out_flag == 0){
     adc_fan_hex = Get_Adc_Average(channel,times);
 
-    fan_detect_voltage  =(uint16_t)((adc_fan_hex * 3300)/4096); //amplification 1000 ,3.111V -> 3111
+    fan_detect_voltage  =(uint16_t)((adc_fan_hex * 33000)/4096); //amplification 1000 ,3.111V -> 3111
 	//HAL_Delay(5);
 
 	if(fan_detect_voltage >0 &&  fan_detect_voltage < 3000){
@@ -183,7 +183,7 @@ void Get_Motor_ADC_Fun(uint8_t channel,uint8_t times)
    // if(gpro_t.works_time_out_flag == 0){
     adc_motor_hex = Get_Adc_Average(channel,times);
 
-    motor_detect_voltage  =(uint16_t)((adc_motor_hex * 3300)/4096); //amplification 1000 ,3.111V -> 3111
+    motor_detect_voltage  =(uint16_t)((adc_motor_hex * 33000)/4096); //amplification 1000 ,3.111V -> 3111
 	//HAL_Delay(5);
 
 	if(fan_detect_voltage >0 &&   fan_detect_voltage < 3000){

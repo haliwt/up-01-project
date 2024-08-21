@@ -219,13 +219,13 @@ static void vTaskMsgPro(void *pvParameters)
           #if 1
            if(gpro_t.gTimer_detecte_fan_adc > 2){
                 gpro_t.gTimer_detecte_fan_adc=0;
-                Get_Fan_ADC_Fun(0,5); //ADC_CHANNEL_0 
+                Get_Fan_ADC_Fun(0,1); //ADC_CHANNEL_0 
 
              }
 
             if(gpro_t.gTimer_detecte_motor_adc > 3){
                 gpro_t.gTimer_detecte_motor_adc=0;
-                Get_Motor_ADC_Fun(1, 5); //ADC_CHANNEL_1 
+                Get_Motor_ADC_Fun(1, 1); //ADC_CHANNEL_1 
             }
           #endif 
           motor_run_hander();
