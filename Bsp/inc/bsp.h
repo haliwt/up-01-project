@@ -70,6 +70,8 @@ typedef struct _bsp_process{
 
      uint8_t gTimer_power_on_disp;
 
+     uint8_t gTimer_motor_run_time;
+
      uint16_t  gTimer_have_a_rest_time;
 
 
@@ -92,6 +94,7 @@ uint8_t  bsp_CheckTimer_2(uint8_t times);
 
 void red_led_active_record_fun(uint8_t rdata);
 
+void fan_works_handler(uint8_t data);
 
 #endif 
 

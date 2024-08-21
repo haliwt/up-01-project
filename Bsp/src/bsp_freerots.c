@@ -172,6 +172,7 @@ static void vTaskMsgPro(void *pvParameters)
           }
          if(gpro_t.gpower_on == power_on ){
             waterfall_light_handler();
+            fan_works_handler(gpro_t.works_time_out_flag);
 
           }
           else if(gpro_t.gpower_on == power_off ){

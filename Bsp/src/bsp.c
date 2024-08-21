@@ -190,6 +190,46 @@ static void status_2(void)
 }
 	
 	
+/**********************************************************************************************************
+*
+*	函 数 名: status_2
+*	功能说明: 状态2.  LED1 - LED5 依次流水显示。每次点亮3个LED, 熄灭1个。状态持续5秒后返回。
+*	形    参：无
+*	返 回 值: 无
+*
+**********************************************************************************************************/
+void fan_works_handler(uint8_t data)
+{
+
+   static uint8_t motor_run_direct;
+   if(data == 0){
+
+     fan_output_fun();
+     if(gpro_t.gTimer_motor_run_time > 10){
+          gpro_t.gTimer_motor_run_time=0;
+          motor_run_direct ++;
+          if(motor_run_direct ==1){
+               motor_run_ccw_fun();
+           }
+           else{
+               motor_run_direct=0;
+
+               motor_run_cw_fun();
+
+
+           }
+
+
+     }
+   }
+   else{
+
+     fan_stop_fun();
+     motor_stop_fun();
+
+   }
+
+}
 
 
 
