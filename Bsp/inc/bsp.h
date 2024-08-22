@@ -21,6 +21,7 @@
 
 #include "tim.h"
 #include "adc.h"
+#include "dma.h"
 
 #include "FreeRTOS.h"
 #include "task.h"

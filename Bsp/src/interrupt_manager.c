@@ -10,10 +10,16 @@
 *******************************************************************************/
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  static uint16_t tm0;
+  static uint16_t tm0,tm160;
   static uint8_t tm1;
  
+   if(htim->Instance==TIM16){
 
+       
+
+
+
+   }
     
    if(htim->Instance==TIM17){
     

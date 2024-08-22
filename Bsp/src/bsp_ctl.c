@@ -680,3 +680,12 @@ void blue_led_all_on(uint8_t on_flag)
   
 }
 
+
+void all_the_time_led_brightness_handler(void)
+{
+
+
+
+
+}
+
