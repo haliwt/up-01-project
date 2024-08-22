@@ -11,15 +11,9 @@
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   static uint16_t tm0,tm160;
-  static uint8_t tm1;
+  static uint8_t tm1,tm20;
  
-   if(htim->Instance==TIM16){
-
-       
-
-
-
-   }
+  
     
    if(htim->Instance==TIM17){
     
@@ -46,6 +40,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	 
 	}
   }
+
+  if(htim->Instance==TIM16){
+
+    tm20++;
+    if(tm20 > 4){
+        tm20= 0;
+    step_motor_rotation_handler(gctl_t.motor_run_direction);
+
+    }
+
+
+   }
 }
 
 

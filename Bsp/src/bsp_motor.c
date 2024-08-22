@@ -11,7 +11,7 @@
 uint8_t speed=STEPMOTOR_SPEED;
 // 转动圈数：28BYJ-48步进电机的步距角度为5.625/64，即每64个脉冲转5.625度
 // 要转一圈需要360/5.625*64=4096个脉冲。
-uint32_t Circle_number= 1000;
+uint32_t Circle_number= 100;
 // 选择方向控制
 uint8_t direction=STEPMOTOR_DIRECTION;
 /* 扩展变量 ------------------------------------------------------------------*/

@@ -219,16 +219,16 @@ static void vTaskMsgPro(void *pvParameters)
            if(gpro_t.gTimer_detecte_fan_adc > 2){
                 gpro_t.gTimer_detecte_fan_adc=0;
                 Get_Fan_ADC_Fun(0,1); //ADC_CHANNEL_0 
-                 Get_Motor_ADC_Fun(1, 1); //ADC_CHANNEL_1 
+                 
 
                  
 
              }
 
-//            if(gpro_t.gTimer_detecte_motor_adc > 3){
-//                gpro_t.gTimer_detecte_motor_adc=0;
-//                Get_Motor_ADC_Fun(1, 1); //ADC_CHANNEL_1 
-//            }
+            if(gpro_t.gTimer_detecte_motor_adc > 3){
+                gpro_t.gTimer_detecte_motor_adc=0;
+                Get_Motor_ADC_Fun(1, 1); //ADC_CHANNEL_1 
+            }
           #endif 
           motor_run_hander();
       }
@@ -399,7 +399,7 @@ static void vTimer2Callback(xTimerHandle pxTimer)
 void xTimerStart_1_Fun(void)
 {
    	xTimerStart((TimerHandle_t  )Timer1Timer_Handler,   /* 待启动的定时器句柄 */
-                 (TickType_t   )60000);        /* 等待系统启动定时器的最大时间 5000ms */
+                 (TickType_t   )30000);        /* 等待系统启动定时器的最大时间 5000ms */
 
 
 }

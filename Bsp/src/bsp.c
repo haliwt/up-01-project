@@ -220,20 +220,20 @@ void fan_works_handler(uint8_t data)
 
 void motor_run_hander(void)
 {
-    static uint8_t motor_run_direct;
+   // static uint8_t motor_run_direct;
     if(gpro_t.gTimer_motor_run_time > 119){
        gpro_t.gTimer_motor_run_time=0;
-       motor_run_direct ++;
+       gctl_t.motor_run_direction ++;
 
    }
-   if(motor_run_direct ==1){
-         step_motor_rotation_handler(1);
-   }
-   else{
-        motor_run_direct=0;
+//    if(gctl_t.motor_run_direction ==1){
+//          step_motor_rotation_handler(1);
+//    }
+//    else{
+//         gctl_t.motor_run_direction=0;
 
-         step_motor_rotation_handler(0);
-    }
+//          step_motor_rotation_handler(0);
+//     }
 
 
 }

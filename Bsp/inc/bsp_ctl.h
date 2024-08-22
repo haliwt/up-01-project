@@ -18,6 +18,8 @@ typedef struct _ctl_t{
 
    uint8_t rgb_color_array[11];
 
+   uint8_t motor_run_direction;
+
 
 }ctl_t;
 
