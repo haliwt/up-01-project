@@ -1,7 +1,6 @@
 #include "bsp.h"
+#include "adc.h"
 
-#include "bsp_adc.h"
-#include "bsp.h"
 
 /* USER CODE BEGIN 0 */
 
@@ -14,7 +13,7 @@ static uint16_t Get_Adc_Average(uint8_t ch,uint8_t times);
 
 uint16_t fan_detect_voltage;
 uint16_t motor_detect_voltage;
-__IO float ADC_ConvertedValueLocal[ADC_CHANNEL_NUMBER];
+__IO uint32_t ADC_ConvertedValueLocal[ADC_CHANNEL_NUMBER];
 
 uint32_t ADC_ConvertedValue[ADC_CHANNEL_NUMBER];
 
@@ -147,15 +146,23 @@ void Get_Fan_ADC_Fun(uint8_t channel,uint8_t times)
 {
 	volatile uint16_t adc_fan_hex;
 	static uint8_t detect_error_times;
-	
+	 ADC_ChannelConfTypeDef sConfig = {0};
    // if(gpro_t.works_time_out_flag == 0){
    // adc_fan_hex = Get_Adc_Average(channel,times);
+  sConfig.Channel = ADC_CHANNEL_0;
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.SamplingTime = ADC_SAMPLINGTIME_COMMON_1;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+   
     HAL_ADC_Start_DMA(&hadc1,&ADC_ConvertedValue[0],1);  //启动ADC DMA 传输
 
-    fan_detect_voltage =(uint16_t)((ADC_ConvertedValue[0] * 33000)/4096); //amplification 1000 ,3.111V -> 3111
+    fan_detect_voltage =(uint16_t)(((ADC_ConvertedValue[0]& 0xfff) * 33000)/4096); //amplification 1000 ,3.111V -> 3111
 	//HAL_Delay(5);
 
-	if( fan_detect_voltage >0 &&  fan_detect_voltage  < 3000){
+	if( fan_detect_voltage >0 ){
            detect_error_times=0;
 		   #if DEBUG
              printf("adc= %d",run_t.fan_detect_voltage);
@@ -188,17 +195,26 @@ void Get_Fan_ADC_Fun(uint8_t channel,uint8_t times)
 
 void Get_Motor_ADC_Fun(uint8_t channel,uint8_t times)
 {
-    volatile uint16_t adc_motor_hex;
+  //  volatile uint16_t adc_motor_hex;
 	static uint8_t detect_error_times;
-	
+	 ADC_ChannelConfTypeDef sConfig = {0};
    // if(gpro_t.works_time_out_flag == 0){
     //adc_motor_hx = Get_Adc_Average(channel,times);
-    HAL_ADC_Start_DMA(&hadc1,&ADC_ConvertedValue[0],2);  //启动ADC DMA 传输
 
-    motor_detect_voltage=(uint16_t)((ADC_ConvertedValue[1]   * 33000)/4096); //amplification 1000 ,3.111V -> 3111
+  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
+  sConfig.SamplingTime = ADC_SAMPLINGTIME_COMMON_1;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+ // ADC_ConvertedValue[1]=0;
+    HAL_ADC_Start_DMA(&hadc1,&ADC_ConvertedValue[1],1);  //启动ADC DMA 传输
+
+    motor_detect_voltage=(uint16_t)(((ADC_ConvertedValue[1]    & 0xfff)* 33000)/4096); //amplification 1000 ,3.111V -> 3111
 	//HAL_Delay(5);
 
-	if(motor_detect_voltage >0 &&   motor_detect_voltage < 3000){
+	if(motor_detect_voltage >0 ){
            detect_error_times=0;
 		   #if DEBUG
              printf("adc= %d",run_t.fan_detect_voltage);
