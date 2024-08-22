@@ -31,7 +31,10 @@ uint16_t pulse_count;
 void motor_stop_fun(void)
 {
 
-    A_OFF;  B_OFF; C_OFF; D_OFF;        // 停机 
+    A_OFF;  
+    B_OFF; 
+    C_OFF; 
+    D_OFF;        // 停机 
 }
 
 /**

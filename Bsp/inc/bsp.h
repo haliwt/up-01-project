@@ -76,7 +76,7 @@ typedef struct _bsp_process{
      uint8_t gTimer_detecte_fan_adc;
      uint8_t  gTimer_detecte_motor_adc;
 
-     uint16_t  gTimer_have_a_rest_time;
+     uint8_t  gTimer_power_on_moment;
 
 
 }Process_T;

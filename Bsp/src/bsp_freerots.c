@@ -210,7 +210,7 @@ static void vTaskMsgPro(void *pvParameters)
 
                }
              gpro_t.g_MainStatus = 0;
-             gpro_t.gTimer_have_a_rest_time =0;
+             gpro_t.gTimer_power_on_moment =0;
 
           
           }
@@ -219,11 +219,7 @@ static void vTaskMsgPro(void *pvParameters)
            if(gpro_t.gTimer_detecte_fan_adc > 2){
                 gpro_t.gTimer_detecte_fan_adc=0;
                 Get_Fan_ADC_Fun(0,1); //ADC_CHANNEL_0 
-                 
-
-                 
-
-             }
+           }
 
             if(gpro_t.gTimer_detecte_motor_adc > 3){
                 gpro_t.gTimer_detecte_motor_adc=0;

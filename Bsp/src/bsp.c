@@ -147,7 +147,8 @@ static void status_2(void)
                   xTimerStop_2_Fun();
                   xTimerStop_1_Fun();
                
-                  gpro_t.gTimer_have_a_rest_time = 0;
+                
+                  gctl_t.gTimer_timer_led_color_changed=0;
 
             }
             #if 0
@@ -167,7 +168,7 @@ static void status_2(void)
                   xTimerStop_2_Fun();
                   xTimerStop_1_Fun();
                
-                  gpro_t.gTimer_have_a_rest_time = 0;
+                  gpro_t.gTimer_power_on_moment = 0;
 
                }
 

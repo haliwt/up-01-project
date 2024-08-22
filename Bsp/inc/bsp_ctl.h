@@ -16,9 +16,17 @@ typedef struct _ctl_t{
 
    uint8_t power_off;
 
+   uint8_t green_led[5];
+   uint8_t red_led[5];
+   uint8_t blue_led[5];
+
    uint8_t rgb_color_array[11];
 
    uint8_t motor_run_direction;
+
+   uint8_t gTimer_timer_led_color_changed;
+
+   
 
 
 }ctl_t;
@@ -54,7 +62,7 @@ void red_led_all_on(void);
 void blue_led_all_on(uint8_t on_flag);
 
 
-void all_the_time_led_brightness_handler(void);
+
 
 
 #endif 
