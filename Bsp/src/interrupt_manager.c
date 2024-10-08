@@ -40,19 +40,52 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                  gctl_t.gTimer_timer_led_color_changed =0;
                  color_flag++;
            
-                 if(color_flag  == 1)gctl_t.green_led[0] = 1;
-                 else if(color_flag  == 2)gctl_t.green_led[1] = 1;
-                 else if(color_flag  == 3)gctl_t.green_led[2] = 1;
-                 else if(color_flag  == 4)gctl_t.green_led[3] = 1;
-                 else if(color_flag  == 5)gctl_t.green_led[4] = 1;
+                 if(color_flag  == 1){
+                    gctl_t.red_led[0] = 0;
+                    gctl_t.green_led[0] = 1;
+                 }
+                 else if(color_flag  == 2){
+                     gctl_t.red_led[1] = 0;
+                    gctl_t.green_led[1] = 1;
+
+                  }
+                 else if(color_flag  == 3){
+                     gctl_t.red_led[2] = 0;
+                    gctl_t.green_led[2] = 1;
+                  }
+                 else if(color_flag  == 4){
+                     gctl_t.red_led[3] = 0;
+                    gctl_t.green_led[3] = 1;
+                 }
+                 else if(color_flag  == 5){
+                     gctl_t.red_led[4] = 0;
+                    gctl_t.green_led[4] = 1;
+
+                  }
                  // red led 
-                 else if(color_flag == 6)gctl_t.red_led[0] = 1;
-                 else if(color_flag  == 7)gctl_t.red_led[1] = 1;
-                 else if(color_flag  == 8)gctl_t.red_led[2] = 1;
-                 else if(color_flag  == 9)gctl_t.red_led[3] = 1;
-                 else if(color_flag  == 10)gctl_t.red_led[4] = 1;
+                 else if(color_flag == 6){
+                    gctl_t.green_led[0] = 0;
+                    gctl_t.red_led[0] = 1;
+                  }
+                 else if(color_flag  == 7){
+                    gctl_t.green_led[1] = 0;
+                    gctl_t.red_led[1] = 1;
+
+                   }
+                 else if(color_flag  == 8){
+                    gctl_t.green_led[2] = 0;
+                    gctl_t.red_led[2] = 1;
+                 }
+                 else if(color_flag  == 9){
+                    gctl_t.green_led[3] = 0;
+                    gctl_t.red_led[3] = 1;
+                 }
+                 else if(color_flag  == 10){
+                    gctl_t.green_led[4] = 0;
+                    gctl_t.red_led[4] = 1;
+                 }
                 
-                 if(color_flag == 11){
+                 if(color_flag == 10){
                     color_flag = 0;
                      gpro_t.works_time_out_flag  =0;
 

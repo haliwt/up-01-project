@@ -140,18 +140,6 @@ static void status_2(void)
 
 
             }
-            else{
-
-                 gpro_t.works_time_out_flag = 1;
-                 gpro_t.key_active_flag = 0;
-                  xTimerStop_2_Fun();
-                  xTimerStop_1_Fun();
-               
-                
-                  gctl_t.gTimer_timer_led_color_changed=0;
-
-            }
-            #if 0
             else if(gpro_t.record_eight_minutes_times_flag > 5 && gpro_t.record_eight_minutes_times_flag < 11){
 
                  green_bsp_LedOn(led_no_state_2,gpro_t.record_eight_minutes_times_flag);    /* 点亮其中一个LED */ 
@@ -161,21 +149,24 @@ static void status_2(void)
             else if(gpro_t.record_eight_minutes_times_flag > 10   &&   gpro_t.works_time_out_flag ==0){
 
                blue_bsp_LedOn(led_no_state_2,gpro_t.record_eight_minutes_times_flag)  ;
-               if(gpro_t.works_time_out_flag == 1){
-
-                  gpro_t.works_time_out_flag = 1;
+               
+                 gpro_t.works_time_out_flag = 1;
                  gpro_t.key_active_flag = 0;
+                  gctl_t.red_led[0]=0;
+                  gctl_t.red_led[1]=0;
+                  gctl_t.red_led[2]=0;
+                   gctl_t.red_led[3]=0;
+                   gctl_t.red_led[4]=0;
                   xTimerStop_2_Fun();
                   xTimerStop_1_Fun();
                
-                  gpro_t.gTimer_power_on_moment = 0;
-
-               }
+                
+                  gctl_t.gTimer_timer_led_color_changed=0;
 
             }
-            #endif 
-			
-            led_no_state_2++;
+
+          
+		     led_no_state_2++;
             if(led_no_state_2 == 6)
 			{
 				led_no_state_2 = 1;
@@ -222,20 +213,26 @@ void fan_works_handler(uint8_t data)
 void motor_run_hander(void)
 {
    // static uint8_t motor_run_direct;
-    if(gpro_t.gTimer_motor_run_time > 119){
+    if(gpro_t.gTimer_motor_run_time > 10){
        gpro_t.gTimer_motor_run_time=0;
        gctl_t.motor_run_direction ++;
+       if(gctl_t.motor_run_direction > 1){
+
+          gctl_t.motor_run_direction=0;
+       }
 
    }
-//    if(gctl_t.motor_run_direction ==1){
-//          step_motor_rotation_handler(1);
-//    }
-//    else{
-//         gctl_t.motor_run_direction=0;
 
-//          step_motor_rotation_handler(0);
-//     }
+   #if 0
+   if(gctl_t.motor_run_direction ==1){
+       step_motor_rotation_handler(CCW);
+   }
+    else{
+        gctl_t.motor_run_direction=0;
 
+        step_motor_rotation_handler(CW);
+     }
 
+   #endif 
 }
 

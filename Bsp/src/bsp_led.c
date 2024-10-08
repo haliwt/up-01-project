@@ -100,79 +100,75 @@ void rgb_led_set_output_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx,uint8_t high_low
 
 void rgb_led_all_set_input_mode(void)
 {
+    uint32_t position = 0x00u;
+    //  uint32_t iocurrent;
+    uint32_t temp;
+
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    /* GPIO Ports Clock Enable */
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+
+    GPIO_InitStruct.Pin = GPIO_1_Pin|GPIO_2_Pin|GPIO_3_Pin|GPIO_4_Pin|GPIO_5_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT; // GPIO_MODE_INPUT = 0X0
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
 
 
+    assert_param(IS_GPIO_MODE(GPIO_InitStruct.Mode));
 
-        uint32_t position = 0x00u;
-      //  uint32_t iocurrent;
-        uint32_t temp;
-    
-    
-        
-        GPIO_InitTypeDef GPIO_InitStruct = {0};
-    
-        /* GPIO Ports Clock Enable */
-        __HAL_RCC_GPIOB_CLK_ENABLE();
-        __HAL_RCC_GPIOC_CLK_ENABLE();
-        __HAL_RCC_GPIOA_CLK_ENABLE();
-    
-          GPIO_InitStruct.Pin = GPIO_1_Pin|GPIO_2_Pin|GPIO_3_Pin|GPIO_4_Pin|GPIO_5_Pin;
-          GPIO_InitStruct.Mode = GPIO_MODE_INPUT; // GPIO_MODE_INPUT = 0X0
-          GPIO_InitStruct.Pull = GPIO_PULLUP;
-    
-    
-         assert_param(IS_GPIO_MODE(GPIO_InitStruct.Mode));
-    
-       /* Configure IO Direction mode (Input, Output, Alternate or Analog) */
-        temp= GPIO_1_GPIO_Port->MODER;
+    /* Configure IO Direction mode (Input, Output, Alternate or Analog) */
+    temp= GPIO_1_GPIO_Port->MODER;
 
-        temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
-        temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
-        GPIO_1_GPIO_Port->MODER = temp;
+    temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
+    temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
+    GPIO_1_GPIO_Port->MODER = temp;
 
-        
-        temp= GPIO_2_GPIO_Port->MODER;
-        temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
-        temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
-        GPIO_2_GPIO_Port->MODER = temp;
 
-        
-        temp= GPIO_3_GPIO_Port->MODER;
-        temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
-        temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
-        GPIO_3_GPIO_Port->MODER = temp;
-        
-        temp= GPIO_4_GPIO_Port->MODER;
-         temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
-         temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
-         GPIO_4_GPIO_Port->MODER = temp;
+    temp= GPIO_2_GPIO_Port->MODER;
+    temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
+    temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
+    GPIO_2_GPIO_Port->MODER = temp;
 
-        
-        
 
-        temp= GPIO_5_GPIO_Port->MODER;
-         temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
-        temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
-        GPIO_5_GPIO_Port->MODER = temp;
+    temp= GPIO_3_GPIO_Port->MODER;
+    temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
+    temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
+    GPIO_3_GPIO_Port->MODER = temp;
 
-    
-    
-   
+    temp= GPIO_4_GPIO_Port->MODER;
+    temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
+    temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
+    GPIO_4_GPIO_Port->MODER = temp;
+
+
+    temp= GPIO_5_GPIO_Port->MODER;
+    temp &= ~(GPIO_MODER_MODE0 << (position * 2u));
+    temp |= ((GPIO_InitStruct.Mode & GPIO_MODE) << (position * 2u));
+    GPIO_5_GPIO_Port->MODER = temp;
 
 }
 
-
+/******************************************************************************
+*
+*Function Name: void rgb_led_all_gpio_set_output(uint8_t logic_data)
+*
+*
+*
+*
+******************************************************************************/
 void rgb_led_all_gpio_set_output(uint8_t logic_data)
 {
     rgb_led_set_output_mode(GPIO_1_GPIO_Port,GPIO_1_Pin,logic_data);
+    
     rgb_led_set_output_mode(GPIO_2_GPIO_Port,GPIO_2_Pin,logic_data);
     
     rgb_led_set_output_mode(GPIO_3_GPIO_Port,GPIO_3_Pin,logic_data);
+    
     rgb_led_set_output_mode(GPIO_4_GPIO_Port,GPIO_4_Pin,logic_data);
 
     rgb_led_set_output_mode(GPIO_5_GPIO_Port,GPIO_5_Pin,logic_data);
-
-
 
 }
  

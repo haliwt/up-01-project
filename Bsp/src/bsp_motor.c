@@ -68,7 +68,8 @@ void step_motor_rotation_handler(uint8_t direction)
   }
   else
   {
-    A_OFF;  B_OFF; C_OFF; D_OFF;        // 停机 
+    //A_OFF;  B_OFF; C_OFF; D_OFF;        // 停机 
+    Circle_number = 10;
   }
 }
 

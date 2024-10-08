@@ -132,16 +132,16 @@ void SysTick_Handler(void)
 /**
   * @brief This function handles TIM17 global interrupt.
   */
-void DMA1_Channel1_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA1_Channel1_IRQn 0 */
-
-  /* USER CODE END DMA1_Channel1_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_adc1);
-  /* USER CODE BEGIN DMA1_Channel1_IRQn 1 */
-
-  /* USER CODE END DMA1_Channel1_IRQn 1 */
-}
+//void DMA1_Channel1_IRQHandler(void)
+//{
+//  /* USER CODE BEGIN DMA1_Channel1_IRQn 0 */
+//
+//  /* USER CODE END DMA1_Channel1_IRQn 0 */
+//  HAL_DMA_IRQHandler(&hdma_adc1);
+//  /* USER CODE BEGIN DMA1_Channel1_IRQn 1 */
+//
+//  /* USER CODE END DMA1_Channel1_IRQn 1 */
+//}
 
 void TIM16_IRQHandler(void)
 {

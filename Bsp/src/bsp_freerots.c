@@ -63,44 +63,17 @@ void freeRTOS_Handler(void)
     /* 启动调度，开始执行任务 */
     vTaskStartScheduler();
 }
-
 /**********************************************************************************************************
-*	函 数 名: static void vTaskLedPro(void *pvParameters)
-*	功能说明: 使用函数xTaskNotifyWait接收任务vTaskTaskUserIF发送的事件标志位设置
-*	形    参: pvParameters 是在创建该任务时传递的形参
-*	返 回 值: 无
-*   优 先 级: 2  
-**********************************************************************************************************/
-//static void vTaskLedPro(void *pvParameters)
-//{
-//
-//    while(1)
-//    {
-//
-//     if(gpro_t.gpower_on == power_on ){
-//        
-//        blue_led_all_on(gpro_t.works_time_out_flag);
-//     }
-//      vTaskDelay(10);
-//
-//    }
-//
-//}
-
-
-/*
-*********************************************************************************************************
 *	函 数 名: vTaskMsgPro
 *	功能说明: 使用函数xTaskNotifyWait接收任务vTaskTaskUserIF发送的事件标志位设置
 *	形    参: pvParameters 是在创建该任务时传递的形参
 *	返 回 值: 无
 *   优 先 级: 2  
-*********************************************************************************************************
-*/
+**********************************************************************************************************/
 static void vTaskMsgPro(void *pvParameters)
 {
     BaseType_t xResult;
-	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(20); /* 设置最大等待时间为50ms */
+	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(30); /* 设置最大等待时间为50ms */
 	uint32_t ulValue;
     static uint8_t dc_power_sound_flag;
     while(1)
@@ -130,8 +103,8 @@ static void vTaskMsgPro(void *pvParameters)
 						          &ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
 						          xMaxBlockTime);  /* 最大允许延迟时间 */
 		
-		if( xResult == pdPASS )
-		{
+	  if( xResult == pdPASS )
+	  {
 			/* 接收到消息，检测那个位被按下 */
              
 			if((ulValue & POWER_KEY_0) != 0){
@@ -145,20 +118,17 @@ static void vTaskMsgPro(void *pvParameters)
 
           if(dc_power_sound_flag==0){
              dc_power_sound_flag++;
+             gpro_t.gpower_on = power_off;
              buzzer_sound();
       
           }
 
-            if(power_onoff_sound ==1){
+          if(power_onoff_sound ==1){
                  power_onoff_sound++;
                  buzzer_sound();
                
-            }
             
-           if(power_onoff_sound==2){
-               power_onoff_sound++ ; 
-           
-            if(gpro_t.gpower_on == power_off){
+             if(gpro_t.gpower_on == power_off){
                 gpro_t.gpower_on = power_on;
                 gpro_t.gTimer_power_on_disp=0;
                 
@@ -169,10 +139,13 @@ static void vTaskMsgPro(void *pvParameters)
                   power_off_flag = 1;
                }
             
-          }
-         if(gpro_t.gpower_on == power_on ){
+          
+         }
+         else if(gpro_t.gpower_on == power_on ){
             waterfall_light_handler();
             fan_works_handler(gpro_t.works_time_out_flag);
+
+            motor_run_hander();
            #if 0
             if(gpro_t.gTimer_detecte_fan_adc > 2){
                 gpro_t.gTimer_detecte_fan_adc=0;
@@ -215,18 +188,18 @@ static void vTaskMsgPro(void *pvParameters)
           
           }
 
-          #if 1
+          #if 1 //test ADC 
            if(gpro_t.gTimer_detecte_fan_adc > 2){
                 gpro_t.gTimer_detecte_fan_adc=0;
-                Get_Fan_ADC_Fun(0,1); //ADC_CHANNEL_0 
+                Get_Fan_ADC_Fun(ADC_CHANNEL_0,10); //ADC_CHANNEL_0 
            }
 
-            if(gpro_t.gTimer_detecte_motor_adc > 3){
+            if(gpro_t.gTimer_detecte_motor_adc >0){
                 gpro_t.gTimer_detecte_motor_adc=0;
-                Get_Motor_ADC_Fun(1, 1); //ADC_CHANNEL_1 
+                Get_Motor_ADC_Fun(ADC_CHANNEL_1, 10); //ADC_CHANNEL_1 
             }
           #endif 
-          motor_run_hander();
+         // motor_run_hander();
       }
              
     }
@@ -258,7 +231,7 @@ static void vTaskStart(void *pvParameters)
 
     }
   
-    vTaskDelay(10);
+    vTaskDelay(20);
   }
 }
 /**********************************************************************************************************
@@ -269,16 +242,6 @@ static void vTaskStart(void *pvParameters)
 **********************************************************************************************************/
 static void AppTaskCreate (void)
 {
-
-//
-//   xTaskCreate( vTaskLedPro,     		/* 任务函数  */
-//                 "vTaskLedPro",   		/* 任务名    */
-//                 128,             		/* 任务栈大小，单位word，也就是4字节 */
-//                 NULL,           		/* 任务参数  */
-//                 1,               		/* 任务优先级次子*/
-//                 &xHandleTaskLedPro );  /* 任务句柄  */
-
-
 
    xTaskCreate( vTaskMsgPro,     		/* 任务函数  */
                  "vTaskMsgPro",   		/* 任务名    */

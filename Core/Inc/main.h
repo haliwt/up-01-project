@@ -92,6 +92,16 @@ void Error_Handler(void);
 #define GPIO_5_Pin GPIO_PIN_14
 #define GPIO_5_GPIO_Port GPIOC
 
+#define GPIO_PLASMA_Pin             GPIO_PIN_2
+#define GPIO_PLASMA_Port             GPIOA
+
+
+#define ADC_FAN_Pin                     GPIO_PIN_0
+#define ADC_FAN_GPIO_Port               GPIOA
+#define ADC_MOTOR_Pin                   GPIO_PIN_1
+#define ADC_MOTOR_GPIO_Port                 GPIOA
+
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

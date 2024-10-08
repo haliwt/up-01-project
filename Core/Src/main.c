@@ -5,13 +5,9 @@
   * @brief          : Main program body
   ******************************************************************************
   * @attention
-  *
-  * Copyright (c) 2024 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
+  * up_01 main board version: 1.0
+  * 
+  * DATA: 2024.08.25
   *
   ******************************************************************************
   */
@@ -91,7 +87,6 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
   MX_ADC1_Init();
   MX_TIM1_Init();
   MX_TIM16_Init();
@@ -101,18 +96,7 @@ int main(void)
    HAL_TIM_Base_Start_IT(&htim17);//HAL_TIM_Base_Start(&htim3);
    bsp_ctl_init();
    freeRTOS_Handler();
-  /* USER CODE END 2 */
-
-  /* Call init function for freertos objects (in cmsis_os2.c) */
-  //MX_FREERTOS_Init();
-
-  /* Start scheduler */
- // osKernelStart();
-
-  /* We should never get here as control is now taken by the scheduler */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+ 
   while (1)
   {
     /* USER CODE END WHILE */

@@ -16,6 +16,7 @@
 #include "bsp_ctl.h"
 #include "bsp_fan.h"
 #include "bsp_adc.h"
+#include "bsp_plasma.h"
 #include "interrupt_manager.h"
 #include "bsp_freertos.h"
 
@@ -58,6 +59,15 @@ typedef enum _power_onoff_stat{
 
 }power_onoff_state;
 
+
+
+typedef enum{
+
+   CW,
+   CCW
+
+}motor_direction_state;
+
 typedef struct _bsp_process{
 
      uint8_t  gpower_on;
@@ -67,6 +77,8 @@ typedef struct _bsp_process{
      uint8_t   works_time_out_flag ;
      uint8_t   g_MainStatus;
      uint8_t   key_active_flag ;
+     uint8_t   fan_warning ;
+     uint8_t   motor_warning ;
     
      uint8_t   record_eight_minutes_times_flag;
 
