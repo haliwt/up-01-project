@@ -1,4 +1,4 @@
-#include "bsp_motor.h"
+#include "bsp.h"
 
 #define STEPMOTOR_SPEED              1    // 定义步进电机速度，值越小，速度越快
                                            // 最小不能小于8
@@ -11,7 +11,7 @@
 uint8_t speed=STEPMOTOR_SPEED;
 // 转动圈数：28BYJ-48步进电机的步距角度为5.625/64，即每64个脉冲转5.625度
 // 要转一圈需要360/5.625*64=4096个脉冲。
-uint32_t Circle_number= 100;
+//uint32_t Circle_number= 100;
 // 选择方向控制
 uint8_t direction=STEPMOTOR_DIRECTION;
 /* 扩展变量 ------------------------------------------------------------------*/
@@ -48,30 +48,27 @@ void step_motor_rotation_handler(uint8_t direction)
   static uint8_t count=0;               // 用于旋转速度控制
   static uint8_t step=0;                // 当前步进节拍
  // static uint16_t pulse_count=0;        // 脉冲计数，4096个脉冲电机旋转一圈
-  
-  if(Circle_number)                     // 如果等待旋转圈数不为0
-  {
-    count++;                            // 增加时间计数
+   if(gpro_t.motor_direction_interval_time ==0){
+ 
+    count++;  //                           // 增加时间计数
     if(count==speed)                    // 时间计数与目标速度相对时执行下一节拍输出
     {
       step_motor_pulse(step,direction); // 输出新节拍信号
-      pulse_count++;                    // 脉冲输出数增加      
+      gpro_t.pulse_counter++;                    // 脉冲输出数增加      
       step++;                           // 节拍数增加
       if(step==8) step=0;               // 循环开始输出节拍
       count=0;                          // 清零时间计数
     }
-    if(pulse_count==4096)               // 如果已经输出了4096个脉冲信号，已经转动了一圈
+    if(gpro_t.pulse_counter==4096)               // 如果已经输出了4096个脉冲信号，已经转动了一圈
     {
-      pulse_count=0;                    // 脉冲计数清零
-      Circle_number--;                  // 等待旋转圈数减1
+      gpro_t.pulse_counter=0;                    // 脉冲计数清零
+      gpro_t.circle_number_counter++;                  // 等待旋转圈数减1
     }
-  }
-  else
-  {
-    //A_OFF;  B_OFF; C_OFF; D_OFF;        // 停机 
-    Circle_number = 10;
+
   }
 }
+ 
+
 
 
 /**

@@ -15,6 +15,7 @@ uint8_t g_recoder_times = 0;
 
 //uint8_t  led_no_state_1 ;
 uint8_t led_no_state_2 ;
+uint8_t motor_direction_interval ;
 
 
 
@@ -213,26 +214,39 @@ void fan_works_handler(uint8_t data)
 void motor_run_hander(void)
 {
    // static uint8_t motor_run_direct;
-    if(gpro_t.gTimer_motor_run_time > 10){
+    if(gpro_t.gTimer_motor_run_time > 19 && gpro_t.motor_direction_interval_time ==0){//25
        gpro_t.gTimer_motor_run_time=0;
+       gpro_t.circle_number_counter=0; 
+ 
        gctl_t.motor_run_direction ++;
+       gpro_t.motor_direction_interval_time = 1;
+       motor_stop_fun();
        if(gctl_t.motor_run_direction > 1){
 
-          gctl_t.motor_run_direction=0;
+          gctl_t.motor_run_direction=0;  //CCW
+          PLASMA_ON();
+       }
+       else{ //CW ->PLASAM TURN OFF
+
+          PLASMA_OFF(); 
+
        }
 
    }
 
-   #if 0
-   if(gctl_t.motor_run_direction ==1){
-       step_motor_rotation_handler(CCW);
-   }
-    else{
-        gctl_t.motor_run_direction=0;
+   if(gpro_t.motor_direction_interval_time ==1){
 
-        step_motor_rotation_handler(CW);
+     if(gpro_t.gTimer_motor_run_time > 60){
+
+       gpro_t.gTimer_motor_run_time=0;
+        gpro_t.pulse_counter=0; 
+       gpro_t.motor_direction_interval_time =0;
+
      }
 
-   #endif 
+
+   }
+
+  
 }
 

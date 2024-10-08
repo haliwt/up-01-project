@@ -79,6 +79,8 @@ typedef struct _bsp_process{
      uint8_t   key_active_flag ;
      uint8_t   fan_warning ;
      uint8_t   motor_warning ;
+     uint8_t   circle_number_counter; 
+     uint8_t   motor_direction_interval_time;
     
      uint8_t   record_eight_minutes_times_flag;
 
@@ -89,6 +91,7 @@ typedef struct _bsp_process{
      uint8_t  gTimer_detecte_motor_adc;
 
      uint8_t  gTimer_power_on_moment;
+     uint16_t pulse_counter;
 
 
 }Process_T;
