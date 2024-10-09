@@ -164,6 +164,7 @@ static void vTaskMsgPro(void *pvParameters)
                          
               rgb_led_all_gpio_set_output(0);
               fan_stop_fun();
+              motor_stop_fun();
 
               if(power_off_flag ==1){
                   power_off_flag ++;

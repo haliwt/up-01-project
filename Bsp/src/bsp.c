@@ -130,9 +130,23 @@ static void status_2(void)
 	led_no_state_2 = 1;
 
     }
-			
-	
-	if(gpro_t.works_time_out_flag ==0){
+
+   if(gpro_t.works_time_out_flag  ==0 && gpro_t.blue_led_work_out_flag==1){
+               gpro_t.blue_led_work_out_flag++;
+           
+              gpro_t.works_time_out_flag = 0;
+              gpro_t.record_eight_minutes_times_flag=0;
+              for(i=0;i<11;i++){
+                gctl_t.rgb_color_array[i] =0;
+
+              }
+              xTimerStart_1_Fun();
+
+              xTimerStart_2_Fun();
+
+
+   }
+   else if(gpro_t.works_time_out_flag ==0){
 		if(gpro_t.timer_1_time_out_flag == 1)
 		{
             gpro_t.timer_1_time_out_flag = 0 ;
@@ -169,8 +183,8 @@ static void status_2(void)
                   gctl_t.red_led[0]=0;
                   gctl_t.red_led[1]=0;
                   gctl_t.red_led[2]=0;
-                   gctl_t.red_led[3]=0;
-                   gctl_t.red_led[4]=0;
+                  gctl_t.red_led[3]=0;
+                  gctl_t.red_led[4]=0;
                   xTimerStop_2_Fun();
                   xTimerStop_1_Fun();
                
@@ -243,8 +257,8 @@ void detect_error_hundler(void)
             gpro_t.gTimer_detecte_fan_adc=0;
             Get_Fan_ADC_Fun(ADC_CHANNEL_0,10); //ADC_CHANNEL_0 
         }
-
-        if(gpro_t.gTimer_detecte_motor_adc >10){
+        //motor run that be detected motor is error.
+        if(gpro_t.gTimer_detecte_motor_adc >3  && ( gctl_t.motor_run_direction > 20  && gctl_t.motor_run_direction < 0xF9D)){
             gpro_t.gTimer_detecte_motor_adc=0;
             Get_Motor_ADC_Fun(ADC_CHANNEL_1, 10); //ADC_CHANNEL_1 
         }
@@ -265,11 +279,8 @@ static void motor_run_fun_hander(void)
     if(gpro_t.gTimer_motor_run_time > 19 && gpro_t.motor_direction_interval_time ==0 && gpro_t.motor_stop_run_flag == 0){//25
        gpro_t.gTimer_motor_run_time=0;
  
- 
        gctl_t.motor_run_direction ++; //CW -> directior ,gctl_t.motor_run_direction = CW
        
-       
-      
        if(gctl_t.motor_run_direction > 1){
 
             gctl_t.motor_run_direction=0;  //CCW

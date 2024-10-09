@@ -270,7 +270,7 @@ void red_bsp_LedOn(uint8_t _no, uint8_t green_flag)  //bsp_LedOn
 
 	if (_no == 1)
 	{
-        if(gctl_t.rgb_color_array[1] == 1){
+        if(gctl_t.rgb_color_array[1] == 1){ //
 
             green_led_1_on();
         }
@@ -724,30 +724,14 @@ void blue_led_all_on(uint8_t on_flag)
             
        }
 
-
-       
-      if(gpro_t.works_time_out_flag  ==0){
-            
-              gpro_t.works_time_out_flag = 0;
-              gpro_t.record_eight_minutes_times_flag=0;
-              for(i=0;i<11;i++){
-                gctl_t.rgb_color_array[i] =0;
-
-              }
-              xTimerStart_1_Fun();
-
-              xTimerStart_2_Fun();
-
-
-       }
-       else if(on_flag == 1 && gpro_t.gpower_on == power_on  && gpro_t.key_active_flag ==0 && gpro_t.works_time_out_flag  ==1){
+     if(on_flag == 1 && gpro_t.gpower_on == power_on  && gpro_t.key_active_flag ==0 && gpro_t.works_time_out_flag  ==1){
            gpro_t.blue_led_work_out_flag=1;
            motor_run_indication_handler();
            goto led_2;
 
         }
       
-       }
+   }
   
 }
 
