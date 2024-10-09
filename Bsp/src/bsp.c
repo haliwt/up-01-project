@@ -319,7 +319,7 @@ static void motor_run_fun_hander(void)
 
    if(gpro_t.motor_direction_interval_time ==1){ 
 
-     if(gpro_t.gTimer_motor_run_time > 15){
+     if(gpro_t.gTimer_motor_run_time > 59){
 
        gpro_t.gTimer_motor_run_time=0;
         gpro_t.pulse_counter=0; 

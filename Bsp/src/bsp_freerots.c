@@ -278,7 +278,7 @@ static void AppObjCreate (void)
 	*/
 	
 		Timer1Timer_Handler = xTimerCreate("Timer",          /* 定时器名字 */
-							       (TickType_t ) 30000,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
+							       (TickType_t ) 480000,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
 							       pdFALSE, /*一次性定时器，非周期性*/ //pdTRUE,          /* 周期性 */
 							       (void *) 1,      /* 定时器ID */
 							       vTimer1Callback); /* 定时器回调函数 */
@@ -355,7 +355,7 @@ static void vTimer2Callback(xTimerHandle pxTimer)
 void xTimerStart_1_Fun(void)
 {
    	xTimerStart((TimerHandle_t  )Timer1Timer_Handler,   /* 待启动的定时器句柄 */
-                 (TickType_t   )30000);        /* 等待系统启动定时器的最大时间 5000ms */
+                 (TickType_t   )480000);        /* 等待系统启动定时器的最大时间 8  分钟 */
 
 
 }

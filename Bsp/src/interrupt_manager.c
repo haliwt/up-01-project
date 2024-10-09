@@ -14,7 +14,7 @@ uint8_t color_flag;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   static uint16_t tm0,tm160;
-  static uint8_t tm1,tm20;
+  static uint8_t tm1,tm2,tm20;
   
   
     
@@ -37,9 +37,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	    //be used to timer 
 	    if(tm1> 59){ //1 mintue
             tm1=0;
+            tm2++;
+           if(tm2 > 3){
+            
             gctl_t.gTimer_timer_led_color_changed ++ ;
 
-           if(gpro_t.works_time_out_flag  ==1 &&  gctl_t.gTimer_timer_led_color_changed > 1){
+           if(gpro_t.works_time_out_flag  ==1 &&  gctl_t.gTimer_timer_led_color_changed > 0){
                  gctl_t.gTimer_timer_led_color_changed =0;
                  color_flag++;
            
@@ -94,6 +97,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                      gpro_t.gTimer_motor_run_time =0;
 
                   }
+
+            }
                     
            }
             
