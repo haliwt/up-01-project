@@ -76,6 +76,7 @@ static void vTaskMsgPro(void *pvParameters)
 	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(30); /* 设置最大等待时间为50ms */
 	uint32_t ulValue;
     static uint8_t dc_power_sound_flag;
+    uint8_t i;
     while(1)
     {
 		/*
@@ -128,18 +129,22 @@ static void vTaskMsgPro(void *pvParameters)
                  buzzer_sound();
                
             
-             if(gpro_t.gpower_on == power_off){
+            if(gpro_t.gpower_on == power_off){
                 gpro_t.gpower_on = power_on;
-                gpro_t.gTimer_motor_run_time=0;
-                gpro_t.pulse_counter=0; 
-                gpro_t.gTimer_power_on_disp=0;
-                gctl_t.motor_run_direction=CCW;    //power on strat plasma turn on.
+                power_off_flag =1;
+                gpro_t.key_power_on_flag = 1;
                 
+//                gpro_t.gTimer_motor_run_time=0;
+//                gpro_t.pulse_counter=0; 
+//                gpro_t.g_MainStatus = 0;
+//             
+//                gctl_t.motor_run_direction=CCW;    //power on strat plasma turn on.
+//                
               }
              else{
-                  gpro_t.gpower_on = power_off;
+               gpro_t.gpower_on = power_off;
                  
-               }
+             }
             
           
          }
@@ -148,7 +153,7 @@ static void vTaskMsgPro(void *pvParameters)
             waterfall_light_handler();
             fan_works_handler(gpro_t.works_time_out_flag);
 
-            motor_run_hander();
+            motor_run_indication_handler();
         
 
           }
@@ -163,8 +168,8 @@ static void vTaskMsgPro(void *pvParameters)
               if(power_off_flag ==1){
                   power_off_flag ++;
                 
-                    gpro_t.works_time_out_flag =0;
-                   gpro_t.record_eight_minutes_times_flag=0;
+                gpro_t.works_time_out_flag =0;
+                gpro_t.record_eight_minutes_times_flag=0;
                   xTimerStop((TimerHandle_t  )Timer1Timer_Handler,    /* 待停止的定时器句柄 */
                                 (TickType_t     )0);        /* 等待系统停止定时器的最大时间 */
 
@@ -172,10 +177,20 @@ static void vTaskMsgPro(void *pvParameters)
                                   (TickType_t     )0);        /* 等待系统停止定时器的最大时间 */
 
                   rgb_led_all_off();
+                  for(i=0;i<11;i++){
+                   gctl_t.rgb_color_array[i] =0;
+
+                 }
 
                }
              gpro_t.g_MainStatus = 0;
-             gpro_t.gTimer_power_on_moment =0;
+       
+
+              gpro_t.gTimer_motor_run_time=0;
+              gpro_t.pulse_counter=0; 
+          
+        
+              gctl_t.motor_run_direction=CCW;    //power on strat plasma turn on.
 
           
           }

@@ -72,6 +72,7 @@ typedef enum{
 typedef struct _bsp_process{
 
      uint8_t  gpower_on;
+     uint8_t  key_power_on_flag;
      uint8_t  timer_1_time_out_flag ;
      uint8_t  timer_2_time_out_flag;
      uint8_t  rgb_red_led_time_out;   // 5 pcs red led is time is up
@@ -81,18 +82,20 @@ typedef struct _bsp_process{
      uint8_t   fan_warning ;
      uint8_t   motor_warning ;
      uint8_t   motor_stop_run_flag;
+     uint8_t   blue_led_work_out_flag;
+  
     
      uint8_t   motor_direction_interval_time;
     
      uint8_t   record_eight_minutes_times_flag;
 
-     uint8_t gTimer_power_on_disp;
+ 
 
      uint8_t gTimer_motor_run_time;
      uint8_t gTimer_detecte_fan_adc;
      uint8_t  gTimer_detecte_motor_adc;
 
-     uint8_t  gTimer_power_on_moment;
+    
      uint16_t pulse_counter;
 
 
@@ -102,6 +105,8 @@ typedef struct _bsp_process{
 extern Process_T gpro_t;
 
 
+extern void(*motor_run_indication_handler)(void);
+void motor_run_indication_fun_handler(void(*motor_run_handler)(void));
 
 
 void bsp_init(void);
@@ -118,6 +123,8 @@ void red_led_active_record_fun(uint8_t rdata);
 void fan_works_handler(uint8_t data);
 
 void motor_run_hander(void);
+
+
 
 
 #endif 

@@ -26,8 +26,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
    if(tm0>999){ //1000 *1ms = 1000ms = 1s
 		tm0=0;
         tm1++;
-        gpro_t.gTimer_power_on_disp++;
-        gpro_t.gTimer_power_on_moment++ ;
+  
+      
         gpro_t.gTimer_detecte_fan_adc++;
         gpro_t.gTimer_detecte_motor_adc++;
         gpro_t.gTimer_motor_run_time++ ;
@@ -91,6 +91,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                     color_flag = 0;
                      gpro_t.works_time_out_flag  =0; //over interval time restart works motor and fan.
                      gpro_t.motor_stop_run_flag = 0;
+                     gpro_t.gTimer_motor_run_time =0;
 
                   }
                     

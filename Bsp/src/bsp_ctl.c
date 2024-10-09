@@ -136,30 +136,35 @@ void red_led_all_on(void)
 {
 
 
+         vTaskDelay(4); 
+        red_led_1_on();
+         vTaskDelay(4);//osDelay(3);
+        red_led_2_on();
+         vTaskDelay(4);//osDelay(3);
+        red_led_3_on();
+         vTaskDelay(4);//osDelay(3);
+        red_led_4_on();
+        vTaskDelay(4);//osDelay(3);
+        red_led_5_on();
 
-if(gpro_t.gTimer_power_on_moment< 1 && gpro_t.gpower_on == power_on){
-led_1:  vTaskDelay(4); 
-    red_led_1_on();
-     vTaskDelay(4);//osDelay(3);
-    red_led_2_on();
-     vTaskDelay(4);//osDelay(3);
-    red_led_3_on();
-     vTaskDelay(4);//osDelay(3);
-    red_led_4_on();
-     vTaskDelay(4);//osDelay(3);
-    red_led_5_on();
-    // vTaskDelay(4);//osDelay(3);
-   if(gpro_t.gTimer_power_on_moment < 1 && gpro_t.gpower_on == power_on){
-        goto led_1;
-    }
-    }
-    else{
 
-      rgb_led_all_off();
+ 
 
-    }
-
+    
 }
+
+//    // vTaskDelay(4);//osDelay(3);
+// //  if(gpro_t.gTimer_power_on_moment < 1 && gpro_t.gpower_on == power_on){
+//        goto led_1;
+//    }
+//    }
+//    else{
+//
+//      rgb_led_all_off();
+//
+//    }
+//
+//}
 
 static void red_led_on_origianl(uint8_t _no)
 {
@@ -634,8 +639,8 @@ void blue_led_all_on(uint8_t on_flag)
 
     //  fan_works_handler(gpro_t.works_time_out_flag);
     
-     led_2:  vTaskDelay(4);
-
+     led_2: osDelay(4);
+          
         if(gctl_t.green_led[0] == 1){
 
              green_led_1_on();
@@ -736,38 +741,14 @@ void blue_led_all_on(uint8_t on_flag)
 
        }
        else if(on_flag == 1 && gpro_t.gpower_on == power_on  && gpro_t.key_active_flag ==0 && gpro_t.works_time_out_flag  ==1){
-           work_out_flag=1;
+           gpro_t.blue_led_work_out_flag=1;
+           motor_run_indication_handler();
            goto led_2;
 
         }
-        else{
-
-           gpro_t.works_time_out_flag =0;
-
-
-        }
-
-       
-
       
-       
-   }
+       }
   
-  if(gpro_t.works_time_out_flag  ==0 && work_out_flag==1){
-               work_out_flag++;
-           
-              gpro_t.works_time_out_flag = 0;
-              gpro_t.record_eight_minutes_times_flag=0;
-              for(i=0;i<11;i++){
-                gctl_t.rgb_color_array[i] =0;
-
-              }
-              xTimerStart_1_Fun();
-
-              xTimerStart_2_Fun();
-
-
-  }
 }
 
 

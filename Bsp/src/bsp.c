@@ -2,7 +2,11 @@
 
 Process_T gpro_t;
 
+void (*motor_run_indication_handler)(void);
 
+
+
+static void motor_run_fun_hander(void);
 
 static void status_0(void);
 //static void status_1(void);
@@ -18,6 +22,13 @@ uint8_t led_no_state_2 ;
 uint8_t motor_direction_interval ;
 
 
+void bsp_init(void)
+{
+
+   motor_run_indication_fun_handler(motor_run_fun_hander);
+
+
+}
 
 
 /*******************************************************************************************************
@@ -61,9 +72,21 @@ void waterfall_light_handler(void)
 static void status_0(void)
 {
         /* 检查定时器2时间是否到 */
-		if(gpro_t.gTimer_power_on_disp > 2)
-		{
-			/* 3秒定时到后退出本状态 */
+      uint8_t i;
+       if(gpro_t.key_power_on_flag ==1){
+              
+              for(i=0;i< 20;i++){
+               red_led_all_on();
+               
+              }
+              
+             gpro_t.key_power_on_flag ++; 
+        }
+        else if(gpro_t.key_power_on_flag==2){
+           
+            gpro_t.key_power_on_flag++;
+
+        /* 3秒定时到后退出本状态 */
                rgb_led_all_off();
                g_recoder_times++ ;
                gpro_t.works_time_out_flag =0;
@@ -73,10 +96,9 @@ static void status_0(void)
             // xTimerStart_1_Fun();
 			
 		}
-        else
-           red_led_all_on();
-	
-	
+       
+
+        
 }
 
 
@@ -97,7 +119,7 @@ uint8_t  bsp_CheckTimer_2(uint8_t times)
 static void status_2(void)
 {
    		/* LED指示灯序号 1-5 */
-   static uint8_t state_0 =0xff;
+   static uint8_t state_0 =0xff,i;
 
    if(state_0 != g_recoder_times  ){
 
@@ -109,12 +131,8 @@ static void status_2(void)
 
     }
 			
-		//bsp_Idle();		/* CPU空闲时执行的函数，在 bsp.c */
-		
-		/* 这个地方可以插入其他任务 */		
-		
-		/* 检查定时器0时间是否到 */
-        if(gpro_t.works_time_out_flag ==0){
+	
+	if(gpro_t.works_time_out_flag ==0){
 		if(gpro_t.timer_1_time_out_flag == 1)
 		{
             gpro_t.timer_1_time_out_flag = 0 ;
@@ -210,21 +228,28 @@ void fan_works_handler(uint8_t data)
    }
 
 }
-
-void motor_run_hander(void)
+/**********************************************************************************************************
+*
+*	函 数 名: static void motor_run_fun_hander(void)
+*	功能说明: 
+*	形    参：无
+*	返 回 值: 无
+*
+**********************************************************************************************************/
+static void motor_run_fun_hander(void)
 {
    // static uint8_t motor_run_direct;
-    if(gpro_t.gTimer_motor_run_time > 19 && gpro_t.motor_direction_interval_time ==0){//25
+    if(gpro_t.gTimer_motor_run_time > 19 && gpro_t.motor_direction_interval_time ==0 && gpro_t.motor_stop_run_flag == 0){//25
        gpro_t.gTimer_motor_run_time=0;
  
  
        gctl_t.motor_run_direction ++; //CW -> directior ,gctl_t.motor_run_direction = CW
-       gpro_t.motor_direction_interval_time = 1;
-       motor_stop_fun();
+       
+       
       
        if(gctl_t.motor_run_direction > 1){
 
-          gctl_t.motor_run_direction=0;  //CCW
+            gctl_t.motor_run_direction=0;  //CCW
             PLASMA_OFF(); 
        }
        else{ //CW ->PLASAM TURN OFF
@@ -233,17 +258,26 @@ void motor_run_hander(void)
 
        }
 
-       if(gpro_t.works_time_out_flag  ==1){
-          gpro_t.motor_stop_run_flag = 1;
-          PLASMA_OFF(); 
+
+       if(gpro_t.works_time_out_flag==1){
+           gpro_t.motor_stop_run_flag = 1;
+           gpro_t.pulse_counter=0; 
+           PLASMA_OFF();
+           motor_stop_fun();
+       }
+       else{
+          gpro_t.motor_direction_interval_time = 1;
+          motor_stop_fun();
 
        }
+
+      
 
    }
 
    if(gpro_t.motor_direction_interval_time ==1){
 
-     if(gpro_t.gTimer_motor_run_time > 60){
+     if(gpro_t.gTimer_motor_run_time > 15){
 
        gpro_t.gTimer_motor_run_time=0;
         gpro_t.pulse_counter=0; 
@@ -256,4 +290,11 @@ void motor_run_hander(void)
 
   
 }
+
+void motor_run_indication_fun_handler(void(*motor_run_handler)(void))
+{
+
+     motor_run_indication_handler = motor_run_handler;
+}
+
 
