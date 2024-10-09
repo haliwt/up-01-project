@@ -38,12 +38,7 @@ void waterfall_light_handler(void)
         //g_MainStatus = 1;   /* 转移到状态1 */
     break;
 
-//    case 1:         /* LED1 - LED4 依次流水显示。每次点亮1个LED。状态持续5秒后返回。 */
-//        status_1();     
-//      //  g_MainStatus = 2;   /* 转移到状态2 */
-//    break;
-
-    case 2:
+     case 2:
         status_2(); /* LED1 - LED4 依次流水显示。每次点亮3个LED, 熄灭1个。状态持续5秒后返回。*/
       //  g_MainStatus = 1;   /* 转移到状态1 */
     break;
@@ -66,7 +61,7 @@ void waterfall_light_handler(void)
 static void status_0(void)
 {
         /* 检查定时器2时间是否到 */
-		if(gpro_t.gTimer_power_on_disp > 1)
+		if(gpro_t.gTimer_power_on_disp > 2)
 		{
 			/* 3秒定时到后退出本状态 */
                rgb_led_all_off();
@@ -176,7 +171,12 @@ static void status_2(void)
 		}
         
         }
-        blue_led_all_on(gpro_t.works_time_out_flag);
+        else{
+            
+          blue_led_all_on(gpro_t.works_time_out_flag);
+
+
+        }
                  
         
        
@@ -205,7 +205,7 @@ void fan_works_handler(uint8_t data)
    else{
 
      fan_stop_fun();
-     motor_stop_fun();
+     PLASMA_OFF(); 
 
    }
 
@@ -216,18 +216,25 @@ void motor_run_hander(void)
    // static uint8_t motor_run_direct;
     if(gpro_t.gTimer_motor_run_time > 19 && gpro_t.motor_direction_interval_time ==0){//25
        gpro_t.gTimer_motor_run_time=0;
-       gpro_t.circle_number_counter=0; 
  
-       gctl_t.motor_run_direction ++;
+ 
+       gctl_t.motor_run_direction ++; //CW -> directior ,gctl_t.motor_run_direction = CW
        gpro_t.motor_direction_interval_time = 1;
        motor_stop_fun();
+      
        if(gctl_t.motor_run_direction > 1){
 
           gctl_t.motor_run_direction=0;  //CCW
-          PLASMA_ON();
+            PLASMA_OFF(); 
        }
        else{ //CW ->PLASAM TURN OFF
 
+           PLASMA_ON();
+
+       }
+
+       if(gpro_t.works_time_out_flag  ==1){
+          gpro_t.motor_stop_run_flag = 1;
           PLASMA_OFF(); 
 
        }

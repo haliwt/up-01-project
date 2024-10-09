@@ -63,8 +63,9 @@ typedef enum _power_onoff_stat{
 
 typedef enum{
 
-   CW,
-   CCW
+   
+   CCW,
+   CW
 
 }motor_direction_state;
 
@@ -79,7 +80,8 @@ typedef struct _bsp_process{
      uint8_t   key_active_flag ;
      uint8_t   fan_warning ;
      uint8_t   motor_warning ;
-     uint8_t   circle_number_counter; 
+     uint8_t   motor_stop_run_flag;
+    
      uint8_t   motor_direction_interval_time;
     
      uint8_t   record_eight_minutes_times_flag;

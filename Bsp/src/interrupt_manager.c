@@ -1,6 +1,9 @@
 #include "interrupt_manager.h"
 #include "bsp.h"
 
+uint8_t color_flag;
+
+
 /*******************************************************************************
 	*
 	*Function Name:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
@@ -11,7 +14,7 @@
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   static uint16_t tm0,tm160;
-  static uint8_t tm1,tm20,color_flag;
+  static uint8_t tm1,tm20;
   
   
     
@@ -62,7 +65,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                     gctl_t.green_led[4] = 1;
 
                   }
-                 // red led 
                  else if(color_flag == 6){
                     gctl_t.green_led[0] = 0;
                     gctl_t.red_led[0] = 1;
@@ -87,7 +89,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                 
                  if(color_flag == 10){
                     color_flag = 0;
-                     gpro_t.works_time_out_flag  =0;
+                     gpro_t.works_time_out_flag  =0; //over interval time restart works motor and fan.
+                     gpro_t.motor_stop_run_flag = 0;
 
                   }
                     
@@ -103,7 +106,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     tm20++;
     if(tm20 > 4){
         tm20= 0;
-      if(gpro_t.gpower_on == power_on && gpro_t.works_time_out_flag==0){
+      if(gpro_t.gpower_on == power_on && gpro_t.motor_stop_run_flag ==0){
           step_motor_rotation_handler(gctl_t.motor_run_direction);
 
         }

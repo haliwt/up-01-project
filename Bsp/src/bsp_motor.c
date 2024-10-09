@@ -59,11 +59,11 @@ void step_motor_rotation_handler(uint8_t direction)
       if(step==8) step=0;               // 循环开始输出节拍
       count=0;                          // 清零时间计数
     }
-    if(gpro_t.pulse_counter==4096)               // 如果已经输出了4096个脉冲信号，已经转动了一圈
-    {
-      gpro_t.pulse_counter=0;                    // 脉冲计数清零
-      gpro_t.circle_number_counter++;                  // 等待旋转圈数减1
-    }
+   // if(gpro_t.pulse_counter==4096)               // 如果已经输出了4096个脉冲信号，已经转动了一圈
+   // {
+    //  gpro_t.pulse_counter=0;                    // 脉冲计数清零
+                      // 等待旋转圈数减1
+   /// }
 
   }
 }

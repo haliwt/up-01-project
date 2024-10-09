@@ -133,12 +133,12 @@ static void vTaskMsgPro(void *pvParameters)
                 gpro_t.gTimer_motor_run_time=0;
                 gpro_t.pulse_counter=0; 
                 gpro_t.gTimer_power_on_disp=0;
+                gctl_t.motor_run_direction=CCW;    //power on strat plasma turn on.
                 
               }
              else{
-                  gpro_t.gTimer_power_on_disp =10;
                   gpro_t.gpower_on = power_off;
-                  power_off_flag = 1;
+                 
                }
             
           
@@ -181,12 +181,12 @@ static void vTaskMsgPro(void *pvParameters)
           }
 
           #if 1 //test ADC 
-           if(gpro_t.gTimer_detecte_fan_adc > 2){
+           if(gpro_t.gTimer_detecte_fan_adc > 10){
                 gpro_t.gTimer_detecte_fan_adc=0;
                 Get_Fan_ADC_Fun(ADC_CHANNEL_0,10); //ADC_CHANNEL_0 
            }
 
-            if(gpro_t.gTimer_detecte_motor_adc >3){
+            if(gpro_t.gTimer_detecte_motor_adc >8){
                 gpro_t.gTimer_detecte_motor_adc=0;
                 Get_Motor_ADC_Fun(ADC_CHANNEL_1, 10); //ADC_CHANNEL_1 
             }
