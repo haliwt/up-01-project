@@ -133,13 +133,12 @@ static void vTaskMsgPro(void *pvParameters)
                 gpro_t.gpower_on = power_on;
                 power_off_flag =1;
                 gpro_t.key_power_on_flag = 1;
-                
-//                gpro_t.gTimer_motor_run_time=0;
-//                gpro_t.pulse_counter=0; 
-//                gpro_t.g_MainStatus = 0;
-//             
-//                gctl_t.motor_run_direction=CCW;    //power on strat plasma turn on.
-//                
+                gpro_t.motor_stop_run_flag = 0;
+                gpro_t.motor_direction_interval_time = 0;
+                gpro_t.pulse_counter=0; 
+                gctl_t.motor_run_direction=CCW;    //power on strat plasma turn on.is plasma turn on
+
+              
               }
              else{
                gpro_t.gpower_on = power_off;
@@ -154,6 +153,7 @@ static void vTaskMsgPro(void *pvParameters)
             fan_works_handler(gpro_t.works_time_out_flag);
 
             motor_run_indication_handler();
+            detect_error_hundler();
         
 
           }
@@ -195,18 +195,7 @@ static void vTaskMsgPro(void *pvParameters)
           
           }
 
-          #if 1 //test ADC 
-           if(gpro_t.gTimer_detecte_fan_adc > 10){
-                gpro_t.gTimer_detecte_fan_adc=0;
-                Get_Fan_ADC_Fun(ADC_CHANNEL_0,10); //ADC_CHANNEL_0 
-           }
-
-            if(gpro_t.gTimer_detecte_motor_adc >8){
-                gpro_t.gTimer_detecte_motor_adc=0;
-                Get_Motor_ADC_Fun(ADC_CHANNEL_1, 10); //ADC_CHANNEL_1 
-            }
-          #endif 
-         // motor_run_hander();
+       
       }
              
     }
@@ -289,7 +278,7 @@ static void AppObjCreate (void)
 	
 		Timer1Timer_Handler = xTimerCreate("Timer",          /* 定时器名字 */
 							       (TickType_t ) 30000,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
-							       pdFALSE, /*一次性定时器*/ //pdTRUE,          /* 周期性 */
+							       pdFALSE, /*一次性定时器，非周期性*/ //pdTRUE,          /* 周期性 */
 							       (void *) 1,      /* 定时器ID */
 							       vTimer1Callback); /* 定时器回调函数 */
 
@@ -389,7 +378,7 @@ void xTimerStop_2_Fun(void)
 void xTimerStop_1_Fun(void)
 {
     xTimerStop((TimerHandle_t  )Timer1Timer_Handler,    /* 待停止的定时器句柄 */
-                                (TickType_t     )10);        /* 等待系统停止定时器的最大时间 */
+                (TickType_t     )10);        /* 等待系统停止定时器的最大时间 */
 
 
 }

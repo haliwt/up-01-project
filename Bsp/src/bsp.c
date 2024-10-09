@@ -236,6 +236,29 @@ void fan_works_handler(uint8_t data)
 *	返 回 值: 无
 *
 **********************************************************************************************************/
+void detect_error_hundler(void)
+{
+   if(gpro_t.works_time_out_flag ==0){   
+        if(gpro_t.gTimer_detecte_fan_adc > 7){
+            gpro_t.gTimer_detecte_fan_adc=0;
+            Get_Fan_ADC_Fun(ADC_CHANNEL_0,10); //ADC_CHANNEL_0 
+        }
+
+        if(gpro_t.gTimer_detecte_motor_adc >10){
+            gpro_t.gTimer_detecte_motor_adc=0;
+            Get_Motor_ADC_Fun(ADC_CHANNEL_1, 10); //ADC_CHANNEL_1 
+        }
+
+    }
+}
+/**********************************************************************************************************
+*
+*	函 数 名: static void motor_run_fun_hander(void)
+*	功能说明: 
+*	形    参：无
+*	返 回 值: 无
+*
+**********************************************************************************************************/
 static void motor_run_fun_hander(void)
 {
    // static uint8_t motor_run_direct;

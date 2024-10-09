@@ -124,6 +124,7 @@ void fan_works_handler(uint8_t data);
 
 void motor_run_hander(void);
 
+void detect_error_hundler(void);
 
 
 

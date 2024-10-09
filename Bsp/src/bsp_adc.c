@@ -6,8 +6,7 @@
 
 static uint16_t Get_Adc_Channel(uint32_t ch) ;     
 
-static uint16_t Get_Adc_Channel_0(void) ;
-static uint16_t Get_Adc_Channel_1(void) ; 
+
 
 static uint16_t Get_Adc_Average(uint32_t ch,uint8_t times);
 
@@ -21,19 +20,6 @@ uint16_t ADC_ConvertedValue[ADC_CHANNEL_NUMBER];
 
 
 
-/*****************************************************************
-*
-	*Function Name: static uint16_t Get_Adc(uint32_t ch)  
-	*Function ADC input channel be selected "which one channe"
-	*Input Ref: which one ? AC_Channel_?
-	*Return Ref: No
-	*
-	*
-*****************************************************************/
-static uint16_t Get_Adc_Channel_0(void)   
-{
- 
-}
 
 /*****************************************************************
 *
@@ -112,16 +98,14 @@ void Get_Fan_ADC_Fun(uint8_t channel,uint8_t times)
 {
 
     static uint8_t detect_error_times;
-    uint16_t adcx,ptc_temp_voltage;
+    uint16_t adcx;
 
-    
-	
-	adcx = Get_Adc_Average(channel,times);
+    adcx = Get_Adc_Average(channel,times);
 
     fan_detect_voltage =(uint16_t)((adcx * 3300)/4096); //amplification 1000 ,3.111V -> 3111
 	//HAL_Delay(5);
 
-	if( fan_detect_voltage >0 ){
+	if( fan_detect_voltage >  200 ){
            detect_error_times=0;
 		   #if DEBUG
              printf("adc= %d",run_t.fan_detect_voltage);
@@ -130,23 +114,19 @@ void Get_Fan_ADC_Fun(uint8_t channel,uint8_t times)
     }
 	else{
 
-	          
-			   if(detect_error_times >1 && gpro_t.gpower_on == power_on){
-			   		detect_error_times=0;
-		           gpro_t.fan_warning = 1;
-			       buzzer_sound();//Buzzer_KeySound();
-			        osDelay(100);
-				   buzzer_sound();//Buzzer_KeySound();
-			        osDelay(100);
-				   buzzer_sound();//Buzzer_KeySound();
-			        osDelay(100);
-				   buzzer_sound();//Buzzer_KeySound();
-			      osDelay(100);
-				 
-				  
-
-			   	}
-	           detect_error_times++;
+       if(detect_error_times >2 && gpro_t.gpower_on == power_on){
+		   	
+            gpro_t.fan_warning = 1;
+            buzzer_sound();//Buzzer_KeySound();
+            osDelay(100);
+            buzzer_sound();//Buzzer_KeySound();
+            osDelay(100);
+            buzzer_sound();//Buzzer_KeySound();
+            osDelay(100);
+            buzzer_sound();//Buzzer_KeySound();
+            osDelay(100);
+        }
+	    detect_error_times++;
 
      }
    /// }
@@ -165,7 +145,7 @@ void Get_Motor_ADC_Fun(uint8_t channel,uint8_t times)
     motor_detect_voltage=(uint16_t)((adc_fan_hex* 3300)/4096); //amplification 1000 ,3.111V -> 3111
 	//HAL_Delay(5);
 
-	if(motor_detect_voltage  >  0 ){
+	if(motor_detect_voltage   >  200 ){
            detect_error_times=0;
 		   #if DEBUG
              printf("adc= %d",run_t.fan_detect_voltage);
@@ -175,24 +155,21 @@ void Get_Motor_ADC_Fun(uint8_t channel,uint8_t times)
 	else{
 
 	          
-			   if(detect_error_times >1 && gpro_t.gpower_on == power_on){
-			   		detect_error_times=0;
-		           buzzer_sound();//Buzzer_KeySound();
-			       osDelay(50);
-				   buzzer_sound();//Buzzer_KeySound();
-			       osDelay(50);
-				   buzzer_sound();//Buzzer_KeySound();
-			       osDelay(50);
-				   buzzer_sound();//Buzzer_KeySound();
-			       osDelay(50);
-				   
-				  
-
-			   	}
-	           detect_error_times++;
-
+	 if(detect_error_times >2 && gpro_t.gpower_on == power_on){
+	   		
+           buzzer_sound();//Buzzer_KeySound();
+	       osDelay(50);
+		   buzzer_sound();//Buzzer_KeySound();
+	       osDelay(50);
+		   buzzer_sound();//Buzzer_KeySound();
+	       osDelay(50);
+		   buzzer_sound();//Buzzer_KeySound();
+	       osDelay(50);
+		   
+	 }
+     detect_error_times++;
+              
      }
-   
 
 }
 
