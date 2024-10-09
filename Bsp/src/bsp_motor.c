@@ -48,8 +48,13 @@ void step_motor_rotation_handler(uint8_t direction)
   static uint8_t count=0;               // 用于旋转速度控制
   static uint8_t step=0;                // 当前步进节拍
  // static uint16_t pulse_count=0;        // 脉冲计数，4096个脉冲电机旋转一圈
-   
+ #if UNIT_TEST
  if(gpro_t.motor_direction_interval_time ==0){
+
+ #else
+  if(gpro_t.motor_stop_run_flag ==0){
+
+  #endif 
     count++;  //                           // 增加时间计数
     if(count==speed)                    // 时间计数与目标速度相对时执行下一节拍输出
     {

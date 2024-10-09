@@ -52,6 +52,10 @@
 #endif
 
 
+#define UNIT_TEST    1
+
+
+
 typedef enum _power_onoff_stat{
 
     power_off,

@@ -258,7 +258,7 @@ void detect_error_hundler(void)
             Get_Fan_ADC_Fun(ADC_CHANNEL_0,10); //ADC_CHANNEL_0 
         }
         //motor run that be detected motor is error.
-        if(gpro_t.gTimer_detecte_motor_adc >3  && ( gctl_t.motor_run_direction > 20  && gctl_t.motor_run_direction < 0xF9D)){
+        if(gpro_t.gTimer_detecte_motor_adc >3  && ( gpro_t.pulse_counter  > 5  && gpro_t.pulse_counter < 0xF9D) && gpro_t.motor_direction_interval_time ==0){
             gpro_t.gTimer_detecte_motor_adc=0;
             Get_Motor_ADC_Fun(ADC_CHANNEL_1, 10); //ADC_CHANNEL_1 
         }
@@ -300,8 +300,13 @@ static void motor_run_fun_hander(void)
            motor_stop_fun();
        }
        else{
+
+         #if UNIT_TEST
+        
           gpro_t.motor_direction_interval_time = 1;
           motor_stop_fun();
+
+        #endif 
 
        }
 
@@ -309,7 +314,10 @@ static void motor_run_fun_hander(void)
 
    }
 
-   if(gpro_t.motor_direction_interval_time ==1){
+
+   #if UNIT_TEST
+
+   if(gpro_t.motor_direction_interval_time ==1){ 
 
      if(gpro_t.gTimer_motor_run_time > 15){
 
@@ -321,6 +329,8 @@ static void motor_run_fun_hander(void)
 
 
    }
+
+   #endif 
 
   
 }
