@@ -20,7 +20,7 @@ static void vTaskMsgPro(void *pvParameters);
 static void vTaskStart(void *pvParameters);
 static void AppTaskCreate (void);
 static void AppObjCreate (void);
-static void vTimer1Callback(xTimerHandle pxTimer);
+//static void vTimer1Callback(xTimerHandle pxTimer);
 static void vTimer2Callback(xTimerHandle pxTimer);
 
 
@@ -35,7 +35,7 @@ static TaskHandle_t xHandleTaskMsgPro = NULL;
 static TaskHandle_t xHandleTaskStart = NULL;
 //static TimerHandle_t xTimers[2] = {NULL};
 
-static TimerHandle_t           Timer1Timer_Handler;/* 定时器1句柄 */
+//static TimerHandle_t           Timer1Timer_Handler;/* 定时器1句柄 */
 static TimerHandle_t           Timer2Timer_Handler;/* 定时器2句柄 */
 
 
@@ -137,6 +137,7 @@ static void vTaskMsgPro(void *pvParameters)
                 gpro_t.motor_direction_interval_time = 0;
                 gpro_t.pulse_counter=0; 
                 gctl_t.motor_run_direction=CCW;    //power on strat plasma turn on.is plasma turn on
+                
 
               
               }
@@ -171,8 +172,8 @@ static void vTaskMsgPro(void *pvParameters)
                 
                 gpro_t.works_time_out_flag =0;
                 gpro_t.record_eight_minutes_times_flag=0;
-                  xTimerStop((TimerHandle_t  )Timer1Timer_Handler,    /* 待停止的定时器句柄 */
-                                (TickType_t     )0);        /* 等待系统停止定时器的最大时间 */
+//                  xTimerStop((TimerHandle_t  )Timer1Timer_Handler,    /* 待停止的定时器句柄 */
+//                                (TickType_t     )0);        /* 等待系统停止定时器的最大时间 */
 
                   xTimerStop((TimerHandle_t  )Timer2Timer_Handler,    /* 待停止的定时器句柄 */
                                   (TickType_t     )0);        /* 等待系统停止定时器的最大时间 */
@@ -187,7 +188,7 @@ static void vTaskMsgPro(void *pvParameters)
              gpro_t.g_MainStatus = 0;
        
 
-              gpro_t.gTimer_motor_run_time=0;
+              gpro_t.gTimer_motor_run_direction_time=0;
               gpro_t.pulse_counter=0; 
           
         
@@ -277,11 +278,11 @@ static void AppObjCreate (void)
 	     是那个定时器的时间到。当然，使用不同的回调函数也是没问题的。
 	*/
 	
-		Timer1Timer_Handler = xTimerCreate("Timer",          /* 定时器名字 */
-							       (TickType_t ) 480000,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
-							       pdFALSE, /*一次性定时器，非周期性*/ //pdTRUE,          /* 周期性 */
-							       (void *) 1,      /* 定时器ID */
-							       vTimer1Callback); /* 定时器回调函数 */
+//		Timer1Timer_Handler = xTimerCreate("Timer",          /* 定时器名字 */
+//							       (TickType_t ) 480000,    /* 定时器周期,单位时钟节拍  ,定时器超时时间 */
+//							       pdFALSE, /*一次性定时器，非周期性*/ //pdTRUE,          /* 周期性 */
+//							       (void *) 1,      /* 定时器ID */
+//							       vTimer1Callback); /* 定时器回调函数 */
 
 
        Timer2Timer_Handler = xTimerCreate("Timer",          /* 定时器名字 */
@@ -292,7 +293,7 @@ static void AppObjCreate (void)
 
                                    
 
-		if(Timer1Timer_Handler == NULL || Timer2Timer_Handler == NULL)
+		if(Timer2Timer_Handler == NULL)
 		{
 			/* 没有创建成功，用户可以在这里加入创建失败的处理机制 */
             creat_timer_success = 1;
@@ -309,23 +310,6 @@ static void AppObjCreate (void)
 *	返 回 值: 无
 *********************************************************************************************************
 */
-static void vTimer1Callback(xTimerHandle pxTimer)
-{
-	
-
-   gpro_t.timer_1_time_out_flag=1;
-    
-
-	//configASSERT(pxTimer);
-
-	/* 获取那个定时器时间到 */
-	//ulTimerID = (uint32_t)pvTimerGetTimerID(pxTimer);
-	
-	/* 处理定时器1任务 */
-	//bsp_CheckTimer_1(gpro_t.timer_1_time_out_flag);
-	
-	
-}
 
 /*
 *********************************************************************************************************
@@ -352,13 +336,13 @@ static void vTimer2Callback(xTimerHandle pxTimer)
 
 
 
-void xTimerStart_1_Fun(void)
-{
-   	xTimerStart((TimerHandle_t  )Timer1Timer_Handler,   /* 待启动的定时器句柄 */
-                 (TickType_t   )480000);        /* 等待系统启动定时器的最大时间 8  分钟 */
+//void xTimerStart_1_Fun(void)
+//{
+//   	xTimerStart((TimerHandle_t  )Timer1Timer_Handler,   /* 待启动的定时器句柄 */
+//                 (TickType_t   )480000);        /* 等待系统启动定时器的最大时间 8  分钟 */
 
 
-}
+//}
 
 void xTimerStart_2_Fun(void)
 {
@@ -376,11 +360,11 @@ void xTimerStop_2_Fun(void)
 
 }
 
-void xTimerStop_1_Fun(void)
-{
-    xTimerStop((TimerHandle_t  )Timer1Timer_Handler,    /* 待停止的定时器句柄 */
-                (TickType_t     )10);        /* 等待系统停止定时器的最大时间 */
+//void xTimerStop_1_Fun(void)
+//{
+//    xTimerStop((TimerHandle_t  )Timer1Timer_Handler,    /* 待停止的定时器句柄 */
+//                (TickType_t     )10);        /* 等待系统停止定时器的最大时间 */
 
 
-}
+//}
 

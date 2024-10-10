@@ -87,11 +87,12 @@ static void status_0(void)
             gpro_t.key_power_on_flag++;
 
         /* 3秒定时到后退出本状态 */
-               rgb_led_all_off();
+            //   rgb_led_all_off();
                g_recoder_times++ ;
                gpro_t.works_time_out_flag =0;
                gpro_t.record_eight_minutes_times_flag=0;
-              gpro_t.g_MainStatus = 2;
+               gpro_t.gTimer_start_recoder_times=0;
+               gpro_t.g_MainStatus = 2;
             
             // xTimerStart_1_Fun();
 			
@@ -125,7 +126,8 @@ static void status_2(void)
 
       state_0 = g_recoder_times;
 
-     xTimerStart_1_Fun();//bsp_StartTimer(0, 5000);		    /* 定时器0是5000ms 单次定时器 */
+     //xTimerStart_1_Fun();//bsp_StartTimer(0, 5000);		    /* 定时器0是5000ms 单次定时器 */
+     gpro_t.gTimer_start_recoder_times=0;
      xTimerStart_2_Fun();
 	led_no_state_2 = 1;
 
@@ -140,7 +142,7 @@ static void status_2(void)
                 gctl_t.rgb_color_array[i] =0;
 
               }
-              xTimerStart_1_Fun();
+              gpro_t.gTimer_start_recoder_times=0;//xTimerStart_1_Fun();
 
               xTimerStart_2_Fun();
 
@@ -149,9 +151,8 @@ static void status_2(void)
    else if(gpro_t.works_time_out_flag ==0){
 		if(gpro_t.timer_1_time_out_flag == 1)
 		{
-            gpro_t.timer_1_time_out_flag = 0 ;
-            //g_recoder_times ++;
-            xTimerStart_1_Fun();
+           gpro_t.timer_1_time_out_flag=0;
+         
            
             gpro_t.record_eight_minutes_times_flag++;
            
@@ -168,13 +169,13 @@ static void status_2(void)
 
 
             }
-            else if(gpro_t.record_eight_minutes_times_flag > 5 && gpro_t.record_eight_minutes_times_flag < 11){
+            else if(gpro_t.record_eight_minutes_times_flag > 5 && gpro_t.record_eight_minutes_times_flag < 10){
 
                  green_bsp_LedOn(led_no_state_2,gpro_t.record_eight_minutes_times_flag);    /* 点亮其中一个LED */ 
 
 
             }
-            else if(gpro_t.record_eight_minutes_times_flag > 10   &&   gpro_t.works_time_out_flag ==0){
+            else if(gpro_t.record_eight_minutes_times_flag == 10   &&   gpro_t.works_time_out_flag ==0){
 
                blue_bsp_LedOn(led_no_state_2,gpro_t.record_eight_minutes_times_flag)  ;
                
@@ -186,15 +187,13 @@ static void status_2(void)
                   gctl_t.red_led[3]=0;
                   gctl_t.red_led[4]=0;
                   xTimerStop_2_Fun();
-                  xTimerStop_1_Fun();
-               
-                
+                  gpro_t.gTimer_start_recoder_times=0;// xTimerStop_1_Fun();
                   gctl_t.gTimer_timer_led_color_changed=0;
 
             }
 
           
-		     led_no_state_2++;
+		    led_no_state_2++;
             if(led_no_state_2 == 6)
 			{
 				led_no_state_2 = 1;
@@ -276,8 +275,8 @@ void detect_error_hundler(void)
 static void motor_run_fun_hander(void)
 {
    // static uint8_t motor_run_direct;
-    if(gpro_t.gTimer_motor_run_time > 19 && gpro_t.motor_direction_interval_time ==0 && gpro_t.motor_stop_run_flag == 0){//25
-       gpro_t.gTimer_motor_run_time=0;
+    if(gpro_t.gTimer_motor_run_direction_time > 19 && gpro_t.motor_direction_interval_time ==0 && gpro_t.motor_stop_run_flag == 0){//25
+       gpro_t.gTimer_motor_run_direction_time=0;
  
        gctl_t.motor_run_direction ++; //CW -> directior ,gctl_t.motor_run_direction = CW
        
@@ -300,14 +299,10 @@ static void motor_run_fun_hander(void)
            motor_stop_fun();
        }
        else{
-
-         #if UNIT_TEST
         
           gpro_t.motor_direction_interval_time = 1;
+          gpro_t.gTimer_motor_switch_time = 0; // two mode be changed timer ,initial  .
           motor_stop_fun();
-
-        #endif 
-
        }
 
       
@@ -315,13 +310,17 @@ static void motor_run_fun_hander(void)
    }
 
 
-   #if UNIT_TEST
+
 
    if(gpro_t.motor_direction_interval_time ==1){ 
 
-     if(gpro_t.gTimer_motor_run_time > 59){
+     
 
-       gpro_t.gTimer_motor_run_time=0;
+     if(gpro_t.gTimer_motor_switch_time > 9){ //mass for number : 9 
+
+        gpro_t.gTimer_motor_switch_time =0;
+
+       gpro_t.gTimer_motor_run_direction_time=0;
         gpro_t.pulse_counter=0; 
        gpro_t.motor_direction_interval_time =0;
 
@@ -330,7 +329,7 @@ static void motor_run_fun_hander(void)
 
    }
 
-   #endif 
+
 
   
 }

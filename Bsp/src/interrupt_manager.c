@@ -30,16 +30,39 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       
         gpro_t.gTimer_detecte_fan_adc++;
         gpro_t.gTimer_detecte_motor_adc++;
-        gpro_t.gTimer_motor_run_time++ ;
-      // SysTick_ISR(); //WT.EDIT 2024.08.14
-        //main process timer
+       
+         gpro_t.gTimer_motor_run_direction_time++ ;
+         #if 0   //test 
+          gpro_t.gTimer_start_recoder_times ++;
+            
+           if(gpro_t.gTimer_start_recoder_times > 29){
+              gpro_t.gTimer_start_recoder_times=0;
+
+              gpro_t.timer_1_time_out_flag = 1;
+
+
+           }
+         #endif 
 	
 	    //be used to timer 
 	    if(tm1> 59){ //1 mintue
             tm1=0;
             tm2++;
-           if(tm2 > 3){
+            gpro_t.gTimer_motor_switch_time ++;
+            #if 1
+            gpro_t.gTimer_start_recoder_times ++;
             
+              if(gpro_t.gTimer_start_recoder_times > 11){
+              gpro_t.gTimer_start_recoder_times=0;
+
+              gpro_t.timer_1_time_out_flag = 1;
+
+
+           }
+           #endif 
+            
+           if(tm2 > 5){
+            tm2=0;
             gctl_t.gTimer_timer_led_color_changed ++ ;
 
            if(gpro_t.works_time_out_flag  ==1 &&  gctl_t.gTimer_timer_led_color_changed > 0){
@@ -94,7 +117,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                     color_flag = 0;
                      gpro_t.works_time_out_flag  =0; //over interval time restart works motor and fan.
                      gpro_t.motor_stop_run_flag = 0;
-                     gpro_t.gTimer_motor_run_time =0;
+                     gpro_t.gTimer_motor_run_direction_time =0;
 
                   }
 
@@ -110,7 +133,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   else if(htim->Instance==TIM16){
 
     tm20++;
-    if(tm20 > 4){
+    if(tm20 > 4){ //
         tm20= 0;
       if(gpro_t.gpower_on == power_on && gpro_t.motor_stop_run_flag ==0){
           step_motor_rotation_handler(gctl_t.motor_run_direction);

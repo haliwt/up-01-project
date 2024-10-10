@@ -95,9 +95,11 @@ typedef struct _bsp_process{
 
  
 
-     uint8_t gTimer_motor_run_time;
+     uint8_t gTimer_motor_run_direction_time;
      uint8_t gTimer_detecte_fan_adc;
      uint8_t  gTimer_detecte_motor_adc;
+     uint8_t  gTimer_start_recoder_times;
+     uint8_t  gTimer_motor_switch_time ;
 
     
      uint16_t pulse_counter;
