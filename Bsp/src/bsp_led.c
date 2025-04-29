@@ -78,22 +78,31 @@ void rgb_led_set_output_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx,uint8_t high_low
   GPIO_InitTypeDef GPIO_InitStruct = {0};
    
     /* GPIO Ports Clock Enable */
-    __HAL_RCC_GPIOB_CLK_ENABLE();
-    __HAL_RCC_GPIOC_CLK_ENABLE();
-    __HAL_RCC_GPIOA_CLK_ENABLE();
+   /* 1. 启用对应 GPIO 端口的时钟 */
+    if (GPIOx == GPIOA) {
+        __HAL_RCC_GPIOA_CLK_ENABLE();
+    } else if (GPIOx == GPIOB) {
+        __HAL_RCC_GPIOB_CLK_ENABLE();
+    } else if (GPIOx == GPIOC) {
+        __HAL_RCC_GPIOC_CLK_ENABLE();
+    }
 
 
      /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOx, pinx,high_low);
+  //HAL_GPIO_WritePin(GPIOx, pinx,high_low);
 
 
-
+    /* 2. 配置 GPIO 引脚为推挽输出 */
   /*Configure GPIO pins : PBPin PBPin */
   GPIO_InitStruct.Pin = pinx;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
+		
+	/* 3. 设置引脚电平（修复枚举类型警告）*/
+    GPIO_PinState pin_state = (high_low != 0) ? GPIO_PIN_SET : GPIO_PIN_RESET;
+    HAL_GPIO_WritePin(GPIOx, pinx, pin_state);
 
 }
 
@@ -255,14 +264,14 @@ void sys_gpio_set_input(GPIO_TypeDef  *GPIOx)
 }
 #endif 
 
-uint8_t rgb_onoff_state_fun(uint8_t (*rgb_on_off_handler)(uint8_t data))
+void rgb_onoff_state_fun(uint8_t (*rgb_on_off_handler)(uint8_t data))
 {
 
      gled_t.rgb_onoff_state = rgb_on_off_handler;
 
 }
 
-uint8_t rgb_color_state_fun(uint8_t(*rgb_color_handler)(uint8_t color))
+void  rgb_color_state_fun(uint8_t(*rgb_color_handler)(uint8_t color))
 {
 
 

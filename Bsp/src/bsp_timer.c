@@ -73,10 +73,10 @@ __IO int32_t g_iRunTime = 0;
 static void bsp_SoftTimerDec(SOFT_TMR *_tmr);
 
 /* 保存 TIM定时中断到后执行的回调函数指针 */
-static void (*s_TIM_CallBack1)(void);
-static void (*s_TIM_CallBack2)(void);
-static void (*s_TIM_CallBack3)(void);
-static void (*s_TIM_CallBack4)(void);
+//static void (*s_TIM_CallBack1)(void);
+//static void (*s_TIM_CallBack2)(void);
+//static void (*s_TIM_CallBack3)(void);
+//static void (*s_TIM_CallBack4)(void);
 
 
 

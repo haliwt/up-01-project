@@ -123,7 +123,7 @@ uint8_t list_delete_assign_node(Node** head,uint8_t n)
 ***********************************************************************************/
 uint8_t list_find_data(Node** head,uint8_t* ndata,uint8_t n)
 {
-     uint8_t cur_i =0;
+     
 
      if(*head == NULL || n< 1|| ndata == NULL) return 0;
 

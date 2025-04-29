@@ -177,7 +177,7 @@ void Get_Fan_ADC_Fun(uint8_t channel,uint8_t times)
    /// }
 }
 
-void Get_Motor_ADC_Fun(uint8_t channel,uint8_t times)
+void Get_Motor_ADC_Fun(uint32_t channel,uint8_t times)
 {
 
    

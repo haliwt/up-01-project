@@ -13,7 +13,7 @@ uint8_t color_flag;
 *******************************************************************************/
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  static uint16_t tm0,tm160;
+  static uint16_t tm0;
   static uint8_t tm1,tm2,tm20;
   
   

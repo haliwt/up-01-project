@@ -35,6 +35,8 @@ static void red_led_on_origianl(uint8_t _no);
 
 void LED_CTL_Iinit(void)
 {
+  #if 0
+
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
@@ -47,6 +49,24 @@ void LED_CTL_Iinit(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;//GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  #else 
+	// 1. 启用 GPIOA 时钟（通过 RCC）
+    RCC->IOPENR |= RCC_IOPENR_GPIOAEN;
+
+    // 2. 配置 GPIOA Pin 0 为推挽输出（MODER0 = 01）
+    GPIOA->MODER &= ~(0x3 << (0 * 2));   // 清除 MODER0 原有配置
+    GPIOA->MODER |=  (0x1 << (0 * 2));   // 设置为输出模式（01）
+
+    // 3. 可选：配置输出类型（推挽/开漏）和速度
+    GPIOA->OTYPER &= ~(1 << 0);          // 推挽输出（0）
+    GPIOA->OSPEEDR &= ~(0x3 << (0 * 2)); // 低速（00）
+
+    // 4. 控制 GPIOA Pin 0 输出
+    GPIOA->BSRR = (1 << 0);      // 置位（高电平）
+   // GPIOA->BSRR = (1 << (16 + 0)); // 复位（低电平）
+
+  #endif 
 
 }
 
@@ -652,8 +672,8 @@ void blue_bsp_LedOn(uint8_t _no, uint8_t blue_end_flag)
 void blue_led_all_on(uint8_t on_flag)
 {
 
-  uint8_t i;
-  static uint8_t work_out_flag;
+ // uint8_t i;
+ // static uint8_t work_out_flag;
 
    if(on_flag == 1 && gpro_t.gpower_on == power_on && gpro_t.key_active_flag ==0){
 

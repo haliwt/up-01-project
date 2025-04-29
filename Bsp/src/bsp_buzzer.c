@@ -6,7 +6,7 @@ void (*buzzer_sound)(void);
 
 //static void Buzzer_KeySound(void);
 
-static void Buzzer_KeySound_Off(void);
+//static void Buzzer_KeySound_Off(void);
 
 /*
 *********************************************************************************************************
@@ -34,11 +34,11 @@ void Buzzer_KeySound(void)
        
 }
 
-static void Buzzer_KeySound_Off(void)
-{
-  HAL_TIM_PWM_Stop(&htim1,TIM_CHANNEL_2);
-	
-}
+//static void Buzzer_KeySound_Off(void)
+//{
+//  HAL_TIM_PWM_Stop(&htim1,TIM_CHANNEL_2);
+//	
+//}
 
 
 void Buzzer_KeySound_Handler(void(*sound_handler)(void))

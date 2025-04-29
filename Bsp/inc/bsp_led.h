@@ -84,9 +84,9 @@ void rgb_led_set_input_mode(GPIO_TypeDef  *GPIOx,uint16_t pinx);
 
 
 
-uint8_t rgb_onoff_state_fun(uint8_t (*rgb_on_off_handler)(uint8_t data));
+void rgb_onoff_state_fun(uint8_t (*rgb_on_off_handler)(uint8_t data));
 
-uint8_t rgb_color_state_fun(uint8_t(*rgb_color_handler)(uint8_t color));
+void  rgb_color_state_fun(uint8_t(*rgb_color_handler)(uint8_t color));
 
 void charlie_multiplexing_led(void);
 
