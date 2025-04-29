@@ -45,8 +45,9 @@ void waterfall_light_handler(void)
     switch (gpro_t.g_MainStatus)
     {
     case 0:         /* 上电执行一次。LED1闪烁3次，每次间隔1秒。3次后状态机返回。*/
-         
+        LED_CTL_Iinit();
 		status_0(); 
+		
         //g_MainStatus = 1;   /* 转移到状态1 */
         
     break;
@@ -128,7 +129,7 @@ static void status_2(void)
    if(state_0 != g_recoder_times  ){
 
       state_0 = g_recoder_times;
-      LED_CTL_OPEN();
+  
      //xTimerStart_1_Fun();//bsp_StartTimer(0, 5000);		    /* 定时器0是5000ms 单次定时器 */
      gpro_t.gTimer_start_recoder_times=0;
      xTimerStart_2_Fun();
@@ -146,7 +147,7 @@ static void status_2(void)
 
               }
               gpro_t.gTimer_start_recoder_times=0;//xTimerStart_1_Fun();
-              LED_CTL_OPEN();
+            
               xTimerStart_2_Fun();
 
 

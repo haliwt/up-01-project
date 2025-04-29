@@ -158,8 +158,8 @@ static void vTaskMsgPro(void *pvParameters)
           
          }
          else if(gpro_t.gpower_on == power_on ){
-		        	LED_CTL_Iinit();
-           // LED_CTL_OPEN();
+		        	
+  
          
             waterfall_light_handler();
             fan_works_handler(gpro_t.works_time_out_flag);
