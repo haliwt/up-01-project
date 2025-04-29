@@ -33,7 +33,22 @@ static void blue_led_5_on(void);
 static void red_led_on_origianl(uint8_t _no);
 
 
+void LED_CTL_Iinit(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+   HAL_GPIO_WritePin(GPIOA,LED_CTL_Pin,GPIO_PIN_SET);
+  
+  GPIO_InitStruct.Pin = LED_CTL_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;//GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+}
 
 /********************************************************************************
 *
@@ -395,7 +410,7 @@ static void green_led_5_on(void)
 
     rgb_led_set_output_mode(GPIO_1_GPIO_Port,GPIO_1_Pin,0);
     rgb_led_set_output_mode(GPIO_5_GPIO_Port,GPIO_5_Pin,1);
-    
+    LED_CTL_OPEN();
 }
 
 
@@ -559,7 +574,7 @@ static void blue_led_4_on(void)
     rgb_led_set_output_mode(GPIO_2_GPIO_Port,GPIO_2_Pin,0);
     rgb_led_set_output_mode(GPIO_4_GPIO_Port,GPIO_4_Pin,1);
     
-
+   
 
 }
 
@@ -587,7 +602,7 @@ void blue_bsp_LedOn(uint8_t _no, uint8_t blue_end_flag)
 {
 	//_no--;
 
-    
+   LED_CTL_OPEN();
    if(blue_end_flag == 11 && gpro_t.works_time_out_flag == 0){
 
         gpro_t.works_time_out_flag = 1;
@@ -598,22 +613,27 @@ void blue_bsp_LedOn(uint8_t _no, uint8_t blue_end_flag)
 	if (_no == 1)
 	{
 		blue_led_1_on();//GPIO_1_GPIO_Port->BRR = GPIO_1_Pin; //BRR ->GPIO output = 0 
+		LED_CTL_OPEN();
 	}
 	else if (_no == 2)
 	{
 		blue_led_2_on();//GPIO_2_GPIO_Port->BRR = GPIO_2_Pin;
+		LED_CTL_OPEN();
 	}
 	else if (_no == 3)
 	{
 		blue_led_3_on();//GPIO_3_GPIO_Port->BRR = GPIO_3_Pin;
+		LED_CTL_OPEN();
 	}
 	else if (_no == 4)
 	{
 		blue_led_4_on();//GPIO_4_GPIO_Port->BRR = GPIO_4_Pin;
+		LED_CTL_OPEN();
 	}
     else if(_no == 5)
     {
         blue_led_5_on();//GPIO_5_GPIO_Port->BRR = GPIO_5_Pin;
+        LED_CTL_OPEN();
 
     }
 
@@ -640,6 +660,7 @@ void blue_led_all_on(uint8_t on_flag)
     //  fan_works_handler(gpro_t.works_time_out_flag);
     
      led_2: osDelay(4);
+	    LED_CTL_OPEN();
           
         if(gctl_t.green_led[0] == 1){
 
@@ -730,6 +751,7 @@ void blue_led_all_on(uint8_t on_flag)
            goto led_2;
 
         }
+	 LED_CTL_OPEN();
       
    }
   

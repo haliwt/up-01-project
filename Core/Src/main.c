@@ -8,6 +8,9 @@
   * up_01 main board version: 1.0 is test version.
   * 
   * DATA: 2024.10.09
+  * MAIN PCB AND KEY PCB Modify by DATA:2025.04.28
+  * Software by modify DATA:2025.04.28
+  *                    Version: 2.0 --hardware by modify 
   *
   ******************************************************************************
   */
@@ -87,7 +90,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_ADC1_Init();
+  //MX_ADC1_Init();//new PCB don't this is GPIO function //WT.EDIT 2025.04.28
   MX_TIM1_Init();
   MX_TIM16_Init();
   MX_TIM17_Init();

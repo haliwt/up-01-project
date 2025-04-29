@@ -43,6 +43,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
            }
          #endif 
+		    
 	
 	    //be used to timer 
 	    if(tm1> 59){ //1 mintue
@@ -122,6 +123,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                   }
 
             }
+		
                     
            }
             

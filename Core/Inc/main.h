@@ -77,8 +77,8 @@ void Error_Handler(void);
 #define MO_STEP_4_GPIO_Port GPIOA
 
 //control rgb led 15pcs 
-#define GPIO_1_Pin GPIO_PIN_0
-#define GPIO_1_GPIO_Port GPIOB
+#define GPIO_1_Pin 					GPIO_PIN_0
+#define GPIO_1_GPIO_Port 			GPIOB
 
 #define GPIO_2_Pin GPIO_PIN_11
 #define GPIO_2_GPIO_Port GPIOA
@@ -96,8 +96,9 @@ void Error_Handler(void);
 #define GPIO_PLASMA_Port             GPIOA
 
 
-#define ADC_FAN_Pin                     GPIO_PIN_0
-#define ADC_FAN_GPIO_Port               GPIOA
+#define LED_CTL_Pin                     GPIO_PIN_0
+#define LED_CTL_GPIO_Port               GPIOA
+
 #define ADC_MOTOR_Pin                   GPIO_PIN_1
 #define ADC_MOTOR_GPIO_Port                 GPIOA
 

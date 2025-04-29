@@ -121,6 +121,14 @@ static void vTaskMsgPro(void *pvParameters)
              dc_power_sound_flag++;
              gpro_t.gpower_on = power_off;
              buzzer_sound();
+			 LED_CTL_OPEN();
+			 osDelay(300);
+			 LED_CTL_CLOSE();
+			 osDelay(300);
+			 LED_CTL_OPEN();
+			 osDelay(300);
+			 LED_CTL_CLOSE();
+			
       
           }
 
@@ -137,30 +145,33 @@ static void vTaskMsgPro(void *pvParameters)
                 gpro_t.motor_direction_interval_time = 0;
                 gpro_t.pulse_counter=0; 
                 gctl_t.motor_run_direction=CCW;    //power on strat plasma turn on.is plasma turn on
-                
+                 
 
               
               }
              else{
                gpro_t.gpower_on = power_off;
+			 
                  
              }
             
           
          }
          else if(gpro_t.gpower_on == power_on ){
-            
+		        	LED_CTL_Iinit();
+           // LED_CTL_OPEN();
+         
             waterfall_light_handler();
             fan_works_handler(gpro_t.works_time_out_flag);
 
             motor_run_indication_handler();
-            detect_error_hundler();
-        
-
+			//new PCB don't this is GPIO function
+            //detect_error_hundler();
+            
           }
           else if(gpro_t.gpower_on == power_off ){
 
-              
+              LED_CTL_CLOSE();
               rgb_led_all_off();
                          
               rgb_led_all_gpio_set_output(0);

@@ -3,6 +3,11 @@
 #include "main.h"
 
 
+
+#define LED_CTL_OPEN()     do{LED_CTL_GPIO_Port ->BSRR |= LED_CTL_Pin; }while(0)
+#define LED_CTL_CLOSE()    do{LED_CTL_GPIO_Port ->BSRR |=(uint32_t)LED_CTL_Pin << 16;}while(0)
+
+
 typedef enum _led_on_off{
 
     off,
@@ -63,6 +68,7 @@ void blue_led_all_on(uint8_t on_flag);
 
 
 
+void LED_CTL_Iinit(void);
 
 
 #endif 
