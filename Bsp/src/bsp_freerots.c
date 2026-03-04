@@ -327,16 +327,6 @@ static void AppObjCreate (void)
 
 	
 }
-
-/*
-*********************************************************************************************************
-*	函 数 名: vTimer1Callback
-*	功能说明: 定时器回调函数
-*	形    参: 无
-*	返 回 值: 无
-*********************************************************************************************************
-*/
-
 /*
 *********************************************************************************************************
 *	函 数 名: vTimer2Callback
@@ -393,7 +383,11 @@ void xTimerStop_2_Fun(void)
 
 
 //}
-
+/**
+	*@brief:
+	*@notice:
+	*@param:
+**/
 static void key_handler(void)
 {
 	if(KEY_POWER_VALUE()  == KEY_UP && key_power_flag ==1){
@@ -409,9 +403,7 @@ static void key_handler(void)
 			  gpro_t.pulse_counter=0; 
 			  gctl_t.motor_run_direction=CCW;	 //power on strat plasma turn on.is plasma turn on
 			   
-
-			
-			}
+		  }
 		   else{
 			 gpro_t.gpower_on = power_off;
 		   
