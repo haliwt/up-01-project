@@ -675,7 +675,7 @@ void blue_led_all_on(uint8_t on_flag)
  // uint8_t i;
  // static uint8_t work_out_flag;
 
-   if(on_flag == 1 && gpro_t.gpower_on == power_on){
+   if(on_flag == 1 && gpro_t.gpower_on == power_on && gpro_t.key_active_flag ==0){
 
     //  fan_works_handler(gpro_t.works_time_out_flag);
     
@@ -765,7 +765,7 @@ void blue_led_all_on(uint8_t on_flag)
             
        }
 
-     if(on_flag == 1 && gpro_t.gpower_on == power_on && gpro_t.works_time_out_flag  ==1){
+     if(on_flag == 1 && gpro_t.gpower_on == power_on && gpro_t.works_time_out_flag  ==1 && gpro_t.key_active_flag ==0){
            gpro_t.blue_led_work_out_flag=1;
            motor_run_indication_handler();
            goto led_2;

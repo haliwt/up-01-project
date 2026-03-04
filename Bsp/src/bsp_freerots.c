@@ -41,9 +41,10 @@ static TimerHandle_t           Timer2Timer_Handler;/* 定时器2句柄 */
 
 uint8_t creat_timer_success; 
 volatile uint8_t power_onoff_sound;
-uint8_t power_off_flag;
+uint8_t power_off_flag,key_power_flag;
               
 
+static void key_handler(void);
 
 
 /**********************************************************************************************************
@@ -119,8 +120,8 @@ static void vTaskMsgPro(void *pvParameters)
 
       #endif 
 
-      if(KEY_POWER_VALUE()  == KEY_UP && gpro_t.key_active_flag ==1){
-			gpro_t.key_active_flag++;
+      if(KEY_POWER_VALUE()  == KEY_UP && key_power_flag ==1){
+			key_power_flag++;
 			Buzzer_KeySound();
 			 
             if(gpro_t.gpower_on == power_off){
@@ -142,7 +143,7 @@ static void vTaskMsgPro(void *pvParameters)
           }
 
         }
-
+        else{
         switch(gpro_t.gpower_on ){
 
 		case power_on:
@@ -151,9 +152,16 @@ static void vTaskMsgPro(void *pvParameters)
          
          
             waterfall_light_handler();
+		    key_handler();
+		   
             fan_works_handler(gpro_t.works_time_out_flag);
-
+		    
+			
+			key_handler();
+			
             motor_run_indication_handler();
+			
+			key_handler();
 			//new PCB don't this is GPIO function
             //detect_error_hundler();
             
@@ -199,7 +207,8 @@ static void vTaskMsgPro(void *pvParameters)
 
           	break;
           }
-        vTaskDelay(20);
+        }
+        vTaskDelay(10);
        
       }
              
@@ -225,7 +234,7 @@ static void vTaskStart(void *pvParameters)
     if(dc_power_sound_flag==0){
              dc_power_sound_flag++;
              gpro_t.gpower_on = power_off;
-             buzzer_sound();
+             Buzzer_KeySound();
 //			 LED_CTL_OPEN();
 //			 osDelay(300);
 //			 LED_CTL_CLOSE();
@@ -237,7 +246,8 @@ static void vTaskStart(void *pvParameters)
       
     }
 	else if(KEY_POWER_VALUE()  == KEY_DOWN){
-          gpro_t.key_active_flag =1 ;
+		  key_power_flag =1;
+          gpro_t.key_active_flag ++ ;
         //  xTaskNotify(xHandleTaskMsgPro, /* 目标任务 */
 					// POWER_KEY_0,            /* 设置目标任务事件标志位bit0  */
 					// eSetBits);          /* 将目标任务的事件标志位与BIT_0进行或操作，  将结果赋值给事件标志位。*/
@@ -383,4 +393,31 @@ void xTimerStop_2_Fun(void)
 
 
 //}
+
+static void key_handler(void)
+{
+	if(KEY_POWER_VALUE()  == KEY_UP && key_power_flag ==1){
+		  key_power_flag++;
+		  Buzzer_KeySound();
+		   
+		  if(gpro_t.gpower_on == power_off){
+			  gpro_t.gpower_on = power_on;
+			  power_off_flag =1;
+			  gpro_t.key_power_on_flag = 1;
+			  gpro_t.motor_stop_run_flag = 0;
+			  gpro_t.motor_direction_interval_time = 0;
+			  gpro_t.pulse_counter=0; 
+			  gctl_t.motor_run_direction=CCW;	 //power on strat plasma turn on.is plasma turn on
+			   
+
+			
+			}
+		   else{
+			 gpro_t.gpower_on = power_off;
+		   
+			   
+		}
+
+	 }
+}
 
