@@ -72,10 +72,10 @@ void freeRTOS_Handler(void)
 **********************************************************************************************************/
 static void vTaskMsgPro(void *pvParameters)
 {
-    BaseType_t xResult;
-	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(30); /* 设置最大等待时间为50ms */
-	uint32_t ulValue;
-    static uint8_t dc_power_sound_flag;
+    //BaseType_t xResult;
+	//const TickType_t xMaxBlockTime = pdMS_TO_TICKS(500); /* 设置最大等待时间为50ms */
+	//uint32_t ulValue;
+
     uint8_t i;
     while(1)
     {
@@ -98,7 +98,7 @@ static void vTaskMsgPro(void *pvParameters)
 		*/
 
  
-		
+	   #if 0
 	  xResult = xTaskNotifyWait(0x00000000,      
 						          0xFFFFFFFF,      
 						          &ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
@@ -117,26 +117,12 @@ static void vTaskMsgPro(void *pvParameters)
       }
 	  else{
 
-          if(dc_power_sound_flag==0){
-             dc_power_sound_flag++;
-             gpro_t.gpower_on = power_off;
-             buzzer_sound();
-			 LED_CTL_OPEN();
-			 osDelay(300);
-			 LED_CTL_CLOSE();
-			 osDelay(300);
-			 LED_CTL_OPEN();
-			 osDelay(300);
-			 LED_CTL_CLOSE();
-			
-      
-          }
+      #endif 
 
-          if(power_onoff_sound ==1){
-                 power_onoff_sound++;
-                 buzzer_sound();
-               
-            
+      if(KEY_POWER_VALUE()  == KEY_UP && gpro_t.key_active_flag ==1){
+			gpro_t.key_active_flag++;
+			Buzzer_KeySound();
+			 
             if(gpro_t.gpower_on == power_off){
                 gpro_t.gpower_on = power_on;
                 power_off_flag =1;
@@ -153,13 +139,16 @@ static void vTaskMsgPro(void *pvParameters)
                gpro_t.gpower_on = power_off;
 			 
                  
-             }
-            
-          
-         }
-         else if(gpro_t.gpower_on == power_on ){
+          }
+
+        }
+
+        switch(gpro_t.gpower_on ){
+
+		case power_on:
+       
 		        	
-  
+         
          
             waterfall_light_handler();
             fan_works_handler(gpro_t.works_time_out_flag);
@@ -168,10 +157,12 @@ static void vTaskMsgPro(void *pvParameters)
 			//new PCB don't this is GPIO function
             //detect_error_hundler();
             
-          }
-          else if(gpro_t.gpower_on == power_off ){
+          
+		  break;
 
-              LED_CTL_CLOSE();
+		  case power_off :
+           
+               LED_CTL_CLOSE();
               rgb_led_all_off();
                          
               rgb_led_all_gpio_set_output(0);
@@ -205,15 +196,14 @@ static void vTaskMsgPro(void *pvParameters)
         
               gctl_t.motor_run_direction=CCW;    //power on strat plasma turn on.
 
-          
-          }
 
+          	break;
+          }
+        vTaskDelay(20);
        
       }
              
-    }
-      
- }
+}
 /**********************************************************************************************************
 *	函 数 名: vTaskStart
 *	功能说明: 启动任务，也就是最高优先级任务，这里用作按键扫描。
@@ -225,17 +215,32 @@ static void vTaskStart(void *pvParameters)
 {
    //BaseType_t xResult;
    ///const TickType_t xMaxBlockTime = pdMS_TO_TICKS(50); /* 设置最大等待时间为500ms */
-
+    static uint8_t dc_power_sound_flag;
  
     while(1)
     {
 		/* 按键扫描 */
 		//bsp_KeyScan();
-    if(KEY_POWER_VALUE()  == KEY_DOWN){
-          gpro_t.key_active_flag ++ ;
-          xTaskNotify(xHandleTaskMsgPro, /* 目标任务 */
-					 POWER_KEY_0,            /* 设置目标任务事件标志位bit0  */
-					 eSetBits);          /* 将目标任务的事件标志位与BIT_0进行或操作，  将结果赋值给事件标志位。*/
+
+    if(dc_power_sound_flag==0){
+             dc_power_sound_flag++;
+             gpro_t.gpower_on = power_off;
+             buzzer_sound();
+//			 LED_CTL_OPEN();
+//			 osDelay(300);
+//			 LED_CTL_CLOSE();
+//			 osDelay(300);
+//			 LED_CTL_OPEN();
+//			 osDelay(300);
+//			 LED_CTL_CLOSE();
+			
+      
+    }
+	else if(KEY_POWER_VALUE()  == KEY_DOWN){
+          gpro_t.key_active_flag =1 ;
+        //  xTaskNotify(xHandleTaskMsgPro, /* 目标任务 */
+					// POWER_KEY_0,            /* 设置目标任务事件标志位bit0  */
+					// eSetBits);          /* 将目标任务的事件标志位与BIT_0进行或操作，  将结果赋值给事件标志位。*/
 
 
     }
